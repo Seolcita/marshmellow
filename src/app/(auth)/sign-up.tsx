@@ -7,7 +7,7 @@ import Input from '../../components/atomic/input/Input';
 
 // TODO: Add Background Image and update UIs
 
-export const SignInScreen = () => {
+export const SignUpScreen = () => {
   const [inputs, setInputs] = useState({
     email: {
       value: '',
@@ -15,6 +15,11 @@ export const SignInScreen = () => {
       error: '',
     },
     password: {
+      value: '',
+      isValid: true,
+      error: '',
+    },
+    confirmPassword: {
       value: '',
       isValid: true,
       error: '',
@@ -33,8 +38,10 @@ export const SignInScreen = () => {
     const isEmailValid =
       inputs.email.value.length > 0 && rexec.test(inputs.email.value);
     const isPasswordValid = inputs.password.value.length > 6;
+    const isConfirmPasswordValid =
+      inputs.password.value === inputs.confirmPassword.value;
 
-    if (!isEmailValid || !isPasswordValid) {
+    if (!isEmailValid || !isPasswordValid || !isConfirmPasswordValid) {
       setInputs((prevState) => ({
         email: {
           value: prevState.email.value,
@@ -46,6 +53,13 @@ export const SignInScreen = () => {
           isValid: isPasswordValid,
           error: !isPasswordValid
             ? 'Password must be at least 6 characters long.'
+            : '',
+        },
+        confirmPassword: {
+          value: prevState.password.value,
+          isValid: isConfirmPasswordValid,
+          error: !isConfirmPasswordValid
+            ? 'Confirm password does not match with the password.'
             : '',
         },
       }));
@@ -64,15 +78,21 @@ export const SignInScreen = () => {
         isValid: isPasswordValid,
         error: '',
       },
+      confirmPassword: {
+        value: prevState.password.value,
+        isValid: isConfirmPasswordValid,
+        error: '',
+      },
     }));
     // SUPABASE: Add login logic here
     console.log('email', inputs.email.value);
     console.log('PW', inputs.password.value);
+    console.log('Confirm PW', inputs.confirmPassword.value);
   };
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: 'Log in' }} />
+      <Stack.Screen options={{ title: 'Sign up' }} />
 
       <Input
         label='Email'
@@ -96,14 +116,25 @@ export const SignInScreen = () => {
         }}
         error={inputs.password.error}
       />
+      <Input
+        label='Confirm Password'
+        isValid={inputs.confirmPassword.isValid}
+        textInputConfig={{
+          value: inputs.confirmPassword.value,
+          onChangeText: handleInputChange.bind(this, 'confirmPassword'),
+          secureTextEntry: true,
+          placeholder: '******',
+        }}
+        error={inputs.confirmPassword.error}
+      />
       <Button text='Log In' onPress={handleSubmit}>
-        <Text>Sign In</Text>
+        <Text>Sign Up</Text>
       </Button>
     </View>
   );
 };
 
-export default SignInScreen;
+export default SignUpScreen;
 
 export const styles = StyleSheet.create({
   container: {
