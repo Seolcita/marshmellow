@@ -12,6 +12,11 @@ export default function AuthIndex() {
           Log In
         </Link>
       </Pressable>
+      <Pressable style={styles.button}>
+        <Link href='/sign-up' style={styles.text}>
+          Sign Up
+        </Link>
+      </Pressable>
     </View>
   );
 }
@@ -27,6 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.light.tint,
     borderRadius: 100,
     width: '80%',
+    marginBottom: 20,
   },
   text: {
     fontSize: 16,
