@@ -17,6 +17,11 @@ export default function AuthIndex() {
           Sign Up
         </Link>
       </Pressable>
+      <Pressable style={styles.button}>
+        <Link href='/sign-out' style={styles.text}>
+          Log Out
+        </Link>
+      </Pressable>
     </View>
   );
 }

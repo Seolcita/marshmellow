@@ -1,13 +1,16 @@
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { Stack } from 'expo-router';
-import { View, Text, StyleSheet } from 'react-native';
 import { useState } from 'react';
-import Colors from '../../constants/Colors';
+
 import Button from '../../components/atomic/button/Button';
 import Input from '../../components/atomic/input/Input';
+import { supabase } from '../../lib/supabase';
+import Colors from '../../constants/Colors';
 
 // TODO: Add Background Image and update UIs
 
 export const SignInScreen = () => {
+  const [loading, setLoading] = useState(false);
   const [inputs, setInputs] = useState({
     email: {
       value: '',
@@ -27,6 +30,17 @@ export const SignInScreen = () => {
       [inputIdentifier]: { value: enteredValue, isValid: true },
     }));
   };
+
+  async function signInWithEmail() {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: inputs.email.value,
+      password: inputs.password.value,
+    });
+
+    if (error) Alert.alert(error.message);
+    setLoading(false);
+  }
 
   const handleSubmit = () => {
     const rexec = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
@@ -65,9 +79,8 @@ export const SignInScreen = () => {
         error: '',
       },
     }));
-    // SUPABASE: Add login logic here
-    console.log('email', inputs.email.value);
-    console.log('PW', inputs.password.value);
+
+    signInWithEmail();
   };
 
   return (
@@ -96,9 +109,7 @@ export const SignInScreen = () => {
         }}
         error={inputs.password.error}
       />
-      <Button text='Log In' onPress={handleSubmit}>
-        <Text>Sign In</Text>
-      </Button>
+      <Button text='Log In' onPress={handleSubmit} disabled={loading} />
     </View>
   );
 };
