@@ -7,7 +7,7 @@ import Input from '../../atomic/input/Input';
 import styles from './ParkPassModal.styles';
 import { Text, View } from '../../Themed';
 import { Button } from 'react-native-elements';
-import { useInsertParkPass } from '../../../park-pass';
+import { useInsertParkPass } from '../../../api/park-pass';
 import { useAuth } from '../../../providers/AuthProvider';
 import { router } from 'expo-router';
 

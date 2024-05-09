@@ -7,7 +7,7 @@ import { Feather } from '@expo/vector-icons';
 import { Alert, FlatList, Pressable } from 'react-native';
 import { useState } from 'react';
 import ParkPassModal from './ParkPassModal';
-import { useParkPasses } from '../../../park-pass';
+import { useParkPasses } from '../../../api/park-pass';
 import { useAuth } from '../../../providers/AuthProvider';
 
 export const ParkPass = () => {

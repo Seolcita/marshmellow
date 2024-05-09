@@ -4,8 +4,8 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { supabase } from '../lib/supabase';
-import { ParkPass } from '../types';
+import { supabase } from '../../lib/supabase';
+import { ParkPass } from '../../types';
 
 interface InsertParkPass {
   item: ParkPass;
