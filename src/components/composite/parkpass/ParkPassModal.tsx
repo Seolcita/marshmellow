@@ -7,6 +7,8 @@ import Input from '../../atomic/input/Input';
 import styles from './ParkPassModal.styles';
 import { Text, View } from '../../Themed';
 import { Button } from 'react-native-elements';
+import { useInsertParkPass } from '../../../app/api/park-pass';
+import { useAuth } from '../../../providers/AuthProvider';
 
 interface ParkPassModalProps {
   isOpen: boolean;
@@ -29,12 +31,16 @@ const ParkPassModal = ({ isOpen, setIsOpen }: ParkPassModalProps) => {
   });
   const [showDatePicker, setShowDatePicker] = useState(false);
 
+  const { mutate: insertParkPass } = useInsertParkPass();
+  const { session } = useAuth();
+  const userId = session?.user.id;
+
   const handleChange = (_event: any, selectedDate: any) => {
     setShowDatePicker(Platform.OS === 'ios');
     setExpiryDate((prev) => ({ date: selectedDate, error: '' }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (parkPassName.name.length === 0) {
       setParkPassName((prev) => ({
         ...prev,
@@ -47,17 +53,30 @@ const ParkPassModal = ({ isOpen, setIsOpen }: ParkPassModalProps) => {
         ...prev,
         error: 'Pleaes provide a valid expiry date',
       }));
+
+      return;
     } else if (expiryDate?.date && expiryDate.date <= new Date()) {
       setExpiryDate((prev) => ({
         ...prev,
         error: 'Expiry date must be in the future',
       }));
+
+      return;
     }
 
-    if (!!parkPassName.error && !!expiryDate.error) setIsOpen(!isOpen);
-    // Save to database
-    console.log('Park Pass Name:', parkPassName);
-    console.log('Expiry Date:', expiryDate);
+    //Save Park Pass Info to database
+
+    if (parkPassName.name && expiryDate.date && userId) {
+      insertParkPass({
+        item: {
+          name: parkPassName.name,
+          expiryDate: expiryDate.date?.toISOString(),
+        },
+        userId,
+      });
+    }
+
+    if (!!!parkPassName.error && !!!expiryDate.error) setIsOpen(!isOpen);
   };
 
   const handleCancel = () => {
