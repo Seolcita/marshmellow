@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, Platform, Pressable } from 'react-native';
+import { Alert, Modal, Platform, Pressable } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -7,8 +7,9 @@ import Input from '../../atomic/input/Input';
 import styles from './ParkPassModal.styles';
 import { Text, View } from '../../Themed';
 import { Button } from 'react-native-elements';
-import { useInsertParkPass } from '../../../app/api/park-pass';
+import { useInsertParkPass } from '../../../park-pass';
 import { useAuth } from '../../../providers/AuthProvider';
+import { router } from 'expo-router';
 
 interface ParkPassModalProps {
   isOpen: boolean;
@@ -31,9 +32,17 @@ const ParkPassModal = ({ isOpen, setIsOpen }: ParkPassModalProps) => {
   });
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const { mutate: insertParkPass } = useInsertParkPass();
   const { session } = useAuth();
   const userId = session?.user.id;
+
+  if (!userId) {
+    Alert.alert('Session is not valid, please login again');
+    console.log('User not found');
+    router.push('/(auth)/sign-in');
+    return;
+  }
+
+  const { mutate: insertParkPass } = useInsertParkPass(userId);
 
   const handleChange = (_event: any, selectedDate: any) => {
     setShowDatePicker(Platform.OS === 'ios');
