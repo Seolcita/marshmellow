@@ -4,7 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome } from '@expo/vector-icons';
 
 import Input from '../../atomic/input/Input';
-import styles from './ParkPassModal.styles';
+import styles from './AddParkPassModal.styles';
 import { Text, View } from '../../Themed';
 import { Button } from 'react-native-elements';
 import { useInsertParkPass } from '../../../api/park-pass';
@@ -21,7 +21,7 @@ interface ExpiryDate {
   error: string;
 }
 
-const ParkPassModal = ({ isOpen, setIsOpen }: ParkPassModalProps) => {
+const AddParkPassModal = ({ isOpen, setIsOpen }: ParkPassModalProps) => {
   const [parkPassName, setParkPassName] = useState({
     name: '',
     error: '',
@@ -177,4 +177,4 @@ const ParkPassModal = ({ isOpen, setIsOpen }: ParkPassModalProps) => {
   );
 };
 
-export default ParkPassModal;
+export default AddParkPassModal;

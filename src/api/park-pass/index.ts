@@ -12,6 +12,11 @@ interface InsertParkPass {
   userId: string;
 }
 
+interface UpdateParkPass {
+  item: Partial<ParkPass>;
+  id: string;
+}
+
 export const useParkPasses = (userId: string) => {
   return useQuery({
     queryKey: ['park-passes', userId],
@@ -56,6 +61,66 @@ export const useInsertParkPass = (userId: string) => {
         'park-passes',
         userId,
       ] as InvalidateQueryFilters);
+    },
+
+    onError(error) {
+      console.log(error);
+    },
+  });
+};
+
+export const useUpdateParkPass = (userId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    async mutationFn({ id, ...update }: UpdateParkPass) {
+      const { error, data: updatedParkPass } = await supabase
+        .from('park_pass')
+        .update(update)
+        .eq('id', id)
+        .single();
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return updatedParkPass;
+    },
+
+    async onSuccess() {
+      await queryClient.invalidateQueries([
+        'park-passes',
+        userId,
+      ] as InvalidateQueryFilters);
+    },
+
+    onError(error) {
+      console.log(error);
+    },
+  });
+};
+
+export const useDeleteParkPass = (userId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    async mutationFn(id: string) {
+      const { error } = await supabase.from('park_pass').delete().eq('id', id);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+    },
+
+    async onSuccess() {
+      await queryClient.invalidateQueries([
+        'park-passes',
+        userId,
+      ] as InvalidateQueryFilters);
+    },
+
+    onError(error) {
+      console.log(error);
     },
   });
 };

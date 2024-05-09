@@ -6,8 +6,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { Alert, FlatList, Pressable } from 'react-native';
 import { useState } from 'react';
-import ParkPassModal from './ParkPassModal';
-import { useParkPasses } from '../../../api/park-pass';
+import ParkPassModal from './AddParkPassModal';
+import {
+  useDeleteParkPass,
+  useParkPasses,
+  useUpdateParkPass,
+} from '../../../api/park-pass';
 import { useAuth } from '../../../providers/AuthProvider';
 
 export const ParkPass = () => {
@@ -15,6 +19,8 @@ export const ParkPass = () => {
   const { session } = useAuth();
   const userId = session?.user.id ?? '';
   const { data, error, isLoading } = useParkPasses(userId);
+  const { mutate: updateParkPass } = useUpdateParkPass(userId);
+  const { mutate: deleteParkPass } = useDeleteParkPass(userId);
   const warningDate = 10;
 
   if (error) {
@@ -35,11 +41,12 @@ export const ParkPass = () => {
   };
 
   const handleEdit = () => {
-    console.log('Delete');
+    console.log('Edit');
   };
 
-  const handleDelete = () => {
+  const handleDelete = (id: string) => {
     console.log('Delete');
+    deleteParkPass(id);
   };
 
   console.log(data);
@@ -82,7 +89,7 @@ export const ParkPass = () => {
                         name='delete-outline'
                         size={20}
                         color='black'
-                        onPress={handleDelete}
+                        onPress={() => handleDelete(item.id)}
                       />
                     </Pressable>
                   </View>
