@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 18,
+    marginBottom: 15,
   },
   error: {
     color: 'red',

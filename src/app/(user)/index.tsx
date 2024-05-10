@@ -1,5 +1,5 @@
 import { Text, View } from '../../components/Themed';
-import ParkPass from '../../components/composite/parkpass/ParkPass';
+import ParkPass from '../../components/composite/park-pass/ParkPass';
 import { useAuth } from '../../providers/AuthProvider';
 
 const UserIndex = () => {
