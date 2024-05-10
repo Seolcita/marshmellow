@@ -1,27 +1,36 @@
-import { useState } from 'react';
 import { Alert, Modal, Platform, Pressable } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { Calendar } from 'react-native-calendars';
 import { FontAwesome } from '@expo/vector-icons';
-
-import Input from '../../atomic/input/Input';
-import styles from './AddParkPassModal.styles';
-import { Text, View } from '../../Themed';
 import { Button } from 'react-native-elements';
-import { useInsertParkPass } from '../../../api/park-pass';
-import { useAuth } from '../../../providers/AuthProvider';
+import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
+
+import { useInsertParkPass, useUpdateParkPass } from '../../../api/park-pass';
+import { useAuth } from '../../../providers/AuthProvider';
+import styles from './ParkPassModal.styles';
+import Input from '../../atomic/input/Input';
+import { Text, View } from '../../Themed';
+import { ParkPass } from '../../../types';
+import { InitialValue } from './ParkPass';
 
 interface ParkPassModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  isEdit?: boolean;
+  initialValue?: InitialValue;
 }
 
 interface ExpiryDate {
-  date: Date | null;
+  date: string | null;
   error: string;
 }
 
-const AddParkPassModal = ({ isOpen, setIsOpen }: ParkPassModalProps) => {
+const ParkPassModal = ({
+  isOpen,
+  setIsOpen,
+  isEdit,
+  initialValue,
+}: ParkPassModalProps) => {
   const [parkPassName, setParkPassName] = useState({
     name: '',
     error: '',
@@ -30,7 +39,7 @@ const AddParkPassModal = ({ isOpen, setIsOpen }: ParkPassModalProps) => {
     date: null,
     error: '',
   });
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
 
   const { session } = useAuth();
   const userId = session?.user.id;
@@ -43,18 +52,27 @@ const AddParkPassModal = ({ isOpen, setIsOpen }: ParkPassModalProps) => {
   }
 
   const { mutate: insertParkPass } = useInsertParkPass(userId);
+  const { mutate: updateParkPass } = useUpdateParkPass(userId);
 
-  const handleChange = (_event: any, selectedDate: any) => {
-    setShowDatePicker(Platform.OS === 'ios');
-    setExpiryDate((prev) => ({ date: selectedDate, error: '' }));
+  useEffect(() => {
+    if (isEdit && initialValue) {
+      setParkPassName({ name: initialValue.name, error: '' });
+      setExpiryDate({ date: initialValue.expiryDate.toString(), error: '' });
+    }
+  }, [isEdit, initialValue]);
+
+  const handleChange = (date: string) => {
+    setShowCalendar(Platform.OS === 'ios');
+    setExpiryDate({ date: date, error: '' });
   };
 
-  const handleSave = async () => {
+  const validateInputs = () => {
     if (parkPassName.name.length === 0) {
       setParkPassName((prev) => ({
         ...prev,
         error: 'Please enter park pass name',
       }));
+      return false;
     }
 
     if (!expiryDate.date) {
@@ -63,40 +81,77 @@ const AddParkPassModal = ({ isOpen, setIsOpen }: ParkPassModalProps) => {
         error: 'Pleaes provide a valid expiry date',
       }));
 
-      return;
-    } else if (expiryDate?.date && expiryDate.date <= new Date()) {
+      return false;
+    } else if (
+      expiryDate?.date &&
+      new Date(expiryDate.date + 'z') <= new Date()
+    ) {
       setExpiryDate((prev) => ({
         ...prev,
         error: 'Expiry date must be in the future',
       }));
 
-      return;
+      return false;
     }
 
-    //Save Park Pass Info to database
+    return true;
+  };
 
-    if (parkPassName.name && expiryDate.date && userId) {
+  const initiate = () => {
+    setParkPassName({ name: '', error: '' });
+    setExpiryDate({ date: null, error: '' });
+    setIsOpen(!isOpen);
+  };
+
+  const handleSave = async () => {
+    const isValid = validateInputs();
+
+    // Save Park Pass Info to database
+    if (
+      !isEdit &&
+      isValid &&
+      parkPassName.name &&
+      expiryDate.date &&
+      userId &&
+      !!!parkPassName.error &&
+      !!!expiryDate.error
+    ) {
       insertParkPass({
         item: {
           name: parkPassName.name,
-          expiryDate: expiryDate.date?.toISOString(),
+          expiryDate: expiryDate.date.toString(),
         },
         userId,
       });
+      initiate();
     }
+  };
 
-    if (!!!parkPassName.error && !!!expiryDate.error) setIsOpen(!isOpen);
+  const handleEdit = (id: string) => {
+    const isValid = validateInputs();
+
+    if (
+      isEdit &&
+      isValid &&
+      parkPassName.name &&
+      expiryDate.date &&
+      userId &&
+      !!!parkPassName.error &&
+      !!!expiryDate.error
+    ) {
+      const updateItem: ParkPass = {
+        name: parkPassName.name,
+        expiryDate: expiryDate.date,
+      };
+
+      updateParkPass({ id, updateItem });
+      initiate();
+    }
   };
 
   const handleCancel = () => {
-    setIsOpen(!isOpen);
-    setParkPassName({ name: '', error: '' });
-    setExpiryDate({ date: null, error: '' });
+    initiate();
   };
-
-  const formattedDate =
-    expiryDate.date &&
-    expiryDate.date.toDateString().split(' ').slice(1).join(' ');
 
   return (
     <Modal
@@ -110,7 +165,9 @@ const AddParkPassModal = ({ isOpen, setIsOpen }: ParkPassModalProps) => {
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <View style={styles.contents}>
-            <Text style={styles.title}>Add Park Passes</Text>
+            <Text style={styles.title}>
+              {isEdit ? 'Edit Park Passes' : 'Add Park Passes'}
+            </Text>
             <Input
               label='Park Pass Name'
               isValid={true}
@@ -125,25 +182,29 @@ const AddParkPassModal = ({ isOpen, setIsOpen }: ParkPassModalProps) => {
             />
             <View style={styles.dateContainer}>
               <Pressable
-                onPress={() => setShowDatePicker(!showDatePicker)}
+                onPress={() => setShowCalendar(!showCalendar)}
                 style={styles.dateSection}
               >
                 <Text style={styles.text}>Park Pass Expiry Date</Text>
                 <FontAwesome name='calendar-plus-o' size={24} color='black' />
               </Pressable>
-              {showDatePicker && (
-                <DateTimePicker
-                  value={expiryDate.date || new Date()}
-                  mode='date'
-                  display='default'
-                  onChange={handleChange}
-                />
-              )}
               <Text
                 style={[styles.date, !!expiryDate.error && { color: 'red' }]}
               >
-                {formattedDate ?? '-'}
+                {expiryDate.date ?? '-'}
               </Text>
+              {showCalendar && (
+                <Calendar
+                  onDayPress={(day) => handleChange(day.dateString)}
+                  markedDates={{
+                    [expiryDate.date]: {
+                      selected: true,
+                      marked: true,
+                      selectedColor: 'skyblue',
+                    },
+                  }}
+                />
+              )}
 
               <Text style={styles.error}>{expiryDate.error}</Text>
             </View>
@@ -161,7 +222,11 @@ const AddParkPassModal = ({ isOpen, setIsOpen }: ParkPassModalProps) => {
             />
             <Button
               title='Save'
-              onPress={handleSave}
+              onPress={
+                isEdit && initialValue
+                  ? () => handleEdit(initialValue.id)
+                  : handleSave
+              }
               buttonStyle={{
                 backgroundColor: 'black',
                 borderRadius: 5,
@@ -177,4 +242,4 @@ const AddParkPassModal = ({ isOpen, setIsOpen }: ParkPassModalProps) => {
   );
 };
 
-export default AddParkPassModal;
+export default ParkPassModal;

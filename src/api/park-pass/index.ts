@@ -12,8 +12,8 @@ interface InsertParkPass {
   userId: string;
 }
 
-interface UpdateParkPass {
-  item: Partial<ParkPass>;
+export interface UpdateParkPass {
+  updateItem: Partial<ParkPass>;
   id: string;
 }
 
@@ -73,10 +73,12 @@ export const useUpdateParkPass = (userId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    async mutationFn({ id, ...update }: UpdateParkPass) {
+    async mutationFn({ id, updateItem: { name, expiryDate } }: UpdateParkPass) {
+      console.log('UPDATE ITEM 🥶', name);
+      console.log('ID 🎄', id);
       const { error, data: updatedParkPass } = await supabase
         .from('park_pass')
-        .update(update)
+        .update({ name: name, expiry_date: expiryDate })
         .eq('id', id)
         .single();
 

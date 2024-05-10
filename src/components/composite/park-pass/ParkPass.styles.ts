@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     paddingLeft: 3,
+    marginTop: 10,
   },
   list: {
     borderRadius: 5,
@@ -39,6 +40,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 15,
+  },
+  noParkPass: {
+    fontSize: 18,
+    paddingTop: 10,
   },
   name: {
     fontSize: 18,
