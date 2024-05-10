@@ -7,8 +7,8 @@ import { router } from 'expo-router';
 
 import { useInsertParkPass, useUpdateParkPass } from '../../../api/park-pass';
 import { useAuth } from '../../../providers/AuthProvider';
-import styles from './ParkPassModal.styles';
 import Input from '../../atomic/input/Input';
+import styles from './ParkPassModal.styles';
 import { Text, View } from '../../Themed';
 import { ParkPass } from '../../../types';
 import { InitialValue } from './ParkPass';
@@ -106,7 +106,6 @@ const ParkPassModal = ({
   const handleSave = async () => {
     const isValid = validateInputs();
 
-    // Save Park Pass Info to database
     if (
       !isEdit &&
       isValid &&

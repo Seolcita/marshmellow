@@ -1,13 +1,14 @@
-import { Text, View } from '../../Themed';
-import styles from './ParkPass.styles';
+import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Alert, FlatList, Pressable } from 'react-native';
-import { useState } from 'react';
+
+import styles from './ParkPass.styles';
+import { Text, View } from '../../Themed';
 import ParkPassModal from './ParkPassModal';
-import { useDeleteParkPass, useParkPasses } from '../../../api/park-pass';
 import { useAuth } from '../../../providers/AuthProvider';
+import { useDeleteParkPass, useParkPasses } from '../../../api/park-pass';
 
 export interface InitialValue {
   id: string;

@@ -4,6 +4,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
+
 import { supabase } from '../../lib/supabase';
 import { ParkPass } from '../../types';
 
@@ -64,6 +65,7 @@ export const useInsertParkPass = (userId: string) => {
     },
 
     onError(error) {
+      //TODO: Handle error
       console.log(error);
     },
   });
@@ -74,8 +76,6 @@ export const useUpdateParkPass = (userId: string) => {
 
   return useMutation({
     async mutationFn({ id, updateItem: { name, expiryDate } }: UpdateParkPass) {
-      console.log('UPDATE ITEM 🥶', name);
-      console.log('ID 🎄', id);
       const { error, data: updatedParkPass } = await supabase
         .from('park_pass')
         .update({ name: name, expiry_date: expiryDate })
@@ -97,6 +97,7 @@ export const useUpdateParkPass = (userId: string) => {
     },
 
     onError(error) {
+      //TODO: Handle error
       console.log(error);
     },
   });
@@ -122,6 +123,7 @@ export const useDeleteParkPass = (userId: string) => {
     },
 
     onError(error) {
+      //TODO: Handle error
       console.log(error);
     },
   });
