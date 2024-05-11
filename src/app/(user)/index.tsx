@@ -1,13 +1,7 @@
-import { Text, View } from '../../components/Themed';
-import ParkPass from '../../components/composite/park-pass/ParkPass';
-import { useAuth } from '../../providers/AuthProvider';
+import { Redirect } from 'expo-router';
 
 const UserIndex = () => {
-  return (
-    <View>
-      <ParkPass />
-    </View>
-  );
+  return <Redirect href='/(user)/main' />;
 };
 
 export default UserIndex;
