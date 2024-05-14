@@ -1,18 +1,20 @@
 import { Pressable, Text, View } from 'react-native';
 import { forwardRef } from 'react';
 
-import styles from './Button.styles';
+import * as S from './Button.styles';
 
 type ButtonProps = {
   text: string;
+  padding?: number;
+  borderRadius?: number;
 } & React.ComponentPropsWithoutRef<typeof Pressable>;
 
 const Button = forwardRef<View | null, ButtonProps>(
-  ({ text, ...pressableProps }, ref) => {
+  ({ text, borderRadius, ...pressableProps }, ref) => {
     return (
-      <Pressable ref={ref} {...pressableProps} style={styles.container}>
-        <Text style={styles.text}>{text}</Text>
-      </Pressable>
+      <S.Pressable ref={ref} {...pressableProps} borderRadius={borderRadius}>
+        <S.Text>{text}</S.Text>
+      </S.Pressable>
     );
   }
 );

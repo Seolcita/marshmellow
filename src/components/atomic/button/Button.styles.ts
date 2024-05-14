@@ -1,19 +1,20 @@
-import { StyleSheet } from 'react-native';
+import styled from 'styled-components/native';
 import Colors from '../../../constants/Colors';
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: Colors.light.tint,
-    padding: 15,
-    alignItems: 'center',
-    borderRadius: 100,
-    marginVertical: 10,
-  },
-  text: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: 'white',
-  },
-});
+interface PressableProps {
+  borderRadius?: number;
+}
 
-export default styles;
+export const Pressable = styled.Pressable<PressableProps>`
+  background-color: ${Colors.light.tint};
+  padding: 15px;
+  align-items: center;
+  border-radius: ${({ borderRadius }) => borderRadius ?? 100}px;
+  margin-vertical: 10px;
+`;
+
+export const Text = styled.Text`
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+`;
