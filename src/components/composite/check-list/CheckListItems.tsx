@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { Feather } from '@expo/vector-icons';
 
 import {
-  useCheckListSubscription,
   useDeleteCheckList,
   useUpdateCheckListItemStatus,
 } from '../../../api/check-list';
@@ -70,7 +69,7 @@ const CheckListItems = ({
   return (
     <>
       {checkList.map((item) => (
-        <s.Row key={item.id}>
+        <S.Wrapper key={item.id}>
           <S.CheckBoxContainer>
             <CheckBox
               checked={checkedItems[item.id] ?? item.checked}
@@ -80,7 +79,7 @@ const CheckListItems = ({
                   isChecked: item.checked,
                 })
               }
-              size={25}
+              containerStyle={{ padding: 2, backgroundColor: 'transparent' }}
             />
             <S.Label>{item.name}</S.Label>
           </S.CheckBoxContainer>
@@ -89,7 +88,7 @@ const CheckListItems = ({
               <Feather name='x' size={24} color='black' />
             </S.DeleteButton>
           )}
-        </s.Row>
+        </S.Wrapper>
       ))}
     </>
   );
