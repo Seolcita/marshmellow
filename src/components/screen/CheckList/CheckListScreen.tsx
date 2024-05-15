@@ -15,6 +15,7 @@ import { useClearCheckList } from '../../../api/check-list';
 const CheckListScreen = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isEditMode, setIsEditMode] = useState(true);
+  const [isClearCheckList, setIsClearCheckList] = useState(false);
 
   const { session } = useAuth();
   const userId = session?.user.id;
@@ -50,6 +51,7 @@ const CheckListScreen = () => {
           <S.ButtonsContainer>
             <S.Button
               onPress={() => {
+                setIsClearCheckList((prev) => !prev);
                 handleClearCheckList();
               }}
             >
@@ -74,6 +76,8 @@ const CheckListScreen = () => {
             categories={categories}
             userId={userId}
             isEditMode={isEditMode}
+            isClearCheckList={isClearCheckList}
+            setIsClearCheckList={setIsClearCheckList}
           />
         </View>
       )}

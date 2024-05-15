@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Feather } from '@expo/vector-icons';
 
 import {
+  useCheckListSubscription,
   useDeleteCheckList,
   useUpdateCheckListItemStatus,
 } from '../../../api/check-list';
@@ -14,12 +15,16 @@ interface CheckListItemsProps {
   items: CheckList[];
   categoryId: string;
   isEditMode: boolean;
+  isClearCheckList: boolean;
+  setIsClearCheckList: (isClearCheckList: boolean) => void;
 }
 
 const CheckListItems = ({
   items,
   isEditMode,
   categoryId,
+  isClearCheckList,
+  setIsClearCheckList,
 }: CheckListItemsProps) => {
   const [checkList, setCheckList] = useState<CheckList[]>([]);
   const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>(
@@ -35,6 +40,17 @@ const CheckListItems = ({
     }
   }, [items]);
 
+  useEffect(() => {
+    if (isClearCheckList) {
+      const clearCheckList = items.reduce(
+        (acc, item) => ({ ...acc, [item.id]: false }),
+        {}
+      );
+      setCheckedItems(clearCheckList);
+      setIsClearCheckList(false);
+    }
+  }, [isClearCheckList, items]);
+
   const toggleCheckListItemStatus = ({
     itemId,
     isChecked,
@@ -43,7 +59,7 @@ const CheckListItems = ({
     isChecked: boolean;
   }) => {
     const newIsChecked = !isChecked;
-    setCheckedItems({ ...checkedItems, [itemId]: newIsChecked });
+    setCheckedItems((prev) => ({ ...prev, [itemId]: newIsChecked }));
     updateCheckListItemStatus({ id: itemId, isChecked: !isChecked });
   };
 

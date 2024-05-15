@@ -121,3 +121,30 @@ export const useDeleteCategory = (userId: string) => {
     },
   });
 };
+
+export const useCategorySubscription = (userId: string) => {
+  const queryClient = useQueryClient();
+
+  const categories = supabase
+    .channel('custom-all-channel')
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'categories',
+        filter: `user_id=eq.${userId}`,
+      },
+      (payload) => {
+        queryClient.invalidateQueries([
+          'categories',
+          userId,
+        ] as InvalidateQueryFilters);
+      }
+    )
+    .subscribe();
+
+  return () => {
+    categories.unsubscribe();
+  };
+};

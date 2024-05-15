@@ -5,6 +5,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { supabase } from '../../lib/supabase';
+import { useEffect } from 'react';
 
 interface InsertCheckListItem {
   name: string;
@@ -177,7 +178,34 @@ export const useClearCheckList = () => {
         throw new Error(error.message);
       }
     },
-
-    //subscription
   });
+};
+
+export const useCheckListSubscription = (categoryId: string) => {
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const checkList = supabase
+      .channel('custom-all-channel')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'check_list',
+          filter: `category_id=eq.${categoryId}`,
+        },
+        (payload) => {
+          queryClient.invalidateQueries([
+            'check-list',
+            categoryId,
+          ] as InvalidateQueryFilters);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      checkList.unsubscribe();
+    };
+  }, []);
 };

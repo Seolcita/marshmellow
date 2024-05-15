@@ -16,6 +16,8 @@ interface CategoriesProps {
   categories: Category[];
   userId: string;
   isEditMode: boolean;
+  isClearCheckList: boolean;
+  setIsClearCheckList: (isClearCheckList: boolean) => void;
 }
 
 export interface EditCategory {
@@ -25,7 +27,13 @@ export interface EditCategory {
 
 export interface DeleteCategory extends EditCategory {}
 
-const Categories = ({ categories, userId, isEditMode }: CategoriesProps) => {
+const Categories = ({
+  categories,
+  userId,
+  isEditMode,
+  isClearCheckList,
+  setIsClearCheckList,
+}: CategoriesProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -111,6 +119,8 @@ const Categories = ({ categories, userId, isEditMode }: CategoriesProps) => {
               categoryId={item.id}
               isInputVisible={isVisible && activeButtonIndex === index}
               isEditMode={isEditMode}
+              isClearCheckList={isClearCheckList}
+              setIsClearCheckList={setIsClearCheckList}
             />
           </S.Wrapper>
         )}

@@ -15,12 +15,16 @@ interface AddCheckListProps {
   categoryId: string;
   isInputVisible?: boolean;
   isEditMode: boolean;
+  isClearCheckList: boolean;
+  setIsClearCheckList: (isClearCheckList: boolean) => void;
 }
 
 const AddCheckList = ({
   categoryId,
   isInputVisible,
   isEditMode,
+  isClearCheckList,
+  setIsClearCheckList,
 }: AddCheckListProps) => {
   const [item, setItem] = useState({
     name: '',
@@ -90,6 +94,8 @@ const AddCheckList = ({
           items={checkList}
           categoryId={categoryId}
           isEditMode={isEditMode}
+          isClearCheckList={isClearCheckList}
+          setIsClearCheckList={setIsClearCheckList}
         />
       )}
     </View>
