@@ -14,14 +14,14 @@ import { useCheckList, useInsertCheckList } from '../../../api/check-list';
 interface AddCheckListProps {
   categoryId: string;
   isInputVisible?: boolean;
-  isExpanded?: boolean;
+  // isExpanded?: boolean;
 }
 
 const AddCheckList = ({
   categoryId,
   isInputVisible,
-  isExpanded,
-}: AddCheckListProps) => {
+}: // isExpanded,
+AddCheckListProps) => {
   const [item, setItem] = useState({
     name: '',
     error: '',
@@ -57,39 +57,36 @@ const AddCheckList = ({
     }
 
     insertCheckListItem({ name: item.name, categoryId });
+    setItem({ name: '', error: '' });
   };
 
   return (
     <View>
-      {isExpanded && (
-        <View>
-          {isInputVisible && (
-            <S.InputContainer>
-              <s.Row>
-                <Input
-                  label='Add Check List Item'
-                  isValid={true}
-                  textInputConfig={{
-                    value: item.name.trim(),
-                    onChangeText: (text) => {
-                      handleChange(text);
-                    },
-                    placeholder: '',
-                    keyboardType: 'default',
-                    autoFocus: true,
-                  }}
-                  style={{ flex: 1, marginRight: 10 }}
-                  error={item.error}
-                />
-                <Button onPress={handleAdd} text='Add' borderRadius={10} />
-              </s.Row>
-            </S.InputContainer>
-          )}
+      {isInputVisible && (
+        <S.InputContainer>
+          <s.Row>
+            <Input
+              label=''
+              isValid={true}
+              textInputConfig={{
+                value: item.name.trim(),
+                onChangeText: (text) => {
+                  handleChange(text);
+                },
+                placeholder: '',
+                keyboardType: 'default',
+                autoFocus: true,
+              }}
+              style={{ flex: 1, marginRight: 10 }}
+              error={item.error}
+            />
+            <Button onPress={handleAdd} text='Add' borderRadius={10} />
+          </s.Row>
+        </S.InputContainer>
+      )}
 
-          {checkList && (
-            <CheckListItems items={checkList} categoryId={categoryId} />
-          )}
-        </View>
+      {checkList && (
+        <CheckListItems items={checkList} categoryId={categoryId} />
       )}
     </View>
   );

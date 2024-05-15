@@ -6,7 +6,6 @@ export const Container = styled.View`
   padding: 20px;
   border-radius: 5px;
   shadow-color: black;
-  shadow-radius: 4;
   elevation: 1;
 `;
 

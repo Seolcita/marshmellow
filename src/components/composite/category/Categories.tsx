@@ -1,32 +1,44 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FlatList, Pressable } from 'react-native';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import { useState } from 'react';
 
-import { Text } from '../../Themed';
 import * as S from './Categories.styles';
+import { Text, View } from '../../Themed';
 import { Category } from '../../../types';
+import EditCategoryModal from './EditCategoryModal';
 import AddCheckList from '../check-list/AddCheckList';
-import { UpdateCategory, userUpdateCategory } from '../../../api/category';
+import DeleteCategoryModal from './DeleteCategoryModal';
 
 interface CategoriesProps {
   categories: Category[];
   userId: string;
 }
 
+export interface EditCategory {
+  categoryId: string;
+  name: string;
+}
+
+export interface DeleteCategory extends EditCategory {}
+
 const Categories = ({ categories, userId }: CategoriesProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
-  const [editModal, setEditModal] = useState({
-    isOpen: false,
+  // const [isExpanded, setIsExpanded] = useState(true);
+  // const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [editCategory, setEditCategory] = useState<EditCategory>({
     categoryId: '',
     name: '',
   });
-
-  const { mutate: updateCategory } = userUpdateCategory(userId);
+  const [deleteCategory, setDeleteCategory] = useState<DeleteCategory>({
+    categoryId: '',
+    name: '',
+  });
 
   const handleVisibility = (index: number) => {
     if (activeButtonIndex === index) {
@@ -37,73 +49,102 @@ const Categories = ({ categories, userId }: CategoriesProps) => {
     }
   };
 
-  const handleExpand = (index: number) => {
-    if (activeCategoryIndex === index) {
-      setIsExpanded(!isExpanded);
-    } else {
-      setActiveCategoryIndex(index);
-      setIsExpanded(true);
-    }
-  };
+  // const handleExpand = (index: number) => {
+  //   if (activeCategoryIndex === index) {
+  //     setIsExpanded(!isExpanded);
+  //   } else {
+  //     setActiveCategoryIndex(index);
+  //     setIsExpanded(true);
+  //   }
+  // };
 
-  const handleEdit = ({ id, item }: UpdateCategory) => {
-    console.log('EDIT CLICKED', id, item);
-    setEditModal({
-      isOpen: true,
-      categoryId: id,
-      name: item,
+  const handleEdit = ({ categoryId, name }: EditCategory) => {
+    setIsEditModalOpen(true);
+    setEditCategory({
+      categoryId,
+      name,
     });
-
-    // TODO: Create Modal
-    // Use below in modal
-    updateCategory({ id, item });
   };
 
-  const handleDelete = () => {
-    //TODO: Implement delete category
+  const handleDelete = ({ categoryId, name }: DeleteCategory) => {
+    setIsDeleteModalOpen(true);
+    setDeleteCategory({
+      categoryId,
+      name,
+    });
   };
 
   return categories?.length <= 0 ? (
     <Text>No categories found. Add Categories and check list items</Text>
   ) : (
-    <FlatList
-      data={categories}
-      keyExtractor={(item: Category) => item.id}
-      renderItem={({ item, index }) => (
-        <S.Wrapper>
-          <S.CategoryContainer>
-            <Text>{item.name}</Text>
-            <S.CategoryButtons>
-              <Pressable onPress={() => handleExpand(index)}>
-                {isExpanded && activeCategoryIndex === index ? (
-                  <FontAwesome6 name='caret-up' size={24} color='black' />
-                ) : (
-                  <FontAwesome6 name='caret-down' size={24} color='black' />
-                )}
-              </Pressable>
-              <Pressable onPress={() => handleVisibility(index)}>
-                {isVisible && activeButtonIndex === index ? (
-                  <FontAwesome6 name='text-slash' size={17} color='black' />
-                ) : (
-                  <Octicons name='diff-added' size={24} color='black' />
-                )}
-              </Pressable>
-              <Pressable
-                onPress={() => handleEdit({ id: item.id, item: item.name })}
-              >
-                <AntDesign name='edit' size={24} color='black' />
-              </Pressable>
-            </S.CategoryButtons>
-          </S.CategoryContainer>
+    <View>
+      <FlatList
+        data={categories}
+        keyExtractor={(item: Category) => item.id}
+        renderItem={({ item, index }) => (
+          <S.Wrapper>
+            <S.CategoryContainer>
+              <S.CategoryName>{item.name}</S.CategoryName>
+              <S.CategoryButtons>
+                {/* <Pressable onPress={() => handleExpand(index)}>
+                  {isExpanded && activeCategoryIndex === index ? (
+                    <FontAwesome6 name='caret-up' size={24} color='black' />
+                  ) : (
+                    <FontAwesome6 name='caret-down' size={24} color='black' />
+                  )}
+                </Pressable> */}
+                <Pressable onPress={() => handleVisibility(index)}>
+                  {isVisible && activeButtonIndex === index ? (
+                    <FontAwesome6 name='text-slash' size={17} color='black' />
+                  ) : (
+                    <Octicons name='diff-added' size={24} color='black' />
+                  )}
+                </Pressable>
+                <Pressable
+                  onPress={() =>
+                    handleEdit({ categoryId: item.id, name: item.name })
+                  }
+                >
+                  <AntDesign name='edit' size={24} color='black' />
+                </Pressable>
 
-          <AddCheckList
-            categoryId={item.id}
-            isExpanded={isExpanded && activeCategoryIndex === index}
-            isInputVisible={isVisible && activeButtonIndex === index}
-          />
-        </S.Wrapper>
-      )}
-    />
+                <Pressable
+                  onPress={() =>
+                    handleDelete({ categoryId: item.id, name: item.name })
+                  }
+                >
+                  <MaterialCommunityIcons
+                    name='delete-outline'
+                    size={24}
+                    color='black'
+                  />
+                </Pressable>
+              </S.CategoryButtons>
+            </S.CategoryContainer>
+
+            <AddCheckList
+              categoryId={item.id}
+              // isExpanded={isExpanded && activeCategoryIndex === index}
+              isInputVisible={isVisible && activeButtonIndex === index}
+            />
+          </S.Wrapper>
+        )}
+      />
+
+      <EditCategoryModal
+        isEditModalOpen={isEditModalOpen}
+        setIsEditModalOpen={setIsEditModalOpen}
+        eidtCategory={editCategory}
+        userId={userId}
+      />
+
+      <DeleteCategoryModal
+        isDeleteModalOpen={isDeleteModalOpen}
+        setIsDeleteModalOpen={setIsDeleteModalOpen}
+        userId={userId}
+        deleteCategory={deleteCategory}
+      />
+    </View>
   );
 };
 

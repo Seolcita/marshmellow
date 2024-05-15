@@ -64,7 +64,7 @@ export const useInsertCategory = (userId: string) => {
   });
 };
 
-export const userUpdateCategory = (userId: string) => {
+export const useUpdateCategory = (userId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -80,6 +80,32 @@ export const userUpdateCategory = (userId: string) => {
       }
 
       return category;
+    },
+
+    async onSuccess() {
+      queryClient.invalidateQueries([
+        'categories',
+        userId,
+      ] as InvalidateQueryFilters);
+    },
+
+    onError(error) {
+      //TODO: Handle error
+      console.log(error);
+    },
+  });
+};
+
+export const useDeleteCategory = (userId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    async mutationFn(id: string) {
+      const { error } = await supabase.from('categories').delete().eq('id', id);
+
+      if (error) {
+        throw new Error(error.message);
+      }
     },
 
     async onSuccess() {
