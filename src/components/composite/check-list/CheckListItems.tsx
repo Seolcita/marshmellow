@@ -17,8 +17,6 @@ interface CheckListItemsProps {
 }
 
 const CheckListItems = ({ items, categoryId }: CheckListItemsProps) => {
-  console.log('ITEMS 🥎', items);
-
   const [checkList, setCheckList] = useState<CheckList[]>([]);
   const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>(
     {}
