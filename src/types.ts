@@ -16,3 +16,15 @@ export interface ParkPass {
   name: string;
   expiryDate: string;
 }
+
+export interface Category {
+  name: string;
+  id: string;
+}
+
+export interface CheckList {
+  name: string;
+  id: string;
+  categoryId: string;
+  checked: boolean;
+}
