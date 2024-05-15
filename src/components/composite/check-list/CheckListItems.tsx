@@ -6,7 +6,6 @@ import {
   useDeleteCheckList,
   useUpdateCheckListItemStatus,
 } from '../../../api/check-list';
-import { View } from '../../Themed';
 import { CheckList } from '../../../types';
 import * as S from './CheckListItems.styles';
 import * as s from '../../common-styles/CommonStyles';
@@ -48,7 +47,7 @@ const CheckListItems = ({ items, categoryId }: CheckListItemsProps) => {
   };
 
   return (
-    <View>
+    <>
       {checkList.map((item) => (
         <s.Row key={item.id}>
           <S.CheckBoxContainer>
@@ -60,6 +59,7 @@ const CheckListItems = ({ items, categoryId }: CheckListItemsProps) => {
                   isChecked: item.checked,
                 })
               }
+              size={25}
             />
             <S.Label>{item.name}</S.Label>
           </S.CheckBoxContainer>
@@ -68,7 +68,7 @@ const CheckListItems = ({ items, categoryId }: CheckListItemsProps) => {
           </S.DeleteButton>
         </s.Row>
       ))}
-    </View>
+    </>
   );
 };
 

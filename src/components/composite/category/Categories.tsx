@@ -84,7 +84,7 @@ const Categories = ({ categories, userId }: CategoriesProps) => {
         renderItem={({ item, index }) => (
           <S.Wrapper>
             <S.CategoryContainer>
-              <Text>{item.name}</Text>
+              <S.CategoryName>{item.name}</S.CategoryName>
               <S.CategoryButtons>
                 {/* <Pressable onPress={() => handleExpand(index)}>
                   {isExpanded && activeCategoryIndex === index ? (

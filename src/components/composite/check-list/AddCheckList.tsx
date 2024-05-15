@@ -66,7 +66,7 @@ AddCheckListProps) => {
         <S.InputContainer>
           <s.Row>
             <Input
-              label='Add Check List Item'
+              label=''
               isValid={true}
               textInputConfig={{
                 value: item.name.trim(),

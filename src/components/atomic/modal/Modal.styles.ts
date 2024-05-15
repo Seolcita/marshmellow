@@ -22,4 +22,5 @@ export const ModalView = styled.View`
 
 export const CloseButton = styled.Pressable`
   align-self: flex-end;
+  margin-bottom: 10px;
 `;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import * as S from './AddCategory.styles';
+import * as S from './Categories.styles';
 import { EditCategory } from './Categories';
 import Modal from '../../atomic/modal/Modal';
 import Input from '../../atomic/input/Input';
@@ -48,9 +48,10 @@ const EditCategoryModal = ({
 
   return (
     <Modal isOpen={isEditModalOpen} setIsOpen={setIsEditModalOpen}>
-      <S.InputContainer>
+      <S.ModalTitle>Edit Category</S.ModalTitle>
+      <S.EditInputContainer>
         <Input
-          label='Edit Category'
+          label=''
           isValid={true}
           textInputConfig={{
             value: category.item,
@@ -61,11 +62,10 @@ const EditCategoryModal = ({
             keyboardType: 'default',
             autoFocus: true,
           }}
-          style={{ flex: 1, marginRight: 10 }}
           error={category.error}
         />
-        <Button onPress={handleEdit} text='Save' borderRadius={10} />
-      </S.InputContainer>
+        <Button onPress={handleEdit} text='Save' borderRadius={10} fullWidth />
+      </S.EditInputContainer>
     </Modal>
   );
 };
