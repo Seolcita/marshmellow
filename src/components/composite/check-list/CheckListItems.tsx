@@ -13,9 +13,14 @@ import * as s from '../../common-styles/CommonStyles';
 interface CheckListItemsProps {
   items: CheckList[];
   categoryId: string;
+  isEditMode: boolean;
 }
 
-const CheckListItems = ({ items, categoryId }: CheckListItemsProps) => {
+const CheckListItems = ({
+  items,
+  isEditMode,
+  categoryId,
+}: CheckListItemsProps) => {
   const [checkList, setCheckList] = useState<CheckList[]>([]);
   const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>(
     {}
@@ -63,9 +68,11 @@ const CheckListItems = ({ items, categoryId }: CheckListItemsProps) => {
             />
             <S.Label>{item.name}</S.Label>
           </S.CheckBoxContainer>
-          <S.DeleteButton onPress={() => handleDelete(item.id)}>
-            <Feather name='x' size={24} color='black' />
-          </S.DeleteButton>
+          {isEditMode && (
+            <S.DeleteButton onPress={() => handleDelete(item.id)}>
+              <Feather name='x' size={24} color='black' />
+            </S.DeleteButton>
+          )}
         </s.Row>
       ))}
     </>

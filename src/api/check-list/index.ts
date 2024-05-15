@@ -20,10 +20,6 @@ interface UpdateCheckListItemStatus {
   isChecked: boolean;
 }
 
-interface ClearCheckListCheckBox {
-  userId: string;
-}
-
 export const useCheckList = (categoryId: string) => {
   return useQuery({
     queryKey: ['check-list', categoryId],
@@ -149,12 +145,30 @@ export const useUpdateCheckListItemStatus = () => {
   });
 };
 
+export const useGetAllCheckList = (userId: string) => {
+  return useQuery({
+    queryKey: ['check-list', userId],
+    queryFn: async () => {
+      const { error, data: checkList } = await supabase
+        .from('check_list')
+        .select()
+        .eq('user_id', userId);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return checkList;
+    },
+  });
+};
+
 export const useClearCheckList = () => {
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
-    async mutationFn({ userId }: ClearCheckListCheckBox): Promise<any> {
-      const { error, data: updatedCheckListItem } = await supabase
+    async mutationFn(userId: string): Promise<any> {
+      const { error } = await supabase
         .from('check_list')
         .update({ checked: false })
         .eq('user_id', userId);
@@ -162,20 +176,8 @@ export const useClearCheckList = () => {
       if (error) {
         throw new Error(error.message);
       }
-
-      return updatedCheckListItem;
     },
 
-    // async onSuccess(categoryId: string) {
-    //   queryClient.invalidateQueries([
-    //     'check-list',
-    //     categoryId,
-    //   ] as InvalidateQueryFilters);
-    // },
-
-    // onError(error) {
-    //   //TODO: Handle error
-    //   console.log(error);
-    // },
+    //subscription
   });
 };
