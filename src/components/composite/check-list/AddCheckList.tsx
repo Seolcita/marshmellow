@@ -14,14 +14,18 @@ import { useCheckList, useInsertCheckList } from '../../../api/check-list';
 interface AddCheckListProps {
   categoryId: string;
   isInputVisible?: boolean;
-  // isExpanded?: boolean;
+  isEditMode: boolean;
+  isClearCheckList: boolean;
+  setIsClearCheckList: (isClearCheckList: boolean) => void;
 }
 
 const AddCheckList = ({
   categoryId,
   isInputVisible,
-}: // isExpanded,
-AddCheckListProps) => {
+  isEditMode,
+  isClearCheckList,
+  setIsClearCheckList,
+}: AddCheckListProps) => {
   const [item, setItem] = useState({
     name: '',
     error: '',
@@ -86,7 +90,13 @@ AddCheckListProps) => {
       )}
 
       {checkList && (
-        <CheckListItems items={checkList} categoryId={categoryId} />
+        <CheckListItems
+          items={checkList}
+          categoryId={categoryId}
+          isEditMode={isEditMode}
+          isClearCheckList={isClearCheckList}
+          setIsClearCheckList={setIsClearCheckList}
+        />
       )}
     </View>
   );

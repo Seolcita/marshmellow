@@ -15,6 +15,9 @@ import DeleteCategoryModal from './DeleteCategoryModal';
 interface CategoriesProps {
   categories: Category[];
   userId: string;
+  isEditMode: boolean;
+  isClearCheckList: boolean;
+  setIsClearCheckList: (isClearCheckList: boolean) => void;
 }
 
 export interface EditCategory {
@@ -24,11 +27,15 @@ export interface EditCategory {
 
 export interface DeleteCategory extends EditCategory {}
 
-const Categories = ({ categories, userId }: CategoriesProps) => {
+const Categories = ({
+  categories,
+  userId,
+  isEditMode,
+  isClearCheckList,
+  setIsClearCheckList,
+}: CategoriesProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
-  // const [isExpanded, setIsExpanded] = useState(true);
-  // const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editCategory, setEditCategory] = useState<EditCategory>({
@@ -48,15 +55,6 @@ const Categories = ({ categories, userId }: CategoriesProps) => {
       setIsVisible(true);
     }
   };
-
-  // const handleExpand = (index: number) => {
-  //   if (activeCategoryIndex === index) {
-  //     setIsExpanded(!isExpanded);
-  //   } else {
-  //     setActiveCategoryIndex(index);
-  //     setIsExpanded(true);
-  //   }
-  // };
 
   const handleEdit = ({ categoryId, name }: EditCategory) => {
     setIsEditModalOpen(true);
@@ -85,47 +83,44 @@ const Categories = ({ categories, userId }: CategoriesProps) => {
           <S.Wrapper>
             <S.CategoryContainer>
               <S.CategoryName>{item.name}</S.CategoryName>
-              <S.CategoryButtons>
-                {/* <Pressable onPress={() => handleExpand(index)}>
-                  {isExpanded && activeCategoryIndex === index ? (
-                    <FontAwesome6 name='caret-up' size={24} color='black' />
-                  ) : (
-                    <FontAwesome6 name='caret-down' size={24} color='black' />
-                  )}
-                </Pressable> */}
-                <Pressable onPress={() => handleVisibility(index)}>
-                  {isVisible && activeButtonIndex === index ? (
-                    <FontAwesome6 name='text-slash' size={17} color='black' />
-                  ) : (
-                    <Octicons name='diff-added' size={24} color='black' />
-                  )}
-                </Pressable>
-                <Pressable
-                  onPress={() =>
-                    handleEdit({ categoryId: item.id, name: item.name })
-                  }
-                >
-                  <AntDesign name='edit' size={24} color='black' />
-                </Pressable>
+              {isEditMode && (
+                <S.CategoryButtons>
+                  <Pressable onPress={() => handleVisibility(index)}>
+                    {isVisible && activeButtonIndex === index ? (
+                      <FontAwesome6 name='text-slash' size={17} color='black' />
+                    ) : (
+                      <Octicons name='diff-added' size={24} color='black' />
+                    )}
+                  </Pressable>
+                  <Pressable
+                    onPress={() =>
+                      handleEdit({ categoryId: item.id, name: item.name })
+                    }
+                  >
+                    <AntDesign name='edit' size={24} color='black' />
+                  </Pressable>
 
-                <Pressable
-                  onPress={() =>
-                    handleDelete({ categoryId: item.id, name: item.name })
-                  }
-                >
-                  <MaterialCommunityIcons
-                    name='delete-outline'
-                    size={24}
-                    color='black'
-                  />
-                </Pressable>
-              </S.CategoryButtons>
+                  <Pressable
+                    onPress={() =>
+                      handleDelete({ categoryId: item.id, name: item.name })
+                    }
+                  >
+                    <MaterialCommunityIcons
+                      name='delete-outline'
+                      size={24}
+                      color='black'
+                    />
+                  </Pressable>
+                </S.CategoryButtons>
+              )}
             </S.CategoryContainer>
 
             <AddCheckList
               categoryId={item.id}
-              // isExpanded={isExpanded && activeCategoryIndex === index}
               isInputVisible={isVisible && activeButtonIndex === index}
+              isEditMode={isEditMode}
+              isClearCheckList={isClearCheckList}
+              setIsClearCheckList={setIsClearCheckList}
             />
           </S.Wrapper>
         )}

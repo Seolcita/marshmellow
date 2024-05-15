@@ -13,9 +13,18 @@ import * as s from '../../common-styles/CommonStyles';
 interface CheckListItemsProps {
   items: CheckList[];
   categoryId: string;
+  isEditMode: boolean;
+  isClearCheckList: boolean;
+  setIsClearCheckList: (isClearCheckList: boolean) => void;
 }
 
-const CheckListItems = ({ items, categoryId }: CheckListItemsProps) => {
+const CheckListItems = ({
+  items,
+  isEditMode,
+  categoryId,
+  isClearCheckList,
+  setIsClearCheckList,
+}: CheckListItemsProps) => {
   const [checkList, setCheckList] = useState<CheckList[]>([]);
   const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>(
     {}
@@ -30,6 +39,17 @@ const CheckListItems = ({ items, categoryId }: CheckListItemsProps) => {
     }
   }, [items]);
 
+  useEffect(() => {
+    if (isClearCheckList) {
+      const clearCheckList = items.reduce(
+        (acc, item) => ({ ...acc, [item.id]: false }),
+        {}
+      );
+      setCheckedItems(clearCheckList);
+      setIsClearCheckList(false);
+    }
+  }, [isClearCheckList, items]);
+
   const toggleCheckListItemStatus = ({
     itemId,
     isChecked,
@@ -38,7 +58,7 @@ const CheckListItems = ({ items, categoryId }: CheckListItemsProps) => {
     isChecked: boolean;
   }) => {
     const newIsChecked = !isChecked;
-    setCheckedItems({ ...checkedItems, [itemId]: newIsChecked });
+    setCheckedItems((prev) => ({ ...prev, [itemId]: newIsChecked }));
     updateCheckListItemStatus({ id: itemId, isChecked: !isChecked });
   };
 
@@ -49,7 +69,7 @@ const CheckListItems = ({ items, categoryId }: CheckListItemsProps) => {
   return (
     <>
       {checkList.map((item) => (
-        <s.Row key={item.id}>
+        <S.Wrapper key={item.id}>
           <S.CheckBoxContainer>
             <CheckBox
               checked={checkedItems[item.id] ?? item.checked}
@@ -59,14 +79,16 @@ const CheckListItems = ({ items, categoryId }: CheckListItemsProps) => {
                   isChecked: item.checked,
                 })
               }
-              size={25}
+              containerStyle={{ padding: 2, backgroundColor: 'transparent' }}
             />
             <S.Label>{item.name}</S.Label>
           </S.CheckBoxContainer>
-          <S.DeleteButton onPress={() => handleDelete(item.id)}>
-            <Feather name='x' size={24} color='black' />
-          </S.DeleteButton>
-        </s.Row>
+          {isEditMode && (
+            <S.DeleteButton onPress={() => handleDelete(item.id)}>
+              <Feather name='x' size={24} color='black' />
+            </S.DeleteButton>
+          )}
+        </S.Wrapper>
       ))}
     </>
   );

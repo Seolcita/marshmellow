@@ -5,6 +5,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { supabase } from '../../lib/supabase';
+import { useEffect } from 'react';
 
 interface InsertCheckListItem {
   name: string;
@@ -18,10 +19,6 @@ interface DeleteCheckListItem {
 interface UpdateCheckListItemStatus {
   id: string;
   isChecked: boolean;
-}
-
-interface ClearCheckListCheckBox {
-  userId: string;
 }
 
 export const useCheckList = (categoryId: string) => {
@@ -149,12 +146,30 @@ export const useUpdateCheckListItemStatus = () => {
   });
 };
 
+export const useGetAllCheckList = (userId: string) => {
+  return useQuery({
+    queryKey: ['check-list', userId],
+    queryFn: async () => {
+      const { error, data: checkList } = await supabase
+        .from('check_list')
+        .select()
+        .eq('user_id', userId);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return checkList;
+    },
+  });
+};
+
 export const useClearCheckList = () => {
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
-    async mutationFn({ userId }: ClearCheckListCheckBox): Promise<any> {
-      const { error, data: updatedCheckListItem } = await supabase
+    async mutationFn(userId: string): Promise<any> {
+      const { error } = await supabase
         .from('check_list')
         .update({ checked: false })
         .eq('user_id', userId);
@@ -162,20 +177,35 @@ export const useClearCheckList = () => {
       if (error) {
         throw new Error(error.message);
       }
-
-      return updatedCheckListItem;
     },
-
-    // async onSuccess(categoryId: string) {
-    //   queryClient.invalidateQueries([
-    //     'check-list',
-    //     categoryId,
-    //   ] as InvalidateQueryFilters);
-    // },
-
-    // onError(error) {
-    //   //TODO: Handle error
-    //   console.log(error);
-    // },
   });
+};
+
+export const useCheckListSubscription = (categoryId: string) => {
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const checkList = supabase
+      .channel('custom-all-channel')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'check_list',
+          filter: `category_id=eq.${categoryId}`,
+        },
+        (payload) => {
+          queryClient.invalidateQueries([
+            'check-list',
+            categoryId,
+          ] as InvalidateQueryFilters);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      checkList.unsubscribe();
+    };
+  }, []);
 };
