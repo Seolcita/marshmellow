@@ -42,9 +42,6 @@ const ParkPassItem = ({ item, userId, handleEdit }: ParkPassItemProps) => {
       const { isAboutToExpire, remainingDate } =
         remainingDateToExpire(expiryDate);
 
-      console.log('isAboutToExpire', isAboutToExpire);
-      console.log('remainingDate', remainingDate);
-
       if (!isAboutToExpire) {
         setIsAboutToExpire(false);
       } else if (isAboutToExpire) {
@@ -65,7 +62,6 @@ const ParkPassItem = ({ item, userId, handleEdit }: ParkPassItemProps) => {
   }, [expiryDate]);
 
   const handleDelete = (id: string) => {
-    console.log('Delete');
     deleteParkPass(id);
   };
 

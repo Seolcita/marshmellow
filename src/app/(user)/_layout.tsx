@@ -1,6 +1,5 @@
-import { Stack, Tabs } from 'expo-router';
+import { Tabs } from 'expo-router';
 import { useAuth } from '../../providers/AuthProvider';
-import { FontAwesome } from '@expo/vector-icons';
 import TabBarIcon from '../../components/atomic/TabBarIcon/TabBarIcon';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -29,6 +28,16 @@ const UserLayout = () => {
             title: 'Check List',
             headerShown: false,
             tabBarIcon: ({ color }) => <TabBarIcon name='list' color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name='reservation'
+          options={{
+            title: 'Reservation',
+            headerShown: false,
+            tabBarIcon: ({ color }) => (
+              <TabBarIcon name='calendar-check-o' color={color} />
+            ),
           }}
         />
       </Tabs>
