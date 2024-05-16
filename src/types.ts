@@ -28,3 +28,70 @@ export interface CheckList {
   categoryId: string;
   checked: boolean;
 }
+
+export enum CampingType {
+  FRONT = 'Front',
+  BACK = 'BACK',
+  GLAMPING = 'GLAMPING',
+  CROWN = 'CROWN',
+}
+
+export enum CarAccessType {
+  ON_SITE = 'ON_SITE',
+  ON_SITE_THROUGH = 'ON_SITE_THROUGH',
+  PARKING_LOT = 'PARKING_LOT',
+}
+
+export enum Privacy {
+  POOR = 'POOR',
+  BAD = 'BAD',
+  AVERAGE = 'AVERAGE',
+  GOOD = 'GOOD',
+  GREAT = 'GREAT',
+}
+
+export enum SiteSize {
+  SMALL = 'SMALL',
+  MEDIUM = 'MEDIUM',
+  LARGE = 'LARGE',
+}
+
+export enum ToiletType {
+  FLUSH = 'FLUSH',
+  VAULT = 'VAULT',
+}
+
+export interface CampSiteInfo {
+  id?: string;
+  arrivalDate?: string;
+  campgroundName?: string;
+  campingType?: CampingType;
+  canPurchaseFirewood?: boolean;
+  carAccess?: CarAccessType;
+  departureDate: string;
+  firewoodPrice?: number;
+  hasDrinkableWater?: boolean;
+  hasElectric?: boolean;
+  hasFirePit?: boolean;
+  hasSewerService?: boolean;
+  hasShower?: boolean;
+  hasSignal?: boolean;
+  hasSink?: boolean;
+  hasStores?: boolean;
+  hasShelter?: boolean;
+  isFirewoodUnlimited?: boolean;
+  isWaterfront?: boolean;
+  needParkPass?: boolean;
+  needReservation?: boolean;
+  note?: string;
+  parkPassName?: string;
+  privacy?: Privacy;
+  rating?: number;
+  reservationFee?: number;
+  showerCost?: number;
+  siteFee?: number;
+  siteNumber?: number;
+  siteSize?: SiteSize;
+  toilet?: ToiletType;
+  userId: string;
+}
