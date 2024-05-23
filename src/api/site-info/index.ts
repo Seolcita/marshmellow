@@ -8,20 +8,6 @@ import {
 import { supabase } from '../../lib/supabase';
 import { CampSiteInfo } from '../../types';
 
-interface UseInsertReservation {
-  userId: string;
-  arriavlaDate: string;
-  departureDate: string;
-  campgroundName: string;
-}
-
-interface UseUpdateReservation {
-  id: string;
-  arriavlaDate?: string;
-  departureDate?: string;
-  campgroundName?: string;
-}
-
 interface UseDeleteSiteInfo {
   id: string;
   userId: string;
@@ -35,7 +21,7 @@ export const useCampSitesInfo = (userId: string) => {
     queryFn: async () => {
       const { error, data: siteInfo } = await supabase
         .from('site_info')
-        .select()
+        .select('*')
         .eq('user_id', userId);
 
       if (error) {
@@ -65,90 +51,11 @@ export const useCampSiteInfo = (id: string) => {
   });
 };
 
-export const useInsertReservation = (userId: string) => {
+export const useDeleteSiteInfo = (userId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    async mutationFn({
-      arriavlaDate,
-      departureDate,
-      campgroundName,
-      userId,
-    }: UseInsertReservation) {
-      const { error, data: addedSiteInfo } = await supabase
-        .from('site_info')
-        .insert({
-          arriaval: arriavlaDate,
-          departure: departureDate,
-          campground_name: campgroundName,
-          user_id: userId,
-        })
-        .single();
-
-      if (error) {
-        throw new Error(error.message);
-      }
-      return addedSiteInfo;
-    },
-
-    async onSuccess() {
-      queryClient.invalidateQueries([
-        'site-info',
-        userId,
-      ] as InvalidateQueryFilters);
-    },
-
-    onError(error) {
-      //TODO: Handle error
-      console.log(error);
-    },
-  });
-};
-
-export const useUpdateReservation = (id: string) => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    async mutationFn({
-      arriavlaDate,
-      departureDate,
-      campgroundName,
-    }: UseUpdateReservation) {
-      const { error, data: updatedSiteInfo } = await supabase
-        .from('site_info')
-        .update({
-          arriaval: arriavlaDate,
-          departure: departureDate,
-          campground_name: campgroundName,
-        })
-        .eq('id', id)
-        .single();
-
-      if (error) {
-        throw new Error(error.message);
-      }
-      return updatedSiteInfo;
-    },
-
-    async onSuccess() {
-      queryClient.invalidateQueries([
-        'site-info',
-        id,
-      ] as InvalidateQueryFilters);
-    },
-
-    onError(error) {
-      //TODO: Handle error
-      console.log(error);
-    },
-  });
-};
-
-export const useDeleteSiteInfo = ({ id, userId }: UseDeleteSiteInfo) => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    async mutationFn() {
+    async mutationFn(id: string) {
       const { error } = await supabase.from('site_info').delete().eq('id', id);
 
       if (error) {
