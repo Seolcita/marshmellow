@@ -7,7 +7,6 @@ export const AddCampingTripCard = styled.View`
 `;
 
 export const StyledBackground = styled(ImageBackground)`
-  flex: 1;
   width: 100%;
   height: 200px;
 `;
@@ -27,4 +26,16 @@ export const AddCampingTripText = styled.Text`
   color: #e1f7f5;
   font-size: 20px;
   font-weight: bold;
+`;
+
+export const TripsContainer = styled.View`
+  margin-vertical: 20px;
+`;
+
+export const Title = styled.Text`
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+  margin: 20px;
 `;

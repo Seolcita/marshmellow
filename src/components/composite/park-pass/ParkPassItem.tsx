@@ -7,6 +7,7 @@ import styles from './ParkPass.styles';
 import { Pressable } from 'react-native';
 import { Text, View } from '../../Themed';
 import { useDeleteParkPass } from '../../../api/park-pass';
+import { format } from 'date-fns';
 
 interface ParkPassItemProps {
   item: any;
@@ -21,6 +22,9 @@ const ParkPassItem = ({ item, userId, handleEdit }: ParkPassItemProps) => {
 
   const { mutate: deleteParkPass } = useDeleteParkPass(userId);
   const warningDate = 10;
+
+  const expiry = new Date(item.expiry_date + 'T00:00:00');
+  const formattedExpiryDate = format(expiry, 'MMMM d, yyyy');
 
   const remainingDateToExpire = (expiryDate: string) => {
     const today = new Date();
@@ -95,7 +99,7 @@ const ParkPassItem = ({ item, userId, handleEdit }: ParkPassItemProps) => {
         </View>
       </View>
       <View>
-        <Text>{`Expiry Date: ${item.expiry_date}`}</Text>
+        <Text>{`Expiry Date: ${formattedExpiryDate}`}</Text>
         {isAboutToExpire && (
           <View style={styles.warningContainer}>
             <Ionicons name='warning-outline' size={15} color='red' />

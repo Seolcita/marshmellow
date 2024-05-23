@@ -1,8 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from 'react-native-elements';
 import { Calendar } from 'react-native-calendars';
 import { eachDayOfInterval, format } from 'date-fns';
 
+import {
+  useInsertReservation,
+  useUpdateReservation,
+} from '../../../api/reservation';
 import Modal from '../../atomic/modal/Modal';
 import Input from '../../atomic/input/Input';
 import { InitialValue } from './Reservation';
@@ -19,22 +23,47 @@ type Day = {
 interface ReservationModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  isEdit?: boolean;
+  isEdit: boolean;
+  setIsEdit: (isEdit: boolean) => void;
   initialValue?: InitialValue;
+  userId: string;
 }
 
 export const ReservationModal = ({
   isOpen,
   setIsOpen,
   isEdit,
+  setIsEdit,
   initialValue,
+  userId,
 }: ReservationModalProps) => {
-  const [arrivalDate, setArrivalDate] = useState<string | null>(null);
-  const [departureDate, setDepartureDate] = useState<string | null>(null);
+  const [arrivalDate, setArrivalDate] = useState<string | undefined>(undefined);
+  const [departureDate, setDepartureDate] = useState<string | undefined>(
+    undefined
+  );
   const [campgroundName, setCampgroundName] = useState({
     name: '',
     error: '',
   });
+  const [campgroundSiteNumber, setCampgroundSiteNumber] = useState({
+    siteNumber: '',
+    error: '',
+  });
+
+  const { mutate: insertReservation } = useInsertReservation(userId);
+  const { mutate: updateReservation } = useUpdateReservation(userId);
+
+  useEffect(() => {
+    if (isEdit && initialValue) {
+      setArrivalDate(initialValue.arrivalDate);
+      setDepartureDate(initialValue.departureDate);
+      setCampgroundName({ name: initialValue.campgroundName, error: '' });
+      setCampgroundSiteNumber({
+        siteNumber: initialValue.campgroundSiteNumber,
+        error: '',
+      });
+    }
+  }, [isEdit, initialValue]);
 
   const getDatesBetween = (start: string, end: string) => {
     let dates = eachDayOfInterval({
@@ -48,7 +77,7 @@ export const ReservationModal = ({
   const handleDayPress = (day: Day) => {
     if (!arrivalDate || (arrivalDate && departureDate)) {
       setArrivalDate(day.dateString);
-      setDepartureDate(null);
+      setDepartureDate(undefined);
     } else if (!departureDate) {
       setDepartureDate(day.dateString);
     }
@@ -86,9 +115,11 @@ export const ReservationModal = ({
   }
 
   const initiate = () => {
-    setArrivalDate(null);
-    setDepartureDate(null);
+    setArrivalDate(undefined);
+    setDepartureDate(undefined);
     setCampgroundName({ name: '', error: '' });
+    setCampgroundSiteNumber({ siteNumber: '', error: '' });
+    setIsEdit(false);
     setIsOpen(!isOpen);
   };
 
@@ -115,27 +146,31 @@ export const ReservationModal = ({
   const handleSave = () => {
     const isValid = isValidInput();
 
-    console.log('Arrival Date:', arrivalDate);
-    console.log('Departure Date:', departureDate);
-    console.log('Campground Name:', campgroundName.name);
-
-    if (isValid) {
-      // SAVE TO DB
-      initiate();
+    if (isValid && arrivalDate && departureDate && campgroundName.name) {
+      insertReservation({
+        arrivalDate,
+        departureDate,
+        campgroundName: campgroundName.name,
+        campgroundSiteNumber: campgroundSiteNumber?.siteNumber,
+        userId,
+      });
     }
+    initiate();
   };
 
   const handleEdit = (id: string) => {
     const isValid = isValidInput();
 
-    console.log('Arrival Date:', arrivalDate);
-    console.log('Departure Date:', departureDate);
-    console.log('Campground Name:', campgroundName.name);
-
     if (isValid) {
-      // Edit TO DB
-      initiate();
+      updateReservation({
+        id,
+        arrivalDate,
+        departureDate,
+        campgroundName: campgroundName.name,
+        campgroundSiteNumber: campgroundSiteNumber?.siteNumber,
+      });
     }
+    initiate();
   };
 
   const handleCancel = () => {
@@ -150,9 +185,10 @@ export const ReservationModal = ({
           onDayPress={(day) => handleDayPress(day)}
           markingType={'period'}
           markedDates={markedDates}
+          style={{ marginBottom: 20 }}
         />
         <S.InputContainer>
-          <S.Title> Q. What do you camp?</S.Title>
+          <S.Title> Where do you camp?</S.Title>
           <Input
             label='Campground Name'
             isValid={true}
@@ -164,6 +200,24 @@ export const ReservationModal = ({
               keyboardType: 'default',
             }}
             error={campgroundName.error}
+          />
+        </S.InputContainer>
+        <S.InputContainer>
+          <S.TextWrapper>
+            <S.Title> What is site number?</S.Title>
+            <S.Span> (If applicable)</S.Span>
+          </S.TextWrapper>
+          <Input
+            label='Campground Site Number'
+            isValid={true}
+            textInputConfig={{
+              value: campgroundSiteNumber.siteNumber,
+              onChangeText: (text: string) =>
+                setCampgroundSiteNumber({ siteNumber: text.trim(), error: '' }),
+              placeholder: 'C-7',
+              keyboardType: 'default',
+            }}
+            error={campgroundSiteNumber.error}
           />
         </S.InputContainer>
         <S.ButtonContainer>
