@@ -33,10 +33,20 @@ const UserLayout = () => {
         <Tabs.Screen
           name='reservation'
           options={{
-            title: 'Reservation',
+            title: 'Trips',
             headerShown: false,
             tabBarIcon: ({ color }) => (
               <TabBarIcon name='calendar-check-o' color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name='site-info'
+          options={{
+            title: 'Site Info',
+            headerShown: false,
+            tabBarIcon: ({ color }) => (
+              <TabBarIcon name='info-circle' color={color} />
             ),
           }}
         />

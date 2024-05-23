@@ -32,9 +32,6 @@ const Reservation = () => {
   }
   const { data, error, isLoading } = useReservationsInfo(userId);
 
-  console.log('DATA🥶🥶🥶🥶🥶', data);
-  console.log('INITIAL VALUE🥶', initialValue);
-
   const handleEdit = (item: InitialValue) => {
     console.log('item 🚙🚙🚙', item); // Add a comma between 'item' and 'item' variable
     setIsEdit(true);
