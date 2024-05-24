@@ -38,17 +38,20 @@ const ResevationDetail = ({
     deleteReservation(id);
   };
 
-  const arrival = new Date(arrivalDate + 'T00:00:00');
-  const departure = new Date(departureDate + 'T00:00:00');
-  const dateOfArrival = format(arrival, 'MMMM d');
-  const dateOfArrivalWithYeaer = format(arrival, 'MMMM d, yyyy');
-  const dateOfDeparture = format(departure, 'MMMM d, yyyy');
-  const arrivalYeaer = arrival.getFullYear();
-  const departureYear = departure.getFullYear();
-  const isSameYear = arrivalYeaer === departureYear;
-  const formattedCampingDate = `${
-    isSameYear ? dateOfArrival : dateOfArrivalWithYeaer
-  }   ~   ${dateOfDeparture}`;
+  const formatCampingDate = () => {
+    const arrival = new Date(arrivalDate + 'T00:00:00');
+    const departure = new Date(departureDate + 'T00:00:00');
+    const dateOfArrival = format(arrival, 'MMMM d');
+    const dateOfArrivalWithYeaer = format(arrival, 'MMMM d, yyyy');
+    const dateOfDeparture = format(departure, 'MMMM d, yyyy');
+    const arrivalYeaer = arrival.getFullYear();
+    const departureYear = departure.getFullYear();
+    const isSameYear = arrivalYeaer === departureYear;
+
+    return `${
+      isSameYear ? dateOfArrival : dateOfArrivalWithYeaer
+    }   ~   ${dateOfDeparture}`;
+  };
 
   return (
     <s.Tile>
@@ -85,7 +88,7 @@ const ResevationDetail = ({
         <S.Text>
           Site: {campgroundSiteNumber ? campgroundSiteNumber : 'N/A'}
         </S.Text>
-        <S.Text>{formattedCampingDate}</S.Text>
+        <S.Text>{formatCampingDate()}</S.Text>
       </View>
     </s.Tile>
   );

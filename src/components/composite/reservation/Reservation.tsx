@@ -33,7 +33,6 @@ const Reservation = () => {
   const { data, error, isLoading } = useReservationsInfo(userId);
 
   const handleEdit = (item: InitialValue) => {
-    console.log('item 🚙🚙🚙', item); // Add a comma between 'item' and 'item' variable
     setIsEdit(true);
     setInitialValue(item);
     setIsModalOpen(true);

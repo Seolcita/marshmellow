@@ -15,9 +15,36 @@ interface UseDeleteSiteInfo {
 
 interface UseUpdateSiteInfo extends UseDeleteSiteInfo {}
 
+export const useCampSitesPartialInfo = (userId: string) => {
+  return useQuery({
+    queryKey: ['camp-sites-partial-info', userId],
+    queryFn: async () => {
+      const { error, data: siteInfo } = await supabase
+        .from('site_info')
+        .select('id, user_id, campground_name, site_number')
+        .eq('user_id', userId);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      const formattedCampSitePartialInfo = siteInfo.map((info) => {
+        return {
+          id: info.id,
+          userId: info.user_id,
+          campgroundName: info.campground_name,
+          campgroundSiteNumber: info.site_number,
+        };
+      });
+
+      return formattedCampSitePartialInfo;
+    },
+  });
+};
+
 export const useCampSitesInfo = (userId: string) => {
   return useQuery({
-    queryKey: ['site-info', userId],
+    queryKey: ['sites-info', userId],
     queryFn: async () => {
       const { error, data: siteInfo } = await supabase
         .from('site_info')
@@ -65,7 +92,7 @@ export const useDeleteSiteInfo = (userId: string) => {
 
     async onSuccess() {
       queryClient.invalidateQueries([
-        'site-info',
+        'sites-info',
         userId,
       ] as InvalidateQueryFilters);
     },

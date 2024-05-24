@@ -6,7 +6,7 @@ export default function AuthLayout() {
   const { session } = useAuth();
 
   if (session) {
-    return <Redirect href={'/(user)'} />;
+    return <Redirect href={'/(user)/main'} />;
   }
 
   return <Stack />;
