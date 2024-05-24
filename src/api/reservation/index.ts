@@ -25,11 +25,11 @@ interface UseUpdateReservation {
 
 export const useReservationsInfo = (userId: string) => {
   return useQuery({
-    queryKey: ['site-info', userId],
+    queryKey: ['reservations-info', userId],
     queryFn: async () => {
       const { error, data: siteInfo } = await supabase
         .from('site_info')
-        .select('*')
+        .select('id, user_id, arrival, departure, campground_name, site_number')
         .eq('user_id', userId);
 
       if (error) {
@@ -54,7 +54,7 @@ export const useReservationsInfo = (userId: string) => {
 
 export const useReservationInfo = (id: string) => {
   return useQuery({
-    queryKey: ['site-info', id],
+    queryKey: ['reservation-info', id],
     queryFn: async () => {
       const { error, data: siteInfo } = await supabase
         .from('site_info')
@@ -100,7 +100,7 @@ export const useInsertReservation = (userId: string) => {
 
     async onSuccess() {
       queryClient.invalidateQueries([
-        'site-info',
+        'reservations-info',
         userId,
       ] as InvalidateQueryFilters);
     },
@@ -142,7 +142,7 @@ export const useUpdateReservation = (userId: string) => {
 
     async onSuccess() {
       queryClient.invalidateQueries([
-        'site-info',
+        'reservations-info',
         userId,
       ] as InvalidateQueryFilters);
     },
