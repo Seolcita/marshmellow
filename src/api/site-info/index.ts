@@ -73,7 +73,44 @@ export const useCampSiteInfo = (id: string) => {
         throw new Error(error.message);
       }
 
-      return siteInfo;
+      const formattedCampSiteInfo = siteInfo.map((info) => {
+        return {
+          id: info.id,
+          arrivalDate: info.arrival,
+          campgroundName: info.campground_name,
+          campingType: info.camping_type,
+          canPurchaseFirewood: info.can_purchase_firewood,
+          carAccess: info.car_access,
+          departureDate: info.departure,
+          firewoodPrice: info.firewood_price,
+          hasDrinkableWater: info.has_drinkable_water,
+          hasElectric: info.has_electric,
+          hasFirePit: info.has_fire_pit,
+          hasSewerService: info.has_sewer_service,
+          hasShower: info.has_shower,
+          hasSignal: info.has_signal,
+          hasSink: info.has_sink,
+          hasStores: info.has_stores,
+          hasShelter: info.hasShelter,
+          isFirewoodUnlimited: info.is_firewood_unlimited,
+          isWaterfront: info.is_water_front,
+          needParkPass: info.need_park_pass,
+          needReservation: info.need_reservation,
+          note: info.note,
+          parkPassName: info.park_pass_name,
+          privacy: info.privacy,
+          rating: info.rating,
+          reservationFee: info.reservation_fee,
+          showerCost: info.shower_cost,
+          siteFee: info.site_fee,
+          siteNumber: info.site_number,
+          siteSize: info.site_size,
+          toilet: info.toilet,
+          userId: info.user_id,
+        };
+      });
+
+      return formattedCampSiteInfo[0];
     },
   });
 };

@@ -30,7 +30,7 @@ export interface CheckList {
 }
 
 export enum CampingType {
-  FRONT = 'Front',
+  FRONT = 'FRONT',
   BACK = 'BACK',
   GLAMPING = 'GLAMPING',
   CROWN = 'CROWN',
