@@ -36,6 +36,12 @@ export enum CampingType {
   CROWN = 'CROWN',
 }
 
+export enum ReservationType {
+  RESERVATION = 'RESERVATION',
+  FCFS = 'FCFS',
+  ANY = 'ANY',
+}
+
 export enum CarAccessType {
   ON_SITE = 'ON_SITE',
   ON_SITE_THROUGH = 'ON_SITE_THROUGH',

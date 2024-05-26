@@ -8,16 +8,22 @@ interface SelectItem {
 
 interface SelectProps {
   stateValue: any;
+  selectName: string;
   handleChange: any;
   items: SelectItem[];
 }
 
-const Select = ({ stateValue, handleChange, items }: SelectProps) => {
+const Select = ({
+  stateValue,
+  selectName,
+  handleChange,
+  items,
+}: SelectProps) => {
   return (
     <Picker
       selectedValue={stateValue}
       onValueChange={(itemValue) =>
-        handleChange({ name: 'campingType', value: itemValue })
+        handleChange({ name: selectName, value: itemValue })
       }
     >
       <Picker.Item label='Select an option...' value='' />

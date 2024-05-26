@@ -11,14 +11,20 @@ interface RadioItems {
 
 interface RadioButtonProps {
   stateValue: any;
+  radioButtonName: string;
   handleChange: any;
   items: RadioItems[];
 }
 
-const RadioButton = ({ stateValue, handleChange, items }: RadioButtonProps) => {
+const RadioButton = ({
+  stateValue,
+  radioButtonName,
+  handleChange,
+  items,
+}: RadioButtonProps) => {
   return (
     <Radio.Group
-      onValueChange={(value) => handleChange({ name: 'needParkPass', value })}
+      onValueChange={(value) => handleChange({ name: radioButtonName, value })}
       value={stateValue}
     >
       {items.map((item) => (
