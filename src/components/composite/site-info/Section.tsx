@@ -15,7 +15,7 @@ const Section = ({ inputComponent, sectionTitle, question }: SectionProps) => {
         </S.SectionTitleContainer>
       )}
       <S.InputContainer>
-        <S.Question>Q. {question} </S.Question>
+        <S.Question> {question} </S.Question>
         {inputComponent}
       </S.InputContainer>
     </>

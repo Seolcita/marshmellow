@@ -88,7 +88,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
       <S.SectionContainer>
         <Section
           sectionTitle='Campsite Info'
-          question='What is the campsite type?'
+          question='1. What is the campsite type?'
           inputComponent={
             <Select
               stateValue={siteInfo.campingType}
@@ -100,19 +100,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
         />
 
         <Section
-          question='What is the car access type?'
-          inputComponent={
-            <Select
-              stateValue={siteInfo.carAccess}
-              selectName='carAccess'
-              handleChange={handleChange}
-              items={carAccessTypesSelectItems}
-            />
-          }
-        />
-
-        <Section
-          question='What is the campsite size?'
+          question='2. What is the campsite size?'
           inputComponent={
             <Select
               stateValue={siteInfo.siteSize}
@@ -124,7 +112,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
         />
 
         <Section
-          question='How is the campsite privacy?'
+          question='3. How is the campsite privacy?'
           inputComponent={
             <Select
               stateValue={siteInfo.privacy}
@@ -136,7 +124,19 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
         />
 
         <Section
-          question='Is there a fire pit?'
+          question='4. What is the car access type?'
+          inputComponent={
+            <Select
+              stateValue={siteInfo.carAccess}
+              selectName='carAccess'
+              handleChange={handleChange}
+              items={carAccessTypesSelectItems}
+            />
+          }
+        />
+
+        <Section
+          question='5. Is there a fire pit?'
           inputComponent={
             <RadioButton
               stateValue={siteInfo.hasFirePit}
@@ -148,7 +148,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
         />
 
         <Section
-          question='Is the camp site waterfront?'
+          question='6. Is the camp site waterfront?'
           inputComponent={
             <RadioButton
               stateValue={siteInfo.isWaterfront}
@@ -160,7 +160,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
         />
 
         <Section
-          question='Is there phone signal?'
+          question='7. Is there phone signal?'
           inputComponent={
             <RadioButton
               stateValue={siteInfo.hasSignal}
@@ -172,7 +172,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
         />
 
         <Section
-          question='Is there a electricity hookup?'
+          question='8. Is there a electricity hookup?'
           inputComponent={
             <RadioButton
               stateValue={siteInfo.hasElectricity}
@@ -184,7 +184,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
         />
 
         <Section
-          question='Is there a water hookup?'
+          question='9. Is there a water hookup?'
           inputComponent={
             <RadioButton
               stateValue={siteInfo.hasWaterHookup}
@@ -198,7 +198,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
       <S.SectionContainer>
         <Section
           sectionTitle='Campsite Reservation'
-          question='What is the booking method?'
+          question='10. What is the booking method?'
           inputComponent={
             <Select
               stateValue={siteInfo.reservation}
@@ -209,27 +209,9 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
           }
         />
 
-        <Section
-          question='How much is campsite fee?'
-          inputComponent={
-            <Input
-              label='Campsite fee per night'
-              isValid={true}
-              textInputConfig={{
-                value: siteInfo.siteFee,
-                onChangeText: (text) => {
-                  handleChange({ name: 'siteFee', value: text });
-                },
-                placeholder: '30',
-                keyboardType: 'numeric',
-              }}
-            />
-          }
-        />
-
         {siteInfo.reservation === ReservationType.RESERVATION && (
           <Section
-            question='How much is reservation fee?'
+            question='10-1. How much is reservation fee?'
             inputComponent={
               <Input
                 label='Reservation fee per booking'
@@ -246,12 +228,30 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
             }
           />
         )}
+
+        <Section
+          question='11. How much is campsite fee?'
+          inputComponent={
+            <Input
+              label='Campsite fee per night'
+              isValid={true}
+              textInputConfig={{
+                value: siteInfo.siteFee,
+                onChangeText: (text) => {
+                  handleChange({ name: 'siteFee', value: text });
+                },
+                placeholder: '30',
+                keyboardType: 'numeric',
+              }}
+            />
+          }
+        />
       </S.SectionContainer>
 
       <S.SectionContainer>
         <Section
           sectionTitle='Campground Facilities'
-          question='Can I purchase fire wood?'
+          question='12. Can I purchase fire wood?'
           inputComponent={
             <RadioButton
               stateValue={siteInfo.canPurchaseFirewood}
@@ -264,7 +264,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
 
         {siteInfo?.canPurchaseFirewood === 'true' && (
           <Section
-            question='Is fire wood provided unlimitedly?'
+            question='12-1. Is fire wood provided unlimitedly?'
             inputComponent={
               <RadioButton
                 stateValue={siteInfo.isFirewoodUnlimited}
@@ -278,7 +278,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
 
         {siteInfo?.isFirewoodUnlimited === 'false' && (
           <Section
-            question='How much is fire wood?'
+            question='12-2. How much is fire wood?'
             inputComponent={
               <Input
                 label='Price of fire wood per bag'
@@ -297,7 +297,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
         )}
 
         <Section
-          question='Are there water pumps?'
+          question='13. Are there water pumps?'
           inputComponent={
             <RadioButton
               stateValue={siteInfo.hasWater}
@@ -309,7 +309,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
         />
 
         <Section
-          question='Are there drinkable water pumps?'
+          question='14. Are there drinkable water pumps?'
           inputComponent={
             <RadioButton
               stateValue={siteInfo.hasDrinkableWater}
@@ -321,7 +321,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
         />
 
         <Section
-          question='Is there dish sink?'
+          question='15. Is there dish sink?'
           inputComponent={
             <RadioButton
               stateValue={siteInfo.hasSink}
@@ -333,7 +333,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
         />
 
         <Section
-          question='What is toilet type?'
+          question='16. What is toilet type?'
           inputComponent={
             <Select
               stateValue={siteInfo.toilet}
@@ -345,7 +345,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
         />
 
         <Section
-          question='Is there shower facility?'
+          question='17. Is there shower facility?'
           inputComponent={
             <RadioButton
               stateValue={siteInfo.hasShower}
@@ -358,7 +358,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
 
         {siteInfo.hasShower === 'true' && (
           <Section
-            question='How much is shower token?'
+            question='17-1. How much is shower token?'
             inputComponent={
               <Input
                 label='Price of shower token'
@@ -377,7 +377,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
         )}
 
         <Section
-          question='Is there shelter?'
+          question='18. Is there shelter?'
           inputComponent={
             <RadioButton
               stateValue={siteInfo.hasShelter}
@@ -389,7 +389,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
         />
 
         <Section
-          question='Is there store?'
+          question='19. Is there store?'
           inputComponent={
             <RadioButton
               stateValue={siteInfo.hasStores}
@@ -401,7 +401,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
         />
 
         <Section
-          question='Is there sewer service?'
+          question='20. Is there sewer service?'
           inputComponent={
             <RadioButton
               stateValue={siteInfo.hasSewerService}
@@ -414,7 +414,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
 
         {siteInfo.hasSewerService === 'true' && (
           <Section
-            question='How much is sewer service fee?'
+            question='20-1. How much is sewer service fee?'
             inputComponent={
               <Input
                 label='Price of sewer service'
@@ -436,7 +436,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
       <S.SectionContainer>
         <Section
           sectionTitle='Park Pass'
-          question='Does campground need a park pass?'
+          question='21. Does campground need a park pass?'
           inputComponent={
             <RadioButton
               stateValue={siteInfo.needParkPass}
@@ -449,7 +449,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
 
         {siteInfo.needParkPass === 'true' && (
           <Section
-            question='What is the name of park pass?'
+            question='21-1. What is the name of park pass?'
             inputComponent={
               <Input
                 label='Park Pass Name'
@@ -473,7 +473,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
       <S.SectionContainer>
         <Section
           sectionTitle='Notes'
-          question='Any additional notes?'
+          question='22. Any additional notes?'
           inputComponent={
             <Input
               label='Leave additional campsite information'

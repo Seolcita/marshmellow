@@ -75,13 +75,10 @@ export const useCampSiteInfo = (id: string) => {
 
       const formattedCampSiteInfo = siteInfo.map((info) => {
         return {
-          id: info.id,
-          arrivalDate: info.arrival,
           campgroundName: info.campground_name,
           campingType: info.camping_type,
           canPurchaseFirewood: info.can_purchase_firewood,
           carAccess: info.car_access,
-          departureDate: info.departure,
           firewoodPrice: info.firewood_price,
           hasDrinkableWater: info.has_drinkable_water,
           hasElectricity: info.has_electricity,
@@ -109,11 +106,10 @@ export const useCampSiteInfo = (id: string) => {
           siteNumber: info.site_number,
           siteSize: info.site_size,
           toilet: info.toilet,
-          userId: info.user_id,
         };
       });
 
-      return formattedCampSiteInfo[0];
+      return formattedCampSiteInfo[0] as CampSiteInfo;
     },
   });
 };

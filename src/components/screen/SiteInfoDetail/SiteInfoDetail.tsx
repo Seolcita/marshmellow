@@ -16,7 +16,7 @@ const SiteInfoDetailScreen = ({ id }: SiteInfoDetailProps) => {
   const [isEditMode, setIsEditMode] = useState(false);
 
   const { error, isLoading, data: siteInfo } = useCampSiteInfo(id);
-  console.log('SITE INFOINFO⭐️', siteInfo);
+  // console.log('SITE INFOINFO⭐️', siteInfo);
 
   return (
     <>
