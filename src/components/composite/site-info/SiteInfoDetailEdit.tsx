@@ -86,26 +86,14 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
     <PaperProvider>
       <S.SectionContainer>
         <Section
-          sectionTitle='Camping Site Type'
-          question='What is the camping site type?'
+          sectionTitle='Campsite Info'
+          question='What is the campsite type?'
           inputComponent={
             <Select
               stateValue={siteInfo.campingType.value}
               selectName='campingType'
               handleChange={handleChange}
               items={campingTypesSelectItems}
-            />
-          }
-        />
-
-        <Section
-          question='What is the booking method?'
-          inputComponent={
-            <Select
-              stateValue={siteInfo.reservation.value}
-              selectName='reservation'
-              handleChange={handleChange}
-              items={reservationTypesSelectItems}
             />
           }
         />
@@ -123,7 +111,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
         />
 
         <Section
-          question='What is the camping site size?'
+          question='What is the campsite size?'
           inputComponent={
             <Select
               stateValue={siteInfo.siteSize.value}
@@ -152,6 +140,18 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
             <RadioButton
               stateValue={siteInfo.hasFirePit.value}
               radioButtonName='hasFirePit'
+              handleChange={handleChange}
+              items={booleanRadioButtonItems}
+            />
+          }
+        />
+
+        <Section
+          question='Is the camp site waterfront?'
+          inputComponent={
+            <RadioButton
+              stateValue={siteInfo.isWaterfront.value}
+              radioButtonName='isWaterfront'
               handleChange={handleChange}
               items={booleanRadioButtonItems}
             />
@@ -193,12 +193,26 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
             />
           }
         />
+      </S.SectionContainer>
+      <S.SectionContainer>
+        <Section
+          sectionTitle='Campsite Reservation'
+          question='What is the booking method?'
+          inputComponent={
+            <Select
+              stateValue={siteInfo.reservation.value}
+              selectName='reservation'
+              handleChange={handleChange}
+              items={reservationTypesSelectItems}
+            />
+          }
+        />
 
         <Section
-          question='How much is camping site fee?'
+          question='How much is campsite fee?'
           inputComponent={
             <Input
-              label='Camping site fee per night'
+              label='Campsite fee per night'
               isValid={true}
               textInputConfig={{
                 value: siteInfo.siteFee.value.trim() ?? '',
@@ -237,7 +251,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
 
       <S.SectionContainer>
         <Section
-          sectionTitle='Facilities'
+          sectionTitle='Campground Facilities'
           question='Can I purchase fire wood?'
           inputComponent={
             <RadioButton
@@ -459,6 +473,30 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
             }
           />
         )}
+      </S.SectionContainer>
+
+      <S.SectionContainer>
+        <Section
+          sectionTitle='Notes'
+          question='Any additional notes?'
+          inputComponent={
+            <Input
+              label='Leave additional campsite information'
+              isValid={true}
+              textInputConfig={{
+                value: siteInfo?.note?.value.trim() ?? '',
+                onChangeText: (text) => {
+                  handleChange({ name: 'note', value: text });
+                },
+                placeholder: 'Enter notes here...',
+                keyboardType: 'default',
+                multiline: true,
+                numberOfLines: 6,
+              }}
+              error={siteInfo?.note?.error}
+            />
+          }
+        />
       </S.SectionContainer>
     </PaperProvider>
   );
