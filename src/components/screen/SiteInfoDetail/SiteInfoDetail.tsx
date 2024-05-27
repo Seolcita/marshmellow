@@ -6,6 +6,7 @@ import { useCampSiteInfo } from '../../../api/site-info';
 import SiteInfoDetail from '../../composite/site-info/SiteInfoDetail';
 import SiteInfoDetailEdit from '../../composite/site-info/SiteInfoDetailEdit';
 import * as S from './SiteInfoDetail.styles';
+import { ScrollView } from 'react-native';
 
 interface SiteInfoDetailProps {
   id: string;
@@ -40,11 +41,13 @@ const SiteInfoDetailScreen = ({ id }: SiteInfoDetailProps) => {
           <S.SubTitle>{siteInfo?.siteNumber}</S.SubTitle>
         </S.HeaderContainer>
         <S.MainContainer>
-          {isEditMode ? (
-            <SiteInfoDetailEdit id={id} />
-          ) : (
-            <SiteInfoDetail id={id} />
-          )}
+          <ScrollView>
+            {isEditMode ? (
+              <SiteInfoDetailEdit id={id} />
+            ) : (
+              <SiteInfoDetail id={id} />
+            )}
+          </ScrollView>
         </S.MainContainer>
       </S.Container>
     </>

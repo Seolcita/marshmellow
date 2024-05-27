@@ -5,21 +5,42 @@ import * as S from './Button.styles';
 
 type ButtonProps = {
   text: string;
-  padding?: number;
+  textSize?: number;
   borderRadius?: number;
   fullWidth?: boolean;
+  paddingVertical?: number;
+  paddingHorizontal?: number;
+  marginVertical?: number;
+  marginHorizontal?: number;
 } & React.ComponentPropsWithoutRef<typeof Pressable>;
 
 const Button = forwardRef<View | null, ButtonProps>(
-  ({ text, borderRadius, fullWidth, ...pressableProps }, ref) => {
+  (
+    {
+      text,
+      textSize,
+      borderRadius,
+      fullWidth,
+      paddingVertical,
+      paddingHorizontal,
+      marginVertical,
+      marginHorizontal,
+      ...pressableProps
+    },
+    ref
+  ) => {
     return (
       <S.Pressable
         ref={ref}
         {...pressableProps}
         borderRadius={borderRadius}
         $fullWidth={fullWidth}
+        $paddingVertical={paddingVertical}
+        $paddingHorizontal={paddingHorizontal}
+        $marginVertical={marginVertical}
+        $marginHorizontal={marginHorizontal}
       >
-        <S.Text>{text}</S.Text>
+        <S.Text $textSize={textSize}>{text}</S.Text>
       </S.Pressable>
     );
   }

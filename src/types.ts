@@ -36,6 +36,12 @@ export enum CampingType {
   CROWN = 'CROWN',
 }
 
+export enum ReservationType {
+  RESERVATION = 'RESERVATION',
+  FCFS = 'FCFS',
+  ANY = 'ANY',
+}
+
 export enum CarAccessType {
   ON_SITE = 'ON_SITE',
   ON_SITE_THROUGH = 'ON_SITE_THROUGH',
@@ -68,10 +74,10 @@ export interface CampSiteInfo {
   campingType?: CampingType;
   canPurchaseFirewood?: boolean;
   carAccess?: CarAccessType;
-  departureDate: string;
+  departureDate?: string;
   firewoodPrice?: number;
   hasDrinkableWater?: boolean;
-  hasElectric?: boolean;
+  hasElectricity?: boolean;
   hasFirePit?: boolean;
   hasSewerService?: boolean;
   hasShower?: boolean;
@@ -82,7 +88,6 @@ export interface CampSiteInfo {
   isFirewoodUnlimited?: boolean;
   isWaterfront?: boolean;
   needParkPass?: boolean;
-  needReservation?: boolean;
   note?: string;
   parkPassName?: string;
   privacy?: Privacy;
@@ -93,5 +98,9 @@ export interface CampSiteInfo {
   siteNumber?: number;
   siteSize?: SiteSize;
   toilet?: ToiletType;
-  userId: string;
+  userId?: string;
+  hasWater?: boolean;
+  hasWaterHookup?: boolean;
+  reservation?: ReservationType;
+  sewerServiceFee?: number;
 }
