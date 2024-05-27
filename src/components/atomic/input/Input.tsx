@@ -7,7 +7,7 @@ interface InputProps {
   label: string;
   isValid: boolean;
   textInputConfig: ComponentProps<typeof TextInput>;
-  error: string;
+  error?: string;
   style?: object;
 }
 

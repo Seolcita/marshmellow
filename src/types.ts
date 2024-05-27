@@ -74,10 +74,10 @@ export interface CampSiteInfo {
   campingType?: CampingType;
   canPurchaseFirewood?: boolean;
   carAccess?: CarAccessType;
-  departureDate: string;
+  departureDate?: string;
   firewoodPrice?: number;
   hasDrinkableWater?: boolean;
-  hasElectric?: boolean;
+  hasElectricity?: boolean;
   hasFirePit?: boolean;
   hasSewerService?: boolean;
   hasShower?: boolean;
@@ -88,7 +88,6 @@ export interface CampSiteInfo {
   isFirewoodUnlimited?: boolean;
   isWaterfront?: boolean;
   needParkPass?: boolean;
-  needReservation?: boolean;
   note?: string;
   parkPassName?: string;
   privacy?: Privacy;
@@ -99,5 +98,9 @@ export interface CampSiteInfo {
   siteNumber?: number;
   siteSize?: SiteSize;
   toilet?: ToiletType;
-  userId: string;
+  userId?: string;
+  hasWater?: boolean;
+  hasWaterHookup?: boolean;
+  reservation?: ReservationType;
+  sewerServiceFee?: number;
 }

@@ -28,7 +28,7 @@ const RadioButton = ({
       value={stateValue}
     >
       {items.map((item) => (
-        <S.RadioButtonContainer>
+        <S.RadioButtonContainer key={item.id}>
           <Radio value={item.value} />
           <Text>{item.label}</Text>
         </S.RadioButtonContainer>

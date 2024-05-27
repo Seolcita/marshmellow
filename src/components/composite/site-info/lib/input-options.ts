@@ -5,7 +5,7 @@ import {
   ReservationType,
   SiteSize,
   ToiletType,
-} from '../../../types';
+} from '../../../../types';
 
 export const campingTypesSelectItems = [
   { id: 1, label: 'Front County', value: CampingType.FRONT },
