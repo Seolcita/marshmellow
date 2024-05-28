@@ -14,7 +14,6 @@ const UploadImage = ({ imageUri, pickImage }: UploadImageProps) => {
             ? { uri: imageUri }
             : require('../../../../assets/images/defaultUploadImage.jpg')
         }
-        onError={(error) => console.log(error)}
       />
       <S.Title onPress={pickImage}>Select Image</S.Title>
     </S.Container>
