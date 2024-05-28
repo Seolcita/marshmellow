@@ -33,3 +33,37 @@ export const convertType = (siteInfo: SiteInfoDetail): CampSiteInfo => {
 
   return convertedSiteInfo;
 };
+
+export const convertBooleanToString = (siteInfo: CampSiteInfo) => {
+  const convertedSiteInfo: { [key: string]: string | number | undefined } = {};
+
+  for (const key in siteInfo) {
+    const value = siteInfo[key as keyof CampSiteInfo];
+    if (value === true) {
+      convertedSiteInfo[key] = 'true';
+    } else if (value === false) {
+      convertedSiteInfo[key] = 'false';
+    } else {
+      convertedSiteInfo[key] = value;
+    }
+  }
+
+  return convertedSiteInfo;
+};
+
+export const convertTypeForInitialValues = (
+  siteInfo: CampSiteInfo
+): SiteInfoDetail => {
+  const convertedBooleanSiteInfo = convertBooleanToString(siteInfo);
+  const convertedSiteInfo: SiteInfoDetail = {
+    ...convertedBooleanSiteInfo,
+    firewoodPrice: siteInfo?.firewoodPrice?.toString(),
+    reservationFee: siteInfo?.reservationFee?.toString(),
+    sewerServiceFee: siteInfo?.sewerServiceFee?.toString(),
+    showerCost: siteInfo?.showerCost?.toString(),
+    siteFee: siteInfo?.siteFee?.toString(),
+    rating: siteInfo?.rating?.toString(),
+  };
+
+  return convertedSiteInfo;
+};

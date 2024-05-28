@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { Rating } from 'react-native-ratings';
 
@@ -19,21 +19,22 @@ import RadioButton from '../../atomic/radio-button/RadioButton';
 import { ReservationType } from '../../../types';
 import { initialValues } from './lib/initial-values';
 import Button from '../../atomic/button/Button';
-import { convertType } from './lib/convert-type';
-import { useUpdateCampSiteInfo } from '../../../api/site-info';
+import { convertType, convertTypeForInitialValues } from './lib/convert-type';
+import { useCampSiteInfo, useUpdateCampSiteInfo } from '../../../api/site-info';
 import { Alert } from 'react-native';
 import { router } from 'expo-router';
 import { useAuth } from '../../../providers/AuthProvider';
 
 interface SiteInfoDetailProps {
   id: string;
+  setIsEditMode: (prev: boolean) => void;
 }
 
 export interface SiteInfoDetail {
   [key: string]: string | undefined;
 }
 
-const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
+const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
   const [siteInfo, setSiteInfo] = useState<SiteInfoDetail>(initialValues);
 
   const { session } = useAuth();
@@ -47,6 +48,16 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
   }
 
   const { mutate: updateSiteInfo } = useUpdateCampSiteInfo({ id, userId });
+  const { data: siteInfoInitialValues, error, isLoading } = useCampSiteInfo(id);
+
+  useEffect(() => {
+    if (siteInfoInitialValues) {
+      const convertedSiteInfoInitialValues = convertTypeForInitialValues(
+        siteInfoInitialValues
+      );
+      setSiteInfo(convertedSiteInfoInitialValues);
+    }
+  }, [siteInfoInitialValues]);
 
   const handleChange = ({ name, value }: { name: string; value: string }) => {
     setSiteInfo((prev) => ({
@@ -58,6 +69,7 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
   const handleSubmit = () => {
     const convertedSiteInfo = convertType(siteInfo);
     updateSiteInfo(convertedSiteInfo);
+    setIsEditMode(false);
   };
 
   return (
@@ -76,9 +88,13 @@ const SiteInfoDetailEdit = ({ id }: SiteInfoDetailProps) => {
               jumpValue={0.5}
               fractions={1}
               imageSize={30}
-              onFinishRating={(rate: number) =>
-                handleChange({ name: 'rating', value: rate.toString() })
-              }
+              startingValue={siteInfo.rating ? parseFloat(siteInfo.rating) : 0}
+              onFinishRating={(rate: number) => {
+                handleChange({
+                  name: 'rating',
+                  value: rate.toString(),
+                });
+              }}
               style={{ paddingTop: 20 }}
             />
           }
