@@ -21,7 +21,6 @@ interface SiteInfoDetailProps {
 
 const SiteInfoDetail = ({ id }: SiteInfoDetailProps) => {
   const { data: siteInfo, error } = useCampSiteInfo(id);
-  console.log('FROM DB', siteInfo);
 
   return (
     <>

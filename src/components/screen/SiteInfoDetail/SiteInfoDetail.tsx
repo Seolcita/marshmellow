@@ -16,7 +16,6 @@ const SiteInfoDetailScreen = ({ id }: SiteInfoDetailProps) => {
   const [isEditMode, setIsEditMode] = useState(false);
 
   const { error, isLoading, data: siteInfo } = useCampSiteInfo(id);
-  // console.log('SITE INFOINFO⭐️', siteInfo);
 
   return (
     <>
@@ -43,7 +42,7 @@ const SiteInfoDetailScreen = ({ id }: SiteInfoDetailProps) => {
         <S.MainContainer>
           <ScrollView>
             {isEditMode ? (
-              <SiteInfoDetailEdit id={id} />
+              <SiteInfoDetailEdit id={id} setIsEditMode={setIsEditMode} />
             ) : (
               <SiteInfoDetail id={id} />
             )}
