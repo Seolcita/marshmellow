@@ -10,6 +10,8 @@ interface SiteInfoCardProps {
   campgroundSiteNumber: string;
 }
 
+// TODO: Display Favorite Icon
+// TODO: Display Rating
 const SiteInfoCard = ({
   id,
   userId,

@@ -1,6 +1,9 @@
+import { router } from 'expo-router';
+import { Alert, Image } from 'react-native';
 import { useEffect, useState } from 'react';
-import { Provider as PaperProvider } from 'react-native-paper';
 import { Rating } from 'react-native-ratings';
+// import * as ImagePicker from 'expo-image-picker';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 import {
   booleanRadioButtonItems,
@@ -15,14 +18,13 @@ import Section from './Section';
 import Input from '../../atomic/input/Input';
 import Select from '../../atomic/select/Select';
 import * as S from './SiteInfoDetailEdit.styles';
-import RadioButton from '../../atomic/radio-button/RadioButton';
+import Button from '../../atomic/button/Button';
 import { ReservationType } from '../../../types';
 import { initialValues } from './lib/initial-values';
-import Button from '../../atomic/button/Button';
+import RadioButton from '../../atomic/radio-button/RadioButton';
 import { convertType, convertTypeForInitialValues } from './lib/convert-type';
 import { useCampSiteInfo, useUpdateCampSiteInfo } from '../../../api/site-info';
-import { Alert } from 'react-native';
-import { router } from 'expo-router';
+
 import { useAuth } from '../../../providers/AuthProvider';
 
 interface SiteInfoDetailProps {
@@ -33,6 +35,8 @@ interface SiteInfoDetailProps {
 export interface SiteInfoDetail {
   [key: string]: string | undefined;
 }
+
+// TODO: ADD Favorites Button
 
 const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
   const [siteInfo, setSiteInfo] = useState<SiteInfoDetail>(initialValues);
@@ -72,9 +76,28 @@ const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
     setIsEditMode(false);
   };
 
+  // const pickImage = async () => {
+  //   let result = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  //     allowsEditing: true,
+  //     aspect: [4, 3],
+  //     quality: 1,
+  //   });
+
+  //   console.log('result⭐️', result);
+
+  //   if (!result.canceled) {
+  //     handleChange({ name: 'imageUri', value: result.assets[0].uri });
+  //   }
+  // };
+
+  // console.log('siteInfo🏙', siteInfo.imageUri);
+
   return (
     <PaperProvider>
       <S.SectionContainer>
+        {/* <UploadImage imageUri={siteInfo?.imageUri} pickImage={pickImage} /> */}
+
         <Section
           sectionTitle='Review'
           question='How much are you satisfied?'
