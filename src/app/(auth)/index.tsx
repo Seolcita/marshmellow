@@ -1,27 +1,33 @@
-import { Pressable, StyleSheet } from 'react-native';
+import { ImageBackground, Pressable, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 
-import { View } from '@/src/components/Themed';
-import Colors from '../../constants/Colors';
+import { Text, View } from '@/src/components/Themed';
 
 export default function AuthIndex() {
   return (
     <View style={styles.container}>
-      <Pressable style={styles.button}>
-        <Link href='/sign-in' style={styles.text}>
-          Log In
-        </Link>
-      </Pressable>
-      <Pressable style={styles.button}>
-        <Link href='/sign-up' style={styles.text}>
-          Sign Up
-        </Link>
-      </Pressable>
-      <Pressable style={styles.button}>
-        <Link href='/sign-out' style={styles.text}>
-          Log Out
-        </Link>
-      </Pressable>
+      <ImageBackground
+        source={require('../../../assets/images/first-screen.png')}
+        style={styles.image}
+      />
+      <Text style={styles.title}>Marsh Mellow</Text>
+      <Text style={styles.subTitle}>
+        Easily organize park passes, gears, favorite campsites, and share
+        information with Friends!
+      </Text>
+      <View style={styles.buttons}>
+        <Pressable style={styles.button}>
+          <Link href='/sign-in' style={styles.text}>
+            Log In
+          </Link>
+        </Pressable>
+
+        <Pressable style={styles.button}>
+          <Link href='/sign-up' style={styles.text}>
+            Sign Up
+          </Link>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -29,19 +35,47 @@ export default function AuthIndex() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#014d94',
+  },
+  image: {
+    width: 370,
+    height: 370,
+  },
+  title: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    paddingVertical: 20,
+    color: 'white',
+    fontStyle: 'italic',
+  },
+  subTitle: {
+    fontSize: 16,
+    color: 'white',
+    textAlign: 'center',
+    lineHeight: 25,
+    fontWeight: '500',
+    paddingHorizontal: 20,
+  },
+  buttons: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 50,
+    backgroundColor: '#014d94',
   },
   button: {
     padding: 15,
-    backgroundColor: Colors.light.tint,
+    backgroundColor: '#C62839',
     borderRadius: 100,
     width: '80%',
     marginBottom: 20,
   },
   text: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 18,
+    fontWeight: '700',
     color: 'white',
     textAlign: 'center',
   },

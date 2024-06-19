@@ -58,11 +58,11 @@ function RootLayoutNav() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <AuthProvider>
         <QueryProvider>
-          <SafeAreaView style={{ flex: 1 }}>
+          <SafeAreaView style={{ flex: 1, backgroundColor: '#014d94' }}>
             <Stack>
               <Stack.Screen name='(auth)' options={{ headerShown: false }} />
-              <Stack.Screen name='(user)' options={{ headerShown: false }} />
-              <Stack.Screen name='modal' options={{ presentation: 'modal' }} />
+              {/* <Stack.Screen name='(user)' options={{ headerShown: false }} /> */}
+              {/* <Stack.Screen name='modal' options={{ presentation: 'modal' }} /> */}
             </Stack>
           </SafeAreaView>
         </QueryProvider>
