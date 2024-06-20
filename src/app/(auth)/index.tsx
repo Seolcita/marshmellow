@@ -12,12 +12,14 @@ export default function AuthIndex() {
         style={styles.image}
       />
 
-      <Text style={styles.title}>Marsh Mellow</Text>
+      <View style={styles.textContainer}>
+        <Text style={styles.title}>Marsh Mellow</Text>
 
-      <Text style={styles.subTitle}>
-        Easily organize park passes, gears, favorite campsites, and share
-        information with Friends!
-      </Text>
+        <Text style={styles.subTitle}>
+          Easily organize park passes, gears, favorite campsites, and share
+          information with Friends!
+        </Text>
+      </View>
 
       <View style={styles.buttons}>
         <Button
@@ -55,10 +57,17 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
   },
+  textContainer: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 30,
+    backgroundColor: '#014d94',
+  },
   title: {
     fontSize: 40,
     fontWeight: 'bold',
-    paddingVertical: 10,
     color: 'white',
     fontStyle: 'italic',
   },
@@ -68,7 +77,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 25,
     fontWeight: '500',
-    paddingHorizontal: 20,
+    paddingTop: 10,
   },
   buttons: {
     width: '100%',

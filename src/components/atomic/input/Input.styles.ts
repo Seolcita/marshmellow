@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import ColorMap from '../../../styles/Color';
 
 const styles = StyleSheet.create({
   container: {
@@ -7,15 +8,16 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   label: {
-    color: 'gray',
+    color: ColorMap['white'].main,
   },
   input: {
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: ColorMap['white'].main,
     padding: 6,
     marginTop: 5,
     borderRadius: 5,
     paddingHorizontal: 10,
+    color: ColorMap['white'].main,
   },
   error: {
     color: 'red',

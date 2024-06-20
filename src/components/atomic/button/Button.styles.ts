@@ -43,7 +43,7 @@ export const Text = styled.Text<TextProps>`
 `;
 
 export const LinkBox = styled.View`
-  width: 300%;
+  width: 100%;
   align-items: center;
   justify-content: center;
 `;

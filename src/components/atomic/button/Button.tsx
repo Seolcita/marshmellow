@@ -53,11 +53,9 @@ const Button = forwardRef<View | null, ButtonProps>(
         $marginHorizontal={marginHorizontal}
       >
         {href ? (
-          <S.LinkBox>
-            <Link href={href}>
-              <S.Text $textSize={textSize}>{text}</S.Text>
-            </Link>
-          </S.LinkBox>
+          <Link href={href} style={{ width: '100%', textAlign: 'center' }}>
+            <S.Text $textSize={textSize}>{text}</S.Text>
+          </Link>
         ) : (
           <S.Text $textSize={textSize}>{text}</S.Text>
         )}
