@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect, Stack } from 'expo-router';
 import { useAuth } from '../../providers/AuthProvider';
+import ColorMap from '../../styles/Color';
 
 export default function AuthLayout() {
   const { session } = useAuth();
@@ -12,6 +13,12 @@ export default function AuthLayout() {
   return (
     <Stack>
       <Stack.Screen name='index' options={{ headerShown: false }} />
+      <Stack.Screen
+        name='sign-in'
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }

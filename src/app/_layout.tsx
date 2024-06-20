@@ -6,14 +6,15 @@ import {
 import { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
-import { LogBox } from 'react-native';
+import { LogBox, StatusBar } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useColorScheme } from '@/src/components/useColorScheme';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { AuthProvider } from '../providers/AuthProvider';
 import QueryProvider from '../providers/QueryProvider';
+import ColorMap from '../styles/Color';
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
@@ -62,10 +63,12 @@ function RootLayoutNav() {
             style={{
               flex: 1,
               backgroundColor: '#014d94',
-              paddingHorizontal: 20,
-              paddingVertical: 20,
             }}
           >
+            <StatusBar
+              backgroundColor={ColorMap['blue'].dark}
+              barStyle={'light-content'}
+            />
             <Stack>
               <Stack.Screen name='(auth)' options={{ headerShown: false }} />
               {/* <Stack.Screen name='(user)' options={{ headerShown: false }} /> */}

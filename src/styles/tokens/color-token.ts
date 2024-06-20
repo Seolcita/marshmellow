@@ -45,7 +45,7 @@ export const colors = {
   },
   blueDark: {
     code: 800,
-    hex: '#1849A9',
+    hex: '#014d94',
   },
   redBackground: {
     code: 25,

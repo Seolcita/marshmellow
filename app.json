@@ -7,11 +7,11 @@
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
-    "backgroundColor": "#014d94",
+    "backgroundColor": "#1849A9",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#014d94"
+      "backgroundColor": "#1849A9"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -20,8 +20,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#014d94"
-      }
+        "backgroundColor": "#1849A9"
+      },
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "bundler": "metro",
