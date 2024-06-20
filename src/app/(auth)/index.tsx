@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingVertical: 20,
     color: 'white',
-    fontStyle: 'italic',
+    fontFamily: 'SpaceMono_400Regular',
   },
   subTitle: {
     fontSize: 16,
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: 50,
-    backgroundColor: '#014d94',
+    backgroundColor: 'SpaceMono_400Regular',
   },
   button: {
     padding: 15,
