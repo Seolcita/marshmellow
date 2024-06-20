@@ -1,7 +1,8 @@
-import { ImageBackground, Pressable, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
-
+import { ImageBackground, StyleSheet } from 'react-native';
 import { Text, View } from '@/src/components/Themed';
+import Button from '../../components/atomic/button/Button';
+import { space } from '../../styles/tokens/space-token';
+import ColorMap from '../../styles/Color';
 
 export default function AuthIndex() {
   return (
@@ -10,23 +11,33 @@ export default function AuthIndex() {
         source={require('../../../assets/images/first-screen.png')}
         style={styles.image}
       />
+
       <Text style={styles.title}>Marsh Mellow</Text>
+
       <Text style={styles.subTitle}>
         Easily organize park passes, gears, favorite campsites, and share
         information with Friends!
       </Text>
-      <View style={styles.buttons}>
-        <Pressable style={styles.button}>
-          <Link href='/sign-in' style={styles.text}>
-            Log In
-          </Link>
-        </Pressable>
 
-        <Pressable style={styles.button}>
-          <Link href='/sign-up' style={styles.text}>
-            Sign Up
-          </Link>
-        </Pressable>
+      <View style={styles.buttons}>
+        <Button
+          text='Log In'
+          href='/sign-in'
+          bgColor='transparent'
+          hasBorder
+          width={280}
+          textSize={16}
+          paddingVertical={space.space3}
+        />
+        <Button
+          text='Sign Up'
+          href='/sign-up'
+          bgColor={ColorMap['red'].main}
+          width={280}
+          textSize={16}
+          paddingVertical={space.space3}
+          marginVertical={space.space4}
+        />
       </View>
     </View>
   );
@@ -35,24 +46,24 @@ export default function AuthIndex() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: 40,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#014d94',
   },
   image: {
-    width: 370,
-    height: 370,
+    width: 300,
+    height: 300,
   },
   title: {
     fontSize: 40,
     fontWeight: 'bold',
-    paddingVertical: 20,
+    paddingVertical: 10,
     color: 'white',
     fontStyle: 'italic',
   },
   subTitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: 'white',
     textAlign: 'center',
     lineHeight: 25,
@@ -65,18 +76,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: 50,
     backgroundColor: '#014d94',
-  },
-  button: {
-    padding: 15,
-    backgroundColor: '#C62839',
-    borderRadius: 100,
-    width: '80%',
-    marginBottom: 20,
-  },
-  text: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: 'white',
-    textAlign: 'center',
   },
 });

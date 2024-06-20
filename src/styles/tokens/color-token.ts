@@ -61,7 +61,7 @@ export const colors = {
   },
   redMedium: {
     code: 600,
-    hex: '#D92D20',
+    hex: '#C62839',
   },
   redDark: {
     code: 800,
