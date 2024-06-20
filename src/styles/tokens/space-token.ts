@@ -1,27 +1,27 @@
 export type Space = {
-  space0: string;
-  space1: string;
-  space2: string;
-  space3: string;
-  space4: string;
-  space5: string;
-  space6: string;
-  space7: string;
-  space8: string;
-  space9: string;
-  space10: string;
+  space0: number;
+  space1: number;
+  space2: number;
+  space3: number;
+  space4: number;
+  space5: number;
+  space6: number;
+  space7: number;
+  space8: number;
+  space9: number;
+  space10: number;
 };
 
 export const space: Space = {
-  space0: '0px',
-  space1: '4px',
-  space2: '8px',
-  space3: '12px',
-  space4: '16px',
-  space5: '20px',
-  space6: '24px',
-  space7: '32px',
-  space8: '40px',
-  space9: '48px',
-  space10: '56px',
+  space0: 0,
+  space1: 4,
+  space2: 8,
+  space3: 12,
+  space4: 16,
+  space5: 20,
+  space6: 24,
+  space7: 32,
+  space8: 40,
+  space9: 48,
+  space10: 56,
 };
