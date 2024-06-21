@@ -89,6 +89,7 @@ export const SignInScreen = () => {
       />
 
       <Text style={styles.title}>Welcome Back</Text>
+
       <Input
         label='Email'
         isValid={inputs.email.isValid}
@@ -136,9 +137,9 @@ export default SignInScreen;
 
 export const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingHorizontal: 20,
     alignItems: 'center',
-    flex: 1,
     backgroundColor: ColorMap['blue'].dark,
   },
   image: {

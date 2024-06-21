@@ -1,13 +1,19 @@
-import { View, StyleSheet, Alert } from 'react-native';
-import { Stack } from 'expo-router';
+import {
+  View,
+  StyleSheet,
+  Alert,
+  ImageBackground,
+  ScrollView,
+} from 'react-native';
 import { useState } from 'react';
+import { Link } from 'expo-router';
 
 import Button from '../../components/atomic/button/Button';
 import Input from '../../components/atomic/input/Input';
+import { Text } from '../../components/Themed';
 import { supabase } from '../../lib/supabase';
 import Colors from '../../constants/Colors';
-
-// TODO: Add Background Image and update UIs
+import ColorMap from '../../styles/Color';
 
 export const SignUpScreen = () => {
   const [loading, setLoading] = useState(false);
@@ -103,44 +109,66 @@ export const SignUpScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Stack.Screen options={{ title: 'Sign up' }} />
-
-      <Input
-        label='Email'
-        isValid={inputs.email.isValid}
-        textInputConfig={{
-          value: inputs.email.value.trim(),
-          onChangeText: handleInputChange.bind(this, 'email'),
-          placeholder: 'john@gmail.com',
-          keyboardType: 'email-address',
-        }}
-        error={inputs.email.error}
-      />
-      <Input
-        label='Password'
-        isValid={inputs.password.isValid}
-        textInputConfig={{
-          value: inputs.password.value,
-          onChangeText: handleInputChange.bind(this, 'password'),
-          secureTextEntry: true,
-          placeholder: '******',
-        }}
-        error={inputs.password.error}
-      />
-      <Input
-        label='Confirm Password'
-        isValid={inputs.confirmPassword.isValid}
-        textInputConfig={{
-          value: inputs.confirmPassword.value,
-          onChangeText: handleInputChange.bind(this, 'confirmPassword'),
-          secureTextEntry: true,
-          placeholder: '******',
-        }}
-        error={inputs.confirmPassword.error}
-      />
-      <Button text='Sign Up' onPress={handleSubmit} disabled={loading} />
-    </View>
+    <ScrollView style={{ flex: 1, backgroundColor: ColorMap['blue'].dark }}>
+      <View style={styles.container}>
+        <ImageBackground
+          source={require('../../../assets/images/signup-screen.png')}
+          style={styles.image}
+        />
+        <Text style={styles.title}>Create Account</Text>
+        <Input
+          label='Email'
+          isValid={inputs.email.isValid}
+          textInputConfig={{
+            value: inputs.email.value.trim(),
+            onChangeText: handleInputChange.bind(this, 'email'),
+            placeholder: 'john@gmail.com',
+            placeholderTextColor: ColorMap['grey'].light,
+            keyboardType: 'email-address',
+          }}
+          error={inputs.email.error}
+        />
+        <Input
+          label='Password'
+          isValid={inputs.password.isValid}
+          textInputConfig={{
+            value: inputs.password.value,
+            onChangeText: handleInputChange.bind(this, 'password'),
+            secureTextEntry: true,
+            placeholder: '******',
+            placeholderTextColor: ColorMap['grey'].light,
+          }}
+          error={inputs.password.error}
+        />
+        <Input
+          label='Confirm Password'
+          isValid={inputs.confirmPassword.isValid}
+          textInputConfig={{
+            value: inputs.confirmPassword.value,
+            onChangeText: handleInputChange.bind(this, 'confirmPassword'),
+            secureTextEntry: true,
+            placeholder: '******',
+            placeholderTextColor: ColorMap['grey'].light,
+          }}
+          error={inputs.confirmPassword.error}
+        />
+        <Button
+          text='Sign Up'
+          onPress={handleSubmit}
+          disabled={loading}
+          bgColor={ColorMap['red'].main}
+          borderRadius={5}
+          marginVertical={8}
+          fullWidth
+        />
+        <View style={styles.textBox}>
+          <Text style={styles.text}>Already have an account?</Text>
+          <Link href='/sign-in'>
+            <Text style={styles.loginText}>Login</Text>
+          </Link>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -148,9 +176,23 @@ export default SignUpScreen;
 
 export const styles = StyleSheet.create({
   container: {
-    padding: 20,
-    justifyContent: 'center',
     flex: 1,
+    padding: 20,
+    alignItems: 'center',
+    backgroundColor: ColorMap['blue'].dark,
+  },
+  image: {
+    width: 225,
+    height: 225,
+    marginTop: 10,
+    backgroundColor: ColorMap['blue'].dark,
+  },
+  title: {
+    fontSize: 32,
+    color: ColorMap['white'].main,
+    fontWeight: 'bold',
+    marginTop: 20,
+    marginBottom: 30,
   },
   inputRow: { flex: 1 },
   textButton: {
@@ -158,5 +200,21 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: Colors.light.tint,
     marginVertical: 10,
+  },
+  textBox: {
+    marginTop: 20,
+    marginBottom: 40,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
+  },
+  text: {
+    color: ColorMap['blue'].light,
+  },
+  loginText: {
+    color: ColorMap['blue'].light,
+    fontWeight: 'bold',
   },
 });

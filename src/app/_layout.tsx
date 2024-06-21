@@ -62,7 +62,7 @@ function RootLayoutNav() {
           <SafeAreaView
             style={{
               flex: 1,
-              backgroundColor: '#014d94',
+              backgroundColor: ColorMap['blue'].dark,
             }}
           >
             <StatusBar
