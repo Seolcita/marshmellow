@@ -101,6 +101,9 @@ export const SignInScreen = () => {
           keyboardType: 'email-address',
         }}
         error={inputs.email.error}
+        borderColor={ColorMap['white'].main}
+        labelColor={ColorMap['white'].main}
+        errorColor={ColorMap['red'].light}
       />
       <Input
         label='Password'
@@ -113,6 +116,9 @@ export const SignInScreen = () => {
           placeholderTextColor: ColorMap['grey'].light,
         }}
         error={inputs.password.error}
+        borderColor={ColorMap['white'].main}
+        labelColor={ColorMap['white'].main}
+        errorColor={ColorMap['red'].light}
       />
       <Button
         text='Log In'

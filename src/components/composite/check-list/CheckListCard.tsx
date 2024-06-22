@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
-import * as S from './CheckListCard.styles';
 import { AntDesign } from '@expo/vector-icons';
+
+import * as S from './CheckListCard.styles';
 
 const CheckListCard = () => {
   const handlePress = () => {
@@ -8,11 +9,12 @@ const CheckListCard = () => {
   };
 
   return (
-    <S.Container>
-      <S.Contents onPress={handlePress}>
+    <S.Container onPress={handlePress}>
+      <S.Contents>
+        <AntDesign name='checksquareo' size={24} color='white' />
         <S.Text>Check List</S.Text>
-        <AntDesign name='checksquareo' size={24} color='black' />
       </S.Contents>
+      <S.Image source={require('../../../../assets/images/check-list.png')} />
     </S.Container>
   );
 };

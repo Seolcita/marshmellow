@@ -1,13 +1,14 @@
+import { format } from 'date-fns';
+import { Pressable } from 'react-native';
 import { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import styles from './ParkPass.styles';
-import { Pressable } from 'react-native';
 import { Text, View } from '../../Themed';
+import ColorMap from '../../../styles/Color';
 import { useDeleteParkPass } from '../../../api/park-pass';
-import { format } from 'date-fns';
 
 interface ParkPassItemProps {
   item: any;
@@ -102,7 +103,11 @@ const ParkPassItem = ({ item, userId, handleEdit }: ParkPassItemProps) => {
         <Text>{`Expiry Date: ${formattedExpiryDate}`}</Text>
         {isAboutToExpire && (
           <View style={styles.warningContainer}>
-            <Ionicons name='warning-outline' size={15} color='red' />
+            <Ionicons
+              name='warning-outline'
+              size={15}
+              color={ColorMap['red'].main}
+            />
             <Text style={styles.warning}>{warningMessage}</Text>
           </View>
         )}

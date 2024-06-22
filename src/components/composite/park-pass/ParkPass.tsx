@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { Alert, FlatList, Pressable } from 'react-native';
+import { Alert, Image, Pressable } from 'react-native';
 
 import styles from './ParkPass.styles';
 import { Text, View } from '../../Themed';
@@ -38,7 +38,13 @@ export const ParkPass = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Park Passes</Text>
+        <View style={styles.titleWrapper}>
+          <Image
+            source={require('../../../../assets/images/park.png')}
+            style={styles.image}
+          />
+          <Text style={styles.title}>Park Passes</Text>
+        </View>
         <Pressable
           onPress={() => {
             setIsEdit(false), setIsOpen(true);
@@ -51,18 +57,16 @@ export const ParkPass = () => {
         {data && data.length <= 0 ? (
           <Text style={styles.noParkPass}>- Please add Park Passes</Text>
         ) : (
-          <FlatList
-            data={data}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
+          <View style={styles.listContainer}>
+            {data?.map((item) => (
               <ParkPassItem
+                key={item.id}
                 item={item}
                 handleEdit={handleEdit}
                 userId={userId}
               />
-            )}
-            contentContainerStyle={styles.listContainer}
-          />
+            ))}
+          </View>
         )}
       </View>
       <ParkPassModal
