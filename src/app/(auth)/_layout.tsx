@@ -6,9 +6,9 @@ import ColorMap from '../../styles/Color';
 export default function AuthLayout() {
   const { session } = useAuth();
 
-  // if (session) {
-  //   return <Redirect href={'/(user)/main'} />;
-  // }
+  if (session) {
+    return <Redirect href={'/(user)/main'} />;
+  }
 
   return (
     <Stack>

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import ColorMap from '../../../styles/Color';
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -6,6 +7,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
+    backgroundColor: 'rgba(0,0,0,0.8)',
   },
   modalView: {
     margin: 20,
@@ -35,9 +37,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  dateContainer: {
-    marginBottom: 20,
-  },
   dateSection: {
     display: 'flex',
     flexDirection: 'row',
@@ -49,14 +48,23 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 15,
   },
+  errorContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    marginTop: 5,
+    marginBottom: 15,
+  },
   error: {
-    color: 'red',
+    color: ColorMap['red'].main,
   },
   buttons: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-around',
     width: '100%',
+    justifyContent: 'space-between',
+    marginTop: 20,
   },
 });
 

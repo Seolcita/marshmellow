@@ -1,28 +1,47 @@
 import { StyleSheet } from 'react-native';
 
+import ColorMap from '../../../styles/Color';
+
 const styles = StyleSheet.create({
   container: {
     width: '100%',
     padding: 20,
   },
   header: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  titleWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    width: 35,
+    height: 35,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginLeft: 8,
   },
   listContainer: {
-    paddingLeft: 3,
-    marginTop: 10,
+    padding: 4,
+    width: '100%',
   },
   list: {
     borderRadius: 5,
     shadowColor: '#000',
     shadowOpacity: 0.25,
     elevation: 5,
-    marginVertical: 10,
-    width: '98%',
+    marginVertical: 5,
+    width: '100%',
     padding: 20,
+    overflow: 'visible',
   },
+
   titleContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -30,10 +49,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     marginBottom: 15,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
+
   iconContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -56,7 +72,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   warning: {
-    color: 'red',
+    color: ColorMap['red'].main,
   },
   error: {
     color: 'red',

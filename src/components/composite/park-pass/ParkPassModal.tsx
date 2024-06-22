@@ -1,12 +1,14 @@
 import { Alert, Modal, Platform, Pressable } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { FontAwesome } from '@expo/vector-icons';
-import { Button } from 'react-native-elements';
+import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
 
 import { useInsertParkPass, useUpdateParkPass } from '../../../api/park-pass';
 import { useAuth } from '../../../providers/AuthProvider';
+import Button from '../../atomic/button/Button';
+import ColorMap from '../../../styles/Color';
 import Input from '../../atomic/input/Input';
 import styles from './ParkPassModal.styles';
 import { Text, View } from '../../Themed';
@@ -178,8 +180,9 @@ const ParkPassModal = ({
                 keyboardType: 'default',
               }}
               error={parkPassName.error}
+              style={{ borderColor: 'red' }}
             />
-            <View style={styles.dateContainer}>
+            <View>
               <Pressable
                 onPress={() => setShowCalendar(!showCalendar)}
                 style={styles.dateSection}
@@ -187,11 +190,19 @@ const ParkPassModal = ({
                 <Text style={styles.text}>Park Pass Expiry Date</Text>
                 <FontAwesome name='calendar-plus-o' size={24} color='black' />
               </Pressable>
-              <Text
-                style={[styles.date, !!expiryDate.error && { color: 'red' }]}
-              >
-                {expiryDate.date ?? '-'}
-              </Text>
+              {!expiryDate.error && (
+                <Text style={[styles.date]}>{expiryDate.date ?? '-'}</Text>
+              )}
+              {expiryDate.error && (
+                <View style={styles.errorContainer}>
+                  <Ionicons
+                    name='warning-outline'
+                    size={15}
+                    color={ColorMap['red'].main}
+                  />
+                  <Text style={styles.error}>{expiryDate.error}</Text>
+                </View>
+              )}
               {showCalendar && (
                 <Calendar
                   onDayPress={(day) => handleChange(day.dateString)}
@@ -204,35 +215,30 @@ const ParkPassModal = ({
                   }}
                 />
               )}
-
-              <Text style={styles.error}>{expiryDate.error}</Text>
             </View>
           </View>
           <View style={styles.buttons}>
             <Button
-              title='Cancle'
+              text='Cancle'
               onPress={handleCancel}
-              buttonStyle={{
-                backgroundColor: 'grey',
-                borderRadius: 5,
-                padding: 10,
-              }}
-              containerStyle={{ flex: 1, marginRight: 2 }}
+              bgColor={ColorMap['grey'].main}
+              paddingHorizontal={10}
+              paddingVertical={10}
+              borderRadius={5}
+              width={105}
             />
             <Button
-              title='Save'
+              text='Save'
               onPress={
                 isEdit && initialValue
                   ? () => handleEdit(initialValue.id)
                   : handleSave
               }
-              buttonStyle={{
-                backgroundColor: 'black',
-                borderRadius: 5,
-                marginBottom: 10,
-                padding: 10,
-              }}
-              containerStyle={{ flex: 1, marginLeft: 2 }}
+              bgColor={ColorMap['blue'].main}
+              paddingHorizontal={10}
+              paddingVertical={10}
+              borderRadius={5}
+              width={105}
             />
           </View>
         </View>

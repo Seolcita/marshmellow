@@ -127,6 +127,9 @@ export const SignUpScreen = () => {
             keyboardType: 'email-address',
           }}
           error={inputs.email.error}
+          borderColor={ColorMap['white'].main}
+          labelColor={ColorMap['white'].main}
+          errorColor={ColorMap['red'].light}
         />
         <Input
           label='Password'
@@ -139,6 +142,9 @@ export const SignUpScreen = () => {
             placeholderTextColor: ColorMap['grey'].light,
           }}
           error={inputs.password.error}
+          borderColor={ColorMap['white'].main}
+          labelColor={ColorMap['white'].main}
+          errorColor={ColorMap['red'].light}
         />
         <Input
           label='Confirm Password'
@@ -151,6 +157,9 @@ export const SignUpScreen = () => {
             placeholderTextColor: ColorMap['grey'].light,
           }}
           error={inputs.confirmPassword.error}
+          borderColor={ColorMap['white'].main}
+          labelColor={ColorMap['white'].main}
+          errorColor={ColorMap['red'].light}
         />
         <Button
           text='Sign Up'
