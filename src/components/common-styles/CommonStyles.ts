@@ -7,7 +7,7 @@ export const Row = styled.View`
 
 export const Tile = styled.View`
   margin-horizontal: 20px;
-  margin-vertical: 10px;
+  margin-vertical: 8px;
   padding: 20px;
   background-color: white;
   border-radius: 5px;
@@ -26,4 +26,11 @@ export const TopScreenImageBackgroundContainer = styled.View`
 `;
 export const TopScreenImageBackground = styled.ImageBackground`
   height: 100%;
+`;
+
+export const TwoButtonContainer = styled.View`
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 5px;
 `;
