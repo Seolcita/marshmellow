@@ -1,5 +1,7 @@
 import { useState } from 'react';
+
 import * as S from './Categories.styles';
+import ColorMap from '../../../styles/Color';
 import Input from '../../atomic/input/Input';
 import Button from '../../atomic/button/Button';
 import { useInsertCategory } from '../../../api/category';
@@ -44,12 +46,18 @@ const AddCategory = ({ userId }: AddCategoryProps) => {
             },
             placeholder: '',
             keyboardType: 'default',
-            autoFocus: true,
           }}
           style={{ flex: 1 }}
           error={category.error}
         />
-        <Button onPress={handleAdd} text='Add' borderRadius={10} />
+        <S.ButtonContainer error={!!category.error}>
+          <Button
+            onPress={handleAdd}
+            text='Add'
+            borderRadius={5}
+            bgColor={ColorMap['grey'].dark}
+          />
+        </S.ButtonContainer>
       </S.AddInputContainer>
     </S.AddCategoryContainer>
   );

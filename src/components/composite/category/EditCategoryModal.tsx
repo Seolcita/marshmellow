@@ -6,6 +6,7 @@ import Modal from '../../atomic/modal/Modal';
 import Input from '../../atomic/input/Input';
 import Button from '../../atomic/button/Button';
 import { useUpdateCategory } from '../../../api/category';
+import ColorMap from '../../../styles/Color';
 
 interface EditCategoryModalProps {
   isEditModalOpen: boolean;
@@ -64,7 +65,13 @@ const EditCategoryModal = ({
           }}
           error={category.error}
         />
-        <Button onPress={handleEdit} text='Save' borderRadius={10} fullWidth />
+        <Button
+          onPress={handleEdit}
+          text='Save'
+          borderRadius={5}
+          fullWidth
+          bgColor={ColorMap['blue'].dark}
+        />
       </S.EditInputContainer>
     </Modal>
   );

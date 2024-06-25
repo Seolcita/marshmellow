@@ -16,3 +16,14 @@ export const Tile = styled.View`
   shadow-opacity: 0.25;
   elevation: 5;
 `;
+
+export const TopScreenImageBackgroundContainer = styled.View`
+  width: 100%;
+  height: 180px;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  overflow: hidden;
+`;
+export const TopScreenImageBackground = styled.ImageBackground`
+  height: 100%;
+`;

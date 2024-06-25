@@ -1,12 +1,43 @@
 import styled from 'styled-components/native';
 
+import ColorMap from '../../../styles/Color';
+import {
+  TopScreenImageBackground,
+  TopScreenImageBackgroundContainer,
+} from '../../common-styles/CommonStyles';
+
+export const ScrollViewContainer = styled.ScrollView`
+  width: 100%;
+`;
+
+export const ImageBackgroundContainer = styled(
+  TopScreenImageBackgroundContainer
+)``;
+
+export const ContentsContainer = styled.View`
+  padding-horizontal: 10px;
+`;
+
+export const ImageBackground = styled(TopScreenImageBackground)`
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Title = styled.Text`
+  font-size: 32px;
+  color: ${ColorMap['white'].main};
+  background-color: ${ColorMap['black'].main};
+  padding-horizontal: 10px;
+  font-weight: bold;
+`;
+
 export const ButtonsContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-horizontal: 20px;
-  padding-vertical: 10px;
   width: 100%;
+  margin-bottom: 10px;
 `;
 
 export const Button = styled.Pressable`

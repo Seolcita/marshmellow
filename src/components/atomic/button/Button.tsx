@@ -8,6 +8,7 @@ type ButtonProps = {
   text: string;
   href?: Href<string>;
   bgColor?: string;
+  textColor?: string;
   textSize?: number;
   borderRadius?: number;
   width?: number;
@@ -25,6 +26,7 @@ const Button = forwardRef<View | null, ButtonProps>(
       text,
       href,
       bgColor,
+      textColor,
       textSize,
       borderRadius,
       width,
@@ -54,10 +56,14 @@ const Button = forwardRef<View | null, ButtonProps>(
       >
         {href ? (
           <Link href={href} style={{ width: '100%', textAlign: 'center' }}>
-            <S.Text $textSize={textSize}>{text}</S.Text>
+            <S.Text $textSize={textSize} $textColor={textColor}>
+              {text}
+            </S.Text>
           </Link>
         ) : (
-          <S.Text $textSize={textSize}>{text}</S.Text>
+          <S.Text $textSize={textSize} $textColor={textColor}>
+            {text}
+          </S.Text>
         )}
       </S.Pressable>
     );

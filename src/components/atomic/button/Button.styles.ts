@@ -16,6 +16,7 @@ interface PressableProps {
 
 interface TextProps {
   $textSize?: number;
+  $textColor?: string;
 }
 
 export const Pressable = styled.Pressable<PressableProps>`
@@ -38,7 +39,7 @@ export const Pressable = styled.Pressable<PressableProps>`
 export const Text = styled.Text<TextProps>`
   font-size: 16px;
   font-weight: 600;
-  color: white;
+  color: ${({ $textColor }) => $textColor ?? ColorMap['white'].main};
   font-size: ${({ $textSize }) => $textSize ?? 16}px;
 `;
 
