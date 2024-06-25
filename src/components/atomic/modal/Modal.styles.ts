@@ -18,7 +18,8 @@ export const ModalView = styled.View`
   shadow-offset: 0px 2px;
   shadow-opacity: 0.25;
   elevation: 5;
-  width: 80%;
+  width: 90%;
+  max-height: 90%;
 `;
 
 export const CloseButton = styled.Pressable`

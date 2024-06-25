@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { FontAwesome } from '@expo/vector-icons';
-import { Modal as ReactModal } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
+import { Modal as ReactModal, ScrollView } from 'react-native';
 
 import * as S from './Modal.styles';
 
@@ -22,10 +22,16 @@ const Modal = ({ children, isOpen, setIsOpen }: ModalProps) => {
     >
       <S.Container>
         <S.ModalView>
-          <S.CloseButton onPress={() => setIsOpen(false)}>
-            <FontAwesome name='close' size={24} color='black' />
-          </S.CloseButton>
-          {children}
+          <ScrollView
+            style={{ padding: 0, margin: 0, width: '100%' }}
+            overScrollMode='auto'
+            showsVerticalScrollIndicator={false}
+          >
+            <S.CloseButton onPress={() => setIsOpen(false)}>
+              <AntDesign name='close' size={15} color='black' />
+            </S.CloseButton>
+            {children}
+          </ScrollView>
         </S.ModalView>
       </S.Container>
     </ReactModal>

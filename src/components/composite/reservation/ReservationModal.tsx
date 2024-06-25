@@ -41,6 +41,7 @@ export const ReservationModal = ({
   const [departureDate, setDepartureDate] = useState<string | undefined>(
     undefined
   );
+  const [dateError, setDateError] = useState<string | undefined>(undefined);
   const [campgroundName, setCampgroundName] = useState({
     name: '',
     error: '',
@@ -64,6 +65,12 @@ export const ReservationModal = ({
       });
     }
   }, [isEdit, initialValue]);
+
+  useEffect(() => {
+    if (arrivalDate && departureDate) {
+      setDateError(undefined);
+    }
+  }, [arrivalDate, departureDate]);
 
   const getDatesBetween = (start: string, end: string) => {
     let dates = eachDayOfInterval({
@@ -117,6 +124,7 @@ export const ReservationModal = ({
   const initiate = () => {
     setArrivalDate(undefined);
     setDepartureDate(undefined);
+    setDateError(undefined);
     setCampgroundName({ name: '', error: '' });
     setCampgroundSiteNumber({ siteNumber: '', error: '' });
     setIsEdit(false);
@@ -125,10 +133,7 @@ export const ReservationModal = ({
 
   const isValidInput = () => {
     if (!arrivalDate || !departureDate) {
-      setCampgroundName({
-        ...campgroundName,
-        error: 'Please select arrival and departure dates',
-      });
+      setDateError('Please select arrival and departure dates');
       return false;
     }
 
@@ -146,7 +151,13 @@ export const ReservationModal = ({
   const handleSave = () => {
     const isValid = isValidInput();
 
-    if (isValid && arrivalDate && departureDate && campgroundName.name) {
+    if (
+      isValid &&
+      arrivalDate &&
+      departureDate &&
+      campgroundName.name !== '' &&
+      dateError === undefined
+    ) {
       insertReservation({
         arrivalDate,
         departureDate,
@@ -154,8 +165,8 @@ export const ReservationModal = ({
         campgroundSiteNumber: campgroundSiteNumber?.siteNumber,
         userId,
       });
+      initiate();
     }
-    initiate();
   };
 
   const handleEdit = (id: string) => {
@@ -169,8 +180,8 @@ export const ReservationModal = ({
         campgroundName: campgroundName.name,
         campgroundSiteNumber: campgroundSiteNumber?.siteNumber,
       });
+      initiate();
     }
-    initiate();
   };
 
   const handleCancel = () => {
@@ -187,6 +198,7 @@ export const ReservationModal = ({
           markedDates={markedDates}
           style={{ marginBottom: 20 }}
         />
+        {dateError && <S.DateErrorText>{dateError}</S.DateErrorText>}
         <S.InputContainer>
           <S.Title> Where do you camp?</S.Title>
           <Input

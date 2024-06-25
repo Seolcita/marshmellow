@@ -1,8 +1,19 @@
 import styled from 'styled-components/native';
+import ColorMap from '../../../styles/Color';
 
 export const ModalTitle = styled.Text`
-  font-size: 23px;
+  font-size: 20px;
   font-weight: bold;
+  margin-vertical: 10px;
+  text-align: center;
+  background-color: #f0f0f0;
+  padding-vertical: 10px;
+  border-radius: 50px;
+`;
+
+export const DateErrorText = styled.Text`
+  color: ${ColorMap['red'].main};
+  text-align: center;
   margin-bottom: 20px;
 `;
 

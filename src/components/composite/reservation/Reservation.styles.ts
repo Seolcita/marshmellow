@@ -1,14 +1,49 @@
 import styled from 'styled-components/native';
-import { ImageBackground } from 'react-native';
+import {
+  TopScreenImageBackground,
+  TopScreenImageBackgroundContainer,
+} from '../../common-styles/CommonStyles';
+import ColorMap from '../../../styles/Color';
+
+export const Container = styled.ScrollView`
+  background-color: ${ColorMap['white'].main};
+  flex: 1;
+`;
 
 export const AddCampingTripCard = styled.View`
   margin: 20px;
   background-color: pink;
 `;
 
-export const StyledBackground = styled(ImageBackground)`
-  width: 100%;
-  height: 200px;
+export const ImageBackgroundContainer = styled(
+  TopScreenImageBackgroundContainer
+)``;
+
+export const ImageBackground = styled(TopScreenImageBackground)`
+  resize-mode: contain;
+`;
+
+export const Image = styled.Image``;
+
+export const TitleContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-horizontal: 20px;
+  margin-vertical: 10px;
+`;
+
+export const TitleImageContainer = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-vertical: 20px;
+`;
+
+export const Title = styled.Text`
+  font-size: 24px;
+  font-weight: bold;
 `;
 
 export const AddCampinButton = styled.Pressable`
@@ -28,14 +63,13 @@ export const AddCampingTripText = styled.Text`
   font-weight: bold;
 `;
 
-export const TripsContainer = styled.View`
-  margin-vertical: 20px;
+export const ButtonsContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  padding-horizontal: 20px;
+  margin-bottom: 8px;
 `;
 
-export const Title = styled.Text`
-  font-size: 25px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 10px;
-  margin: 20px;
+export const TripsContainer = styled.View`
+  margin-horizontal: 0px;
 `;
