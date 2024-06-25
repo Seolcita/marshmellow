@@ -5,6 +5,7 @@ export const Container = styled.View`
   justify-content: center;
   align-items: center;
   margin-top: 22px;
+  background-color: rgba(0, 0, 0, 0.85);
 `;
 
 export const ModalView = styled.View`

@@ -5,7 +5,9 @@ import { Feather } from '@expo/vector-icons';
 
 import { Category } from '../../../types';
 import { Text, View } from '../../Themed';
+import ColorMap from '../../../styles/Color';
 import * as S from './CheckListScreen.styles';
+import Button from '../../atomic/button/Button';
 import { useCategories } from '../../../api/category';
 import { useAuth } from '../../../providers/AuthProvider';
 import Categories from '../../composite/category/Categories';
@@ -44,44 +46,58 @@ const CheckListScreen = () => {
   };
 
   return (
-    <View>
+    <>
       {userId && (
-        <View>
-          <AddCategory userId={userId} />
-          <S.ButtonsContainer>
-            <S.Button
-              onPress={() => {
-                setIsClearCheckList((prev) => !prev);
-                handleClearCheckList();
-              }}
-            >
-              <Feather name='check-square' size={24} color='black' />
-              <Text>Clear all Checkbox</Text>
-            </S.Button>
-            <S.Button onPress={() => setIsEditMode((prev) => !prev)}>
-              {isEditMode ? (
-                <>
-                  <Feather name='toggle-left' size={24} color='black' />
-                  <Text>Check Mode</Text>
-                </>
-              ) : (
-                <>
-                  <Feather name='toggle-right' size={24} color='black' />
-                  <Text> Manage Mode</Text>
-                </>
-              )}
-            </S.Button>
-          </S.ButtonsContainer>
-          <Categories
-            categories={categories}
-            userId={userId}
-            isEditMode={isEditMode}
-            isClearCheckList={isClearCheckList}
-            setIsClearCheckList={setIsClearCheckList}
-          />
-        </View>
+        <S.ScrollViewContainer>
+          <S.ImageBackgroundContainer>
+            <S.ImageBackground
+              source={require('../../../../assets/images/camping-gears.png')}
+            />
+          </S.ImageBackgroundContainer>
+          <S.ContentsContainer>
+            <AddCategory userId={userId} />
+            <S.ButtonsContainer>
+              <View style={{ width: '49%' }}>
+                <Button
+                  text='Clear all Checkbox'
+                  onPress={() => {
+                    setIsClearCheckList((prev) => !prev);
+                    handleClearCheckList();
+                  }}
+                  borderRadius={5}
+                  bgColor={ColorMap['blue'].dark}
+                  textColor={ColorMap['white'].main}
+                />
+              </View>
+              <View style={{ width: '49%' }}>
+                {isEditMode ? (
+                  <Button
+                    text='Check Mode'
+                    onPress={() => setIsEditMode((prev) => !prev)}
+                    borderRadius={5}
+                    bgColor={ColorMap['blue'].dark}
+                  />
+                ) : (
+                  <Button
+                    text='Manage Mode'
+                    onPress={() => setIsEditMode((prev) => !prev)}
+                    borderRadius={5}
+                    bgColor={ColorMap['blue'].main}
+                  />
+                )}
+              </View>
+            </S.ButtonsContainer>
+            <Categories
+              categories={categories}
+              userId={userId}
+              isEditMode={isEditMode}
+              isClearCheckList={isClearCheckList}
+              setIsClearCheckList={setIsClearCheckList}
+            />
+          </S.ContentsContainer>
+        </S.ScrollViewContainer>
       )}
-    </View>
+    </>
   );
 };
 

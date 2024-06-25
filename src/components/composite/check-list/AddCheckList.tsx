@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 import { View } from '../../Themed';
 import * as S from './AddCheckList.styles';
 import Input from '../../atomic/input/Input';
+import ColorMap from '../../../styles/Color';
 import CheckListItems from './CheckListItems';
 import Button from '../../atomic/button/Button';
 import * as s from '../../common-styles/CommonStyles';
@@ -84,7 +85,14 @@ const AddCheckList = ({
               style={{ flex: 1, marginRight: 10 }}
               error={item.error}
             />
-            <Button onPress={handleAdd} text='Add' borderRadius={10} />
+            <S.ButtonContainer $error={!!item.error}>
+              <Button
+                onPress={handleAdd}
+                text='Add'
+                borderRadius={5}
+                bgColor={ColorMap['blue'].dark}
+              />
+            </S.ButtonContainer>
           </s.Row>
         </S.InputContainer>
       )}

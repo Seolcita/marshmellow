@@ -219,7 +219,7 @@ const ParkPassModal = ({
           </View>
           <View style={styles.buttons}>
             <Button
-              text='Cancle'
+              text='Cancel'
               onPress={handleCancel}
               bgColor={ColorMap['grey'].main}
               paddingHorizontal={10}

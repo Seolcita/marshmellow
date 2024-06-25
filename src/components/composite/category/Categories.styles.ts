@@ -1,23 +1,34 @@
 import styled from 'styled-components/native';
 
-export const Wrapper = styled.View`
-  margin-bottom: 10px;
-  padding-horizontal: 20px;
-`;
+import ColorMap from '../../../styles/Color';
+
+interface ButtonContainerProps {
+  error: boolean;
+}
+
+export const Wrapper = styled.View``;
 
 export const CategoryContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: lightgrey;
+  background-color: ${ColorMap['grey'].dark};
   padding-vertical: 10px;
   padding-horizontal: 20px;
   margin-vertical: 5px;
+  border-radius: 5px;
+`;
+
+export const CategoryNameContainer = styled.Pressable`
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 `;
 
 export const CategoryName = styled.Text`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
+  color: ${ColorMap['white'].main};
 `;
 
 export const CategoryButtons = styled.View`
@@ -28,12 +39,16 @@ export const CategoryButtons = styled.View`
 
 export const AddCategoryContainer = styled.View`
   margin-vertical: 20px;
-  margin-horizontal: 20px;
+  border-radius: 10px;
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
   padding-top: 20px;
   padding-horizontal: 20px;
-  background-color: lightgrey;
-  border-radius: 5px;
+  background-color: #dddddd;
 `;
+
+export const AddCategoryImageBackground = styled.ImageBackground``;
 
 export const AddInputContainer = styled.View`
   flex-direction: row;
@@ -42,11 +57,16 @@ export const AddInputContainer = styled.View`
   gap: 10px;
 `;
 
+export const ButtonContainer = styled.View<ButtonContainerProps>`
+  margin-bottom: ${({ error }) => (error ? '22px' : '-2px')};
+`;
+
 export const Title = styled.Text`
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   text-align: center;
-  margin-bottom: -10px;
+  margin-bottom: -8px;
+  color: ${ColorMap['black'].main};
 `;
 
 export const EditInputContainer = styled.View`
