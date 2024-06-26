@@ -1,5 +1,9 @@
 import styled from 'styled-components/native';
 
+interface ButtonWrapperProps {
+  width?: number;
+}
+
 export const Row = styled.View`
   flex-direction: row;
   align-items: center;
@@ -33,4 +37,9 @@ export const TwoButtonContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   gap: 5px;
+`;
+
+export const ButtonWrapper = styled.View<ButtonWrapperProps>`
+  width: ${({ width }) => width && `${width}%`};
+  background-color: transparent;
 `;

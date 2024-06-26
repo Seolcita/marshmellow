@@ -12,3 +12,8 @@ export const Text = styled.Text`
   font-weight: bold;
   letter-spacing: 0.5px;
 `;
+
+export const FavouriteIcon = styled.Image`
+  width: 22px;
+  height: 20px;
+`;
