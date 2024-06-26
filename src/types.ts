@@ -103,4 +103,5 @@ export interface CampSiteInfo {
   hasWaterHookup?: boolean;
   reservation?: ReservationType;
   sewerServiceFee?: number;
+  favourite?: boolean;
 }

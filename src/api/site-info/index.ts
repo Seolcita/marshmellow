@@ -21,7 +21,9 @@ export const useCampSitesPartialInfo = (userId: string) => {
     queryFn: async () => {
       const { error, data: siteInfo } = await supabase
         .from('site_info')
-        .select('id, user_id, campground_name, site_number')
+        .select(
+          'id, user_id, campground_name, site_number, favourite, rating, reservation'
+        )
         .eq('user_id', userId);
 
       if (error) {
@@ -34,6 +36,9 @@ export const useCampSitesPartialInfo = (userId: string) => {
           userId: info.user_id,
           campgroundName: info.campground_name,
           campgroundSiteNumber: info.site_number,
+          favourite: info.favourite,
+          rate: info.rating,
+          reservationType: info.reservation,
         };
       });
 
@@ -174,6 +179,7 @@ export const useUpdateCampSiteInfo = ({ id, userId }: UseUpdateSiteInfo) => {
       hasWaterHookup,
       reservation,
       sewerServiceFee,
+      favourite,
     }: CampSiteInfo) {
       const { error, data: updatedSiteInfo } = await supabase
         .from('site_info')
@@ -207,6 +213,7 @@ export const useUpdateCampSiteInfo = ({ id, userId }: UseUpdateSiteInfo) => {
           site_fee: siteFee,
           site_size: siteSize,
           toilet,
+          favourite,
           updated_at: new Date(),
         })
         .eq('id', id)
