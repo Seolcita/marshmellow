@@ -51,7 +51,6 @@ const AddCheckList = ({
 
   const handleChange = (text: string) => {
     setItem({ name: text, error: '' });
-    console.log(item.name);
   };
 
   const handleAdd = () => {
@@ -66,8 +65,8 @@ const AddCheckList = ({
   };
 
   return (
-    <View>
-      {isInputVisible && (
+    <>
+      {isInputVisible && isEditMode && (
         <S.InputContainer>
           <s.Row>
             <Input
@@ -106,7 +105,7 @@ const AddCheckList = ({
           setIsClearCheckList={setIsClearCheckList}
         />
       )}
-    </View>
+    </>
   );
 };
 

@@ -6,7 +6,22 @@ interface ButtonContainerProps {
   error: boolean;
 }
 
-export const Wrapper = styled.View``;
+export const NoCategoryContainer = styled.View`
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+`;
+
+export const NoCategoryText = styled.Text`
+  font-size: 18px;
+  color: ${ColorMap['black'].main};
+  font-weight: bold;
+`;
+
+export const Wrapper = styled.View`
+  background-color: #f1f1f1;
+`;
 
 export const CategoryContainer = styled.View`
   flex-direction: row;
@@ -75,13 +90,16 @@ export const EditInputContainer = styled.View`
 `;
 
 export const ModalTitle = styled.Text`
-  font-size: 23px;
+  font-size: 24px;
   font-weight: bold;
+  text-align: center;
 `;
 
 export const ConfirmMessage = styled.Text`
   font-size: 20px;
-  margin-vertical: 20px;
+  text-align: center;
+  margin-bottom: 30px;
+  margin-top: 20px;
 `;
 
 export const Span = styled.Text`
