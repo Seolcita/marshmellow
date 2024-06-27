@@ -1,6 +1,4 @@
-import { Text } from '../../Themed';
 import * as S from './SiteInfoDetailItem.styles';
-import { Entypo } from '@expo/vector-icons';
 
 interface SiteInfoDetailItemProps {
   question: string;
@@ -10,8 +8,19 @@ interface SiteInfoDetailItemProps {
 const SiteInfoDetailItem = ({ question, answer }: SiteInfoDetailItemProps) => {
   return (
     <S.Container>
-      <S.Question>{question}</S.Question>
-      <S.Answer>{answer}</S.Answer>
+      <S.QuestionContainer>
+        <S.Image source={require('../../../../assets/images/like.png')} />
+        <S.Question>{question}</S.Question>
+      </S.QuestionContainer>
+      <S.AnswerContainer>
+        {answer === ' - ' ? (
+          <S.Wrapper>
+            <S.NotAnswered>Not Answered</S.NotAnswered>
+          </S.Wrapper>
+        ) : (
+          <S.Answer>{answer}</S.Answer>
+        )}
+      </S.AnswerContainer>
     </S.Container>
   );
 };

@@ -1,12 +1,15 @@
 import { useState } from 'react';
-import { Feather } from '@expo/vector-icons';
-import { Text, View } from '../../Themed';
+import { Ionicons } from '@expo/vector-icons';
+import { ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+import { View } from '../../Themed';
+import ColorMap from '../../../styles/Color';
+import * as S from './SiteInfoDetail.styles';
 import Button from '../../atomic/button/Button';
 import { useCampSiteInfo } from '../../../api/site-info';
 import SiteInfoDetail from '../../composite/site-info/SiteInfoDetail';
 import SiteInfoDetailEdit from '../../composite/site-info/SiteInfoDetailEdit';
-import * as S from './SiteInfoDetail.styles';
-import { ScrollView } from 'react-native';
 
 interface SiteInfoDetailProps {
   id: string;
@@ -17,37 +20,54 @@ const SiteInfoDetailScreen = ({ id }: SiteInfoDetailProps) => {
 
   const { error, isLoading, data: siteInfo } = useCampSiteInfo(id);
 
+  const navigation = useNavigation();
+
   return (
     <>
-      <S.ButtonContainer>
-        <S.Button onPress={() => setIsEditMode((prev) => !prev)}>
-          {isEditMode ? (
-            <>
-              <Feather name='toggle-left' size={24} color='black' />
-              <Text>View</Text>
-            </>
-          ) : (
-            <>
-              <Feather name='toggle-right' size={24} color='black' />
-              <Text> Edit</Text>
-            </>
-          )}
-        </S.Button>
-      </S.ButtonContainer>
+      <S.TopHeaderContainer>
+        <S.BackButton onPress={() => navigation.goBack()}>
+          <Ionicons
+            name='arrow-back-sharp'
+            size={18}
+            color={ColorMap['white'].main}
+          />
+          <S.BackButtonText>Back</S.BackButtonText>
+        </S.BackButton>
+        <S.ButtonContainer>
+          <Button
+            onPress={() => setIsEditMode((prev) => !prev)}
+            text={isEditMode ? 'View' : 'Edit'}
+            borderRadius={5}
+            paddingHorizontal={8}
+            paddingVertical={4}
+            bgColor={
+              isEditMode ? ColorMap['white'].main : ColorMap['blue'].light
+            }
+            textColor={ColorMap['blue'].dark}
+            width={60}
+          />
+        </S.ButtonContainer>
+      </S.TopHeaderContainer>
+
       <S.Container>
-        <S.HeaderContainer>
-          <S.Title>{siteInfo?.campgroundName}</S.Title>
-          <S.SubTitle>{siteInfo?.siteNumber}</S.SubTitle>
-        </S.HeaderContainer>
-        <S.MainContainer>
-          <ScrollView>
-            {isEditMode ? (
-              <SiteInfoDetailEdit id={id} setIsEditMode={setIsEditMode} />
-            ) : (
-              <SiteInfoDetail id={id} />
+        <S.SiteInfoCardContainer>
+          <S.Text>{siteInfo?.campgroundName}</S.Text>
+          <View style={{ flexDirection: 'row', gap: 15, alignItems: 'center' }}>
+            <S.Text>{siteInfo?.siteNumber}</S.Text>
+            {siteInfo?.favourite && (
+              <S.FavouriteIcon
+                source={require('../../../../assets/images/like.png')}
+              />
             )}
-          </ScrollView>
-        </S.MainContainer>
+          </View>
+        </S.SiteInfoCardContainer>
+        <ScrollView>
+          {isEditMode ? (
+            <SiteInfoDetailEdit id={id} setIsEditMode={setIsEditMode} />
+          ) : (
+            <SiteInfoDetail id={id} />
+          )}
+        </ScrollView>
       </S.Container>
     </>
   );
