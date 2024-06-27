@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { View } from '../../Themed';
@@ -40,9 +39,7 @@ const SiteInfoDetailScreen = ({ id }: SiteInfoDetailProps) => {
             borderRadius={5}
             paddingHorizontal={8}
             paddingVertical={4}
-            bgColor={
-              isEditMode ? ColorMap['white'].main : ColorMap['blue'].light
-            }
+            bgColor={ColorMap['white'].main}
             textColor={ColorMap['blue'].dark}
             width={60}
           />
@@ -61,13 +58,11 @@ const SiteInfoDetailScreen = ({ id }: SiteInfoDetailProps) => {
             )}
           </View>
         </S.SiteInfoCardContainer>
-        <ScrollView>
-          {isEditMode ? (
-            <SiteInfoDetailEdit id={id} setIsEditMode={setIsEditMode} />
-          ) : (
-            <SiteInfoDetail id={id} />
-          )}
-        </ScrollView>
+        {isEditMode ? (
+          <SiteInfoDetailEdit id={id} setIsEditMode={setIsEditMode} />
+        ) : (
+          <SiteInfoDetail id={id} />
+        )}
       </S.Container>
     </>
   );

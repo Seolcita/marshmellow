@@ -30,8 +30,9 @@ export default function RootLayout() {
   ];
   LogBox.ignoreLogs(IGNORED_LOGS);
 
+  // TODO: Currently custom font is not working. Need to fix this.
   const [loaded, error] = useFonts({
-    SpaceMono: require('../../assets/fonts/SpaceMono-Regular.ttf'),
+    // SpaceMono: require('../../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
   });
 

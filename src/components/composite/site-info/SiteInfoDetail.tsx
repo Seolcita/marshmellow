@@ -1,8 +1,5 @@
 import { Rating } from 'react-native-ratings';
 
-import * as S from './SiteInfoDetail.styles';
-import SiteInfoDetailItem from './SiteInfoDetailItem';
-import { useCampSiteInfo } from '../../../api/site-info';
 import {
   CampingTypeMap,
   CarAccessTypeMap,
@@ -13,6 +10,10 @@ import {
   convertBooleanToString,
   convertCost,
 } from './lib/site-info-map';
+import { ScrollView } from 'react-native';
+import * as S from './SiteInfoDetail.styles';
+import SiteInfoDetailItem from './SiteInfoDetailItem';
+import { useCampSiteInfo } from '../../../api/site-info';
 
 interface SiteInfoDetailProps {
   id: string;
@@ -22,13 +23,16 @@ const SiteInfoDetail = ({ id }: SiteInfoDetailProps) => {
   const { data: siteInfo, error } = useCampSiteInfo(id);
 
   return (
-    <>
-      <Rating
-        imageSize={25}
-        readonly
-        startingValue={siteInfo?.rating}
-        style={{ marginTop: 15, marginBottom: 15 }}
-      />
+    <ScrollView>
+      <S.SectionTitle>Review</S.SectionTitle>
+      <S.ReviewContainer style={{ alignSelf: 'flex-start', paddingLeft: 10 }}>
+        <Rating
+          imageSize={25}
+          readonly
+          startingValue={siteInfo?.rating}
+          style={{ marginBottom: 15 }}
+        />
+      </S.ReviewContainer>
 
       {/* TODO: Add Campsite Image Here */}
 
@@ -136,12 +140,12 @@ const SiteInfoDetail = ({ id }: SiteInfoDetailProps) => {
       />
 
       <SiteInfoDetailItem
-        question='Has Dish Sink?'
+        question='Has Dish Sink'
         answer={convertBooleanToString(siteInfo?.hasSink)}
       />
 
       <SiteInfoDetailItem
-        question='Toilet Type?'
+        question='Toilet Type'
         answer={siteInfo?.toilet ? ToiletTypeMap[siteInfo.toilet] : ' - '}
       />
 
@@ -174,14 +178,14 @@ const SiteInfoDetail = ({ id }: SiteInfoDetailProps) => {
 
       {siteInfo?.hasSewerService !== false && (
         <SiteInfoDetailItem
-          question='Sewer Service Fee?'
+          question='Sewer Service Fee'
           answer={convertCost(siteInfo?.sewerServiceFee)}
         />
       )}
 
       <S.SectionTitle>Park Pass</S.SectionTitle>
       <SiteInfoDetailItem
-        question='Need Park Pass?'
+        question='Need Park Pass'
         answer={convertBooleanToString(siteInfo?.needParkPass)}
       />
 
@@ -197,7 +201,7 @@ const SiteInfoDetail = ({ id }: SiteInfoDetailProps) => {
         question='Additional Notes'
         answer={siteInfo?.note ?? ' - '}
       />
-    </>
+    </ScrollView>
   );
 };
 
