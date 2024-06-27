@@ -151,97 +151,93 @@ const Categories = ({
   };
 
   return categories?.length <= 0 ? (
-    <Text>No categories found. Add Categories and check list items</Text>
+    <S.NoCategoryContainer>
+      <S.NoCategoryText>Add Categories and check list items!!</S.NoCategoryText>
+    </S.NoCategoryContainer>
   ) : (
     <View>
-      <FlatList
-        data={categories}
-        keyExtractor={(item: Category) => item.id}
-        renderItem={({ item, index }) => {
-          return (
-            <S.Wrapper>
-              <S.CategoryContainer>
-                <S.CategoryNameContainer
+      {categories.map((item, index) => (
+        <S.Wrapper key={item.id}>
+          <S.CategoryContainer>
+            <S.CategoryNameContainer
+              onPress={() =>
+                handleAccordion({ categoryName: item.name, index })
+              }
+            >
+              {activeAccordion && activeAccordion[item.name] && (
+                <FontAwesome6
+                  name={
+                    activeAccordion[item.name].isOpen
+                      ? 'caret-up'
+                      : 'caret-down'
+                  }
+                  size={IconSize}
+                  color={ColorMap['white'].main}
+                />
+              )}
+
+              <S.CategoryName>{item.name}</S.CategoryName>
+            </S.CategoryNameContainer>
+            {isEditMode && (
+              <S.CategoryButtons>
+                <Pressable
                   onPress={() =>
-                    handleAccordion({ categoryName: item.name, index })
+                    handleVisibility({ index, categoryName: item.name })
                   }
                 >
-                  {activeAccordion && activeAccordion[item.name] && (
+                  {isVisible && activeButtonIndex === index ? (
                     <FontAwesome6
-                      name={
-                        activeAccordion[item.name].isOpen
-                          ? 'caret-up'
-                          : 'caret-down'
-                      }
+                      name='text-slash'
+                      size={16}
+                      color={ColorMap['white'].main}
+                    />
+                  ) : (
+                    <Octicons
+                      name='diff-added'
                       size={IconSize}
                       color={ColorMap['white'].main}
                     />
                   )}
-
-                  <S.CategoryName>{item.name}</S.CategoryName>
-                </S.CategoryNameContainer>
-                {isEditMode && (
-                  <S.CategoryButtons>
-                    <Pressable
-                      onPress={() =>
-                        handleVisibility({ index, categoryName: item.name })
-                      }
-                    >
-                      {isVisible && activeButtonIndex === index ? (
-                        <FontAwesome6
-                          name='text-slash'
-                          size={16}
-                          color={ColorMap['white'].main}
-                        />
-                      ) : (
-                        <Octicons
-                          name='diff-added'
-                          size={IconSize}
-                          color={ColorMap['white'].main}
-                        />
-                      )}
-                    </Pressable>
-                    <Pressable
-                      onPress={() =>
-                        handleEdit({ categoryId: item.id, name: item.name })
-                      }
-                    >
-                      <AntDesign
-                        name='edit'
-                        size={IconSize}
-                        color={ColorMap['white'].main}
-                      />
-                    </Pressable>
-
-                    <Pressable
-                      onPress={() =>
-                        handleDelete({ categoryId: item.id, name: item.name })
-                      }
-                    >
-                      <MaterialCommunityIcons
-                        name='delete-outline'
-                        size={IconSize}
-                        color={ColorMap['white'].main}
-                      />
-                    </Pressable>
-                  </S.CategoryButtons>
-                )}
-              </S.CategoryContainer>
-              {activeAccordion &&
-                activeAccordion[item.name] &&
-                activeAccordion[item.name].isOpen && (
-                  <AddCheckList
-                    categoryId={item.id}
-                    isInputVisible={isVisible && activeButtonIndex === index}
-                    isEditMode={isEditMode}
-                    isClearCheckList={isClearCheckList}
-                    setIsClearCheckList={setIsClearCheckList}
+                </Pressable>
+                <Pressable
+                  onPress={() =>
+                    handleEdit({ categoryId: item.id, name: item.name })
+                  }
+                >
+                  <AntDesign
+                    name='edit'
+                    size={IconSize}
+                    color={ColorMap['white'].main}
                   />
-                )}
-            </S.Wrapper>
-          );
-        }}
-      />
+                </Pressable>
+
+                <Pressable
+                  onPress={() =>
+                    handleDelete({ categoryId: item.id, name: item.name })
+                  }
+                >
+                  <MaterialCommunityIcons
+                    name='delete-outline'
+                    size={IconSize}
+                    color={ColorMap['white'].main}
+                  />
+                </Pressable>
+              </S.CategoryButtons>
+            )}
+          </S.CategoryContainer>
+          {activeAccordion &&
+            activeAccordion[item.name] &&
+            activeAccordion[item.name].isOpen && (
+              <AddCheckList
+                categoryId={item.id}
+                isInputVisible={isVisible && activeButtonIndex === index}
+                isEditMode={isEditMode}
+                isClearCheckList={isClearCheckList}
+                setIsClearCheckList={setIsClearCheckList}
+              />
+            )}
+        </S.Wrapper>
+      ))}
 
       <EditCategoryModal
         isEditModalOpen={isEditModalOpen}

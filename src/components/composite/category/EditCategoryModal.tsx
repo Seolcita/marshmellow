@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 
+import { View } from '../../Themed';
 import * as S from './Categories.styles';
 import { EditCategory } from './Categories';
 import Modal from '../../atomic/modal/Modal';
 import Input from '../../atomic/input/Input';
+import ColorMap from '../../../styles/Color';
 import Button from '../../atomic/button/Button';
 import { useUpdateCategory } from '../../../api/category';
-import ColorMap from '../../../styles/Color';
+import { TwoButtonContainer } from '../../common-styles/CommonStyles';
 
 interface EditCategoryModalProps {
   isEditModalOpen: boolean;
@@ -65,13 +67,26 @@ const EditCategoryModal = ({
           }}
           error={category.error}
         />
-        <Button
-          onPress={handleEdit}
-          text='Save'
-          borderRadius={5}
-          fullWidth
-          bgColor={ColorMap['blue'].dark}
-        />
+
+        <TwoButtonContainer>
+          <View style={{ width: '48%' }}>
+            <Button
+              onPress={() => setIsEditModalOpen(false)}
+              text='Cancel'
+              borderRadius={5}
+              bgColor={ColorMap['grey'].main}
+            />
+          </View>
+          <View style={{ width: '48%' }}>
+            <Button
+              onPress={handleEdit}
+              text='Save'
+              borderRadius={5}
+              fullWidth
+              bgColor={ColorMap['blue'].dark}
+            />
+          </View>
+        </TwoButtonContainer>
       </S.EditInputContainer>
     </Modal>
   );

@@ -5,6 +5,7 @@ import Modal from '../../atomic/modal/Modal';
 import { DeleteCategory } from './Categories';
 import Button from '../../atomic/button/Button';
 import { useDeleteCategory } from '../../../api/category';
+import { TwoButtonContainer } from '../../common-styles/CommonStyles';
 
 interface DeleteCategoryModalProps {
   isDeleteModalOpen: boolean;
@@ -29,15 +30,25 @@ const DeleteCategoryModal = ({
   return (
     <Modal isOpen={isDeleteModalOpen} setIsOpen={setIsDeleteModalOpen}>
       <S.ModalTitle>Delete Category</S.ModalTitle>
-      <View>
-        <S.ConfirmMessage>{`Are you sure you want to delete '${name}' category?`}</S.ConfirmMessage>
-        <Button
-          onPress={handleDelete}
-          text='Delete'
-          borderRadius={5}
-          bgColor={ColorMap['blue'].dark}
-        />
-      </View>
+      <S.ConfirmMessage>{`Are you sure you want to delete '${name}' category?`}</S.ConfirmMessage>
+      <TwoButtonContainer>
+        <View style={{ width: '48%' }}>
+          <Button
+            onPress={() => setIsDeleteModalOpen(false)}
+            text='Cancel'
+            borderRadius={5}
+            bgColor={ColorMap['grey'].main}
+          />
+        </View>
+        <View style={{ width: '48%' }}>
+          <Button
+            onPress={handleDelete}
+            text='Delete'
+            borderRadius={5}
+            bgColor={ColorMap['blue'].dark}
+          />
+        </View>
+      </TwoButtonContainer>
     </Modal>
   );
 };

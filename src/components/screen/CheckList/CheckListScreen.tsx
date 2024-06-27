@@ -1,18 +1,17 @@
 import { Alert } from 'react-native';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Feather } from '@expo/vector-icons';
 
+import { View } from '../../Themed';
 import { Category } from '../../../types';
-import { Text, View } from '../../Themed';
 import ColorMap from '../../../styles/Color';
 import * as S from './CheckListScreen.styles';
 import Button from '../../atomic/button/Button';
 import { useCategories } from '../../../api/category';
 import { useAuth } from '../../../providers/AuthProvider';
+import { useClearCheckList } from '../../../api/check-list';
 import Categories from '../../composite/category/Categories';
 import AddCategory from '../../composite/category/AddCategory';
-import { useClearCheckList } from '../../../api/check-list';
 
 const CheckListScreen = () => {
   const [categories, setCategories] = useState<Category[]>([]);
