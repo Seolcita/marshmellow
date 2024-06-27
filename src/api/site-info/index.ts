@@ -85,6 +85,7 @@ export const useCampSiteInfo = (id: string) => {
           canPurchaseFirewood: info.can_purchase_firewood,
           carAccess: info.car_access,
           firewoodPrice: info.firewood_price,
+          favourite: info.favourite,
           hasDrinkableWater: info.has_drinkable_water,
           hasElectricity: info.has_electricity,
           hasFirePit: info.has_fire_pit,

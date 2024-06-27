@@ -75,6 +75,7 @@ export interface CampSiteInfo {
   canPurchaseFirewood?: boolean;
   carAccess?: CarAccessType;
   departureDate?: string;
+  favourite?: boolean;
   firewoodPrice?: number;
   hasDrinkableWater?: boolean;
   hasElectricity?: boolean;
@@ -103,5 +104,4 @@ export interface CampSiteInfo {
   hasWaterHookup?: boolean;
   reservation?: ReservationType;
   sewerServiceFee?: number;
-  favourite?: boolean;
 }

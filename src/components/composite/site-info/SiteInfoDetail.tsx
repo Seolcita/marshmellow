@@ -1,9 +1,8 @@
 import { Rating } from 'react-native-ratings';
 
-import { Text, View } from '../../Themed';
 import * as S from './SiteInfoDetail.styles';
-import { useCampSiteInfo } from '../../../api/site-info';
 import SiteInfoDetailItem from './SiteInfoDetailItem';
+import { useCampSiteInfo } from '../../../api/site-info';
 import {
   CampingTypeMap,
   CarAccessTypeMap,
@@ -24,179 +23,180 @@ const SiteInfoDetail = ({ id }: SiteInfoDetailProps) => {
 
   return (
     <>
-      <View>
-        <Rating
-          imageSize={30}
-          readonly
-          startingValue={siteInfo?.rating}
-          style={{ margin: 15 }}
-        />
-        <S.SectionTitle>Campsite Info</S.SectionTitle>
+      <Rating
+        imageSize={25}
+        readonly
+        startingValue={siteInfo?.rating}
+        style={{ marginTop: 15, marginBottom: 15 }}
+      />
 
+      {/* TODO: Add Campsite Image Here */}
+
+      <S.SectionTitle>Campsite Info</S.SectionTitle>
+
+      <SiteInfoDetailItem
+        question='Campsite Type'
+        answer={
+          siteInfo?.campingType ? CampingTypeMap[siteInfo.campingType] : ' - '
+        }
+      />
+
+      <SiteInfoDetailItem
+        question='Campsite Size'
+        answer={siteInfo?.siteSize ? SiteSizeMap[siteInfo.siteSize] : ' - '}
+      />
+
+      <SiteInfoDetailItem
+        question='Campsite Privacy'
+        answer={siteInfo?.privacy ? PrivacyMap[siteInfo.privacy] : ' - '}
+      />
+
+      <SiteInfoDetailItem
+        question='Car Access Type'
+        answer={
+          siteInfo?.carAccess ? CarAccessTypeMap[siteInfo.carAccess] : ' - '
+        }
+      />
+
+      <SiteInfoDetailItem
+        question='Has Fire Pit'
+        answer={convertBooleanToString(siteInfo?.hasFirePit)}
+      />
+
+      <SiteInfoDetailItem
+        question='Waterfront Site'
+        answer={convertBooleanToString(siteInfo?.isWaterfront)}
+      />
+
+      <SiteInfoDetailItem
+        question='Has phone signal'
+        answer={convertBooleanToString(siteInfo?.hasSignal)}
+      />
+
+      <SiteInfoDetailItem
+        question='Has Electricity Hookup'
+        answer={convertBooleanToString(siteInfo?.hasElectricity)}
+      />
+
+      <SiteInfoDetailItem
+        question='Has Water Hookup'
+        answer={convertBooleanToString(siteInfo?.hasWaterHookup)}
+      />
+
+      <S.SectionTitle>Campsite Reservation</S.SectionTitle>
+      <SiteInfoDetailItem
+        question='Booking Method'
+        answer={
+          siteInfo?.reservation
+            ? ReservationTypeMap[siteInfo.reservation]
+            : ' - '
+        }
+      />
+
+      {siteInfo?.reservation !== 'FCFS' && (
         <SiteInfoDetailItem
-          question='1. What is the campsite type?'
-          answer={
-            siteInfo?.campingType ? CampingTypeMap[siteInfo.campingType] : ' - '
-          }
+          question='Reservation Fee'
+          answer={convertCost(siteInfo?.reservationFee)}
         />
+      )}
 
+      <SiteInfoDetailItem
+        question='Campsite Fee Per Night'
+        answer={convertCost(siteInfo?.siteFee)}
+      />
+
+      <S.SectionTitle>Campground Facilities</S.SectionTitle>
+      <SiteInfoDetailItem
+        question='Can Purchase Fire Wood'
+        answer={convertBooleanToString(siteInfo?.canPurchaseFirewood)}
+      />
+
+      {siteInfo?.canPurchaseFirewood !== false && (
         <SiteInfoDetailItem
-          question='2. What is the campsite size?'
-          answer={siteInfo?.siteSize ? SiteSizeMap[siteInfo.siteSize] : ' - '}
+          question='Fire Wood Provided Unlimitedly'
+          answer={convertBooleanToString(siteInfo?.isFirewoodUnlimited)}
         />
+      )}
 
+      {siteInfo?.isFirewoodUnlimited !== true && (
         <SiteInfoDetailItem
-          question='3. How is the campsite privacy?'
-          answer={siteInfo?.privacy ? PrivacyMap[siteInfo.privacy] : ' - '}
+          question='Fire Wood Price Per Bag'
+          answer={convertCost(siteInfo?.firewoodPrice)}
         />
+      )}
 
+      <SiteInfoDetailItem
+        question='Has Water pumps'
+        answer={convertBooleanToString(siteInfo?.hasWater)}
+      />
+
+      <SiteInfoDetailItem
+        question='Has drinkable water pumps'
+        answer={convertBooleanToString(siteInfo?.hasDrinkableWater)}
+      />
+
+      <SiteInfoDetailItem
+        question='Has Dish Sink?'
+        answer={convertBooleanToString(siteInfo?.hasSink)}
+      />
+
+      <SiteInfoDetailItem
+        question='Toilet Type?'
+        answer={siteInfo?.toilet ? ToiletTypeMap[siteInfo.toilet] : ' - '}
+      />
+
+      <SiteInfoDetailItem
+        question='Has Shower Facility'
+        answer={convertBooleanToString(siteInfo?.hasShower)}
+      />
+
+      {siteInfo?.hasShower !== false && (
         <SiteInfoDetailItem
-          question='4. What is the car access type?'
-          answer={
-            siteInfo?.carAccess ? CarAccessTypeMap[siteInfo.carAccess] : ' - '
-          }
+          question='Shower Token Price'
+          answer={convertCost(siteInfo?.showerCost)}
         />
+      )}
 
+      <SiteInfoDetailItem
+        question='Has Shelter'
+        answer={convertBooleanToString(siteInfo?.hasShelter)}
+      />
+
+      <SiteInfoDetailItem
+        question='Has Store'
+        answer={convertBooleanToString(siteInfo?.hasStores)}
+      />
+
+      <SiteInfoDetailItem
+        question='Has Sewer Service'
+        answer={convertBooleanToString(siteInfo?.hasSewerService)}
+      />
+
+      {siteInfo?.hasSewerService !== false && (
         <SiteInfoDetailItem
-          question='5. Is there a fire pit?'
-          answer={convertBooleanToString(siteInfo?.hasFirePit)}
+          question='Sewer Service Fee?'
+          answer={convertCost(siteInfo?.sewerServiceFee)}
         />
+      )}
 
+      <S.SectionTitle>Park Pass</S.SectionTitle>
+      <SiteInfoDetailItem
+        question='Need Park Pass?'
+        answer={convertBooleanToString(siteInfo?.needParkPass)}
+      />
+
+      {siteInfo?.needParkPass !== false && (
         <SiteInfoDetailItem
-          question='6. Is the camp site waterfront?'
-          answer={convertBooleanToString(siteInfo?.isWaterfront)}
+          question='Park Pass Name'
+          answer={siteInfo?.parkPassName ?? ' - '}
         />
+      )}
 
-        <SiteInfoDetailItem
-          question='7. Is there phone signal?'
-          answer={convertBooleanToString(siteInfo?.hasSignal)}
-        />
-
-        <SiteInfoDetailItem
-          question='8. Is there a electricity hookup?'
-          answer={convertBooleanToString(siteInfo?.hasElectricity)}
-        />
-
-        <SiteInfoDetailItem
-          question='9. Is there a water hookup?'
-          answer={convertBooleanToString(siteInfo?.hasWaterHookup)}
-        />
-
-        <S.SectionTitle>Campsite Reservation</S.SectionTitle>
-        <SiteInfoDetailItem
-          question='10. What is the booking method?'
-          answer={
-            siteInfo?.reservation
-              ? ReservationTypeMap[siteInfo.reservation]
-              : ' - '
-          }
-        />
-
-        {siteInfo?.reservation !== 'FCFS' && (
-          <SiteInfoDetailItem
-            question='10-1. How much is reservation fee?'
-            answer={`$ ${siteInfo?.reservationFee?.toFixed(2)}` ?? ' - '}
-          />
-        )}
-
-        <SiteInfoDetailItem
-          question='11. How much is campsite fee?'
-          answer={`$ ${siteInfo?.siteFee?.toFixed(2)}` ?? ' - '}
-        />
-
-        <S.SectionTitle>Campground Facilities</S.SectionTitle>
-        <SiteInfoDetailItem
-          question='12. Can I purchase fire wood??'
-          answer={convertBooleanToString(siteInfo?.canPurchaseFirewood)}
-        />
-
-        {siteInfo?.canPurchaseFirewood !== false && (
-          <SiteInfoDetailItem
-            question='12-1. Is fire wood provided unlimitedly?'
-            answer={convertBooleanToString(siteInfo?.isFirewoodUnlimited)}
-          />
-        )}
-
-        {siteInfo?.isFirewoodUnlimited !== true && (
-          <SiteInfoDetailItem
-            question='12-2. How much is fire wood per bag?'
-            answer={convertCost(siteInfo?.firewoodPrice)}
-          />
-        )}
-
-        <SiteInfoDetailItem
-          question='13. Are there water pumps'
-          answer={convertBooleanToString(siteInfo?.hasWater)}
-        />
-
-        <SiteInfoDetailItem
-          question='14. Are there drinkable water pumps?'
-          answer={convertBooleanToString(siteInfo?.hasDrinkableWater)}
-        />
-
-        <SiteInfoDetailItem
-          question='15. Is there dish sink?'
-          answer={convertBooleanToString(siteInfo?.hasSink)}
-        />
-
-        <SiteInfoDetailItem
-          question='16. What is toilet type?'
-          answer={siteInfo?.toilet ? ToiletTypeMap[siteInfo.toilet] : ' - '}
-        />
-
-        <SiteInfoDetailItem
-          question='17. Is there shower facility?'
-          answer={convertBooleanToString(siteInfo?.hasShower)}
-        />
-
-        {siteInfo?.hasShower !== false && (
-          <SiteInfoDetailItem
-            question='17-1. How much is shower token?'
-            answer={convertCost(siteInfo?.showerCost)}
-          />
-        )}
-
-        <SiteInfoDetailItem
-          question='18. Is there shelter?'
-          answer={convertBooleanToString(siteInfo?.hasShelter)}
-        />
-
-        <SiteInfoDetailItem
-          question='19. Is there store?'
-          answer={convertBooleanToString(siteInfo?.hasStores)}
-        />
-
-        <SiteInfoDetailItem
-          question='20. Is there sewer service?'
-          answer={convertBooleanToString(siteInfo?.hasSewerService)}
-        />
-
-        {siteInfo?.hasSewerService !== false && (
-          <SiteInfoDetailItem
-            question='20-1. How much is sewer service fee?'
-            answer={convertCost(siteInfo?.sewerServiceFee)}
-          />
-        )}
-
-        <S.SectionTitle>Park Pass</S.SectionTitle>
-        <SiteInfoDetailItem
-          question='21. Does campground need a park pass?'
-          answer={convertBooleanToString(siteInfo?.needParkPass)}
-        />
-
-        {siteInfo?.needParkPass !== false && (
-          <SiteInfoDetailItem
-            question='21-1. What is the name of park pass?'
-            answer={siteInfo?.parkPassName ?? ' - '}
-          />
-        )}
-
-        <S.SectionTitle>Additional Information</S.SectionTitle>
-        <SiteInfoDetailItem
-          question='22. Any additional notes?'
-          answer={siteInfo?.note ?? ' - '}
-        />
-      </View>
+      <S.SectionTitle>Additional Information</S.SectionTitle>
+      <SiteInfoDetailItem
+        question='Additional Notes'
+        answer={siteInfo?.note ?? ' - '}
+      />
     </>
   );
 };

@@ -101,6 +101,8 @@ const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
         />
       </S.SectionContainer>
 
+      {/* TODO: Add Campsite Image Here */}
+
       <S.SectionContainer>
         <Section
           sectionTitle='Campsite Info'
