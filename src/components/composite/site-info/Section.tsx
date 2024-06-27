@@ -15,8 +15,11 @@ const Section = ({ inputComponent, sectionTitle, question }: SectionProps) => {
         </S.SectionTitleContainer>
       )}
       <S.InputContainer>
-        <S.Question> {question} </S.Question>
-        {inputComponent}
+        <S.QuestionContainer>
+          <S.Image source={require('../../../../assets/images/like.png')} />
+          <S.Question>{question}</S.Question>
+        </S.QuestionContainer>
+        <S.InputComponentContainer>{inputComponent}</S.InputComponentContainer>
       </S.InputContainer>
     </>
   );

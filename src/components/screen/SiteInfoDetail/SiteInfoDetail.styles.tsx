@@ -38,7 +38,7 @@ export const Button = styled.Pressable`
 export const Container = styled.View`
   flex: 1;
   background-color: ${ColorMap['white'].main};
-  padding-horizontal: 20px;
+  padding-horizontal: 10px;
 `;
 
 export const HeaderContainer = styled.View`
@@ -62,8 +62,9 @@ export const SiteInfoCardContainer = styled(Tile)`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 10px;
-  margin-top: 20px;
+  margin-top: 10px;
   margin-horizontal: 0px;
+  padding: 15px;
 `;
 
 export const Text = styled.Text`

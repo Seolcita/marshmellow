@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Provider as PaperProvider } from 'react-native-paper';
 import { Rating } from 'react-native-ratings';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 import {
   booleanRadioButtonItems,
@@ -21,9 +21,10 @@ import { initialValues } from './lib/initial-values';
 import Button from '../../atomic/button/Button';
 import { convertType, convertTypeForInitialValues } from './lib/convert-type';
 import { useCampSiteInfo, useUpdateCampSiteInfo } from '../../../api/site-info';
-import { Alert } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { useAuth } from '../../../providers/AuthProvider';
+import ColorMap from '../../../styles/Color';
 
 interface SiteInfoDetailProps {
   id: string;
@@ -71,452 +72,470 @@ const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
     updateSiteInfo(convertedSiteInfo);
     setIsEditMode(false);
   };
+  console.log('siteInfo FV', siteInfo.favourite);
 
   return (
     <PaperProvider>
-      <S.SectionContainer>
-        <Section
-          sectionTitle='Review'
-          question='How much are you satisfied?'
-          inputComponent={
-            <Rating
-              type='custom'
-              ratingColor='#FEB941'
-              ratingBackgroundColor='#F6E9B2'
-              tintColor='white'
-              ratingCount={5}
-              jumpValue={0.5}
-              fractions={1}
-              imageSize={30}
-              startingValue={siteInfo.rating ? parseFloat(siteInfo.rating) : 0}
-              onFinishRating={(rate: number) => {
-                handleChange({
-                  name: 'rating',
-                  value: rate.toString(),
-                });
-              }}
-              style={{ paddingTop: 20 }}
-            />
-          }
-        />
-      </S.SectionContainer>
-
-      {/* TODO: Add Campsite Image Here */}
-
-      <S.SectionContainer>
-        <Section
-          sectionTitle='Campsite Info'
-          question='1. What is the campsite type?'
-          inputComponent={
-            <Select
-              stateValue={siteInfo.campingType}
-              selectName='campingType'
-              handleChange={handleChange}
-              items={campingTypesSelectItems}
-            />
-          }
-        />
-
-        <Section
-          question='2. What is the campsite size?'
-          inputComponent={
-            <Select
-              stateValue={siteInfo.siteSize}
-              selectName='siteSize'
-              handleChange={handleChange}
-              items={siteSizeSelectItems}
-            />
-          }
-        />
-
-        <Section
-          question='3. How is the campsite privacy?'
-          inputComponent={
-            <Select
-              stateValue={siteInfo.privacy}
-              selectName='privacy'
-              handleChange={handleChange}
-              items={privacySelectItems}
-            />
-          }
-        />
-
-        <Section
-          question='4. What is the car access type?'
-          inputComponent={
-            <Select
-              stateValue={siteInfo.carAccess}
-              selectName='carAccess'
-              handleChange={handleChange}
-              items={carAccessTypesSelectItems}
-            />
-          }
-        />
-
-        <Section
-          question='5. Is there a fire pit?'
-          inputComponent={
-            <RadioButton
-              stateValue={siteInfo.hasFirePit}
-              radioButtonName='hasFirePit'
-              handleChange={handleChange}
-              items={booleanRadioButtonItems}
-            />
-          }
-        />
-
-        <Section
-          question='6. Is the camp site waterfront?'
-          inputComponent={
-            <RadioButton
-              stateValue={siteInfo.isWaterfront}
-              radioButtonName='isWaterfront'
-              handleChange={handleChange}
-              items={booleanRadioButtonItems}
-            />
-          }
-        />
-
-        <Section
-          question='7. Is there phone signal?'
-          inputComponent={
-            <RadioButton
-              stateValue={siteInfo.hasSignal}
-              radioButtonName='hasSignal'
-              handleChange={handleChange}
-              items={booleanRadioButtonItems}
-            />
-          }
-        />
-
-        <Section
-          question='8. Is there a electricity hookup?'
-          inputComponent={
-            <RadioButton
-              stateValue={siteInfo.hasElectricity}
-              radioButtonName='hasElectricity'
-              handleChange={handleChange}
-              items={booleanRadioButtonItems}
-            />
-          }
-        />
-
-        <Section
-          question='9. Is there a water hookup?'
-          inputComponent={
-            <RadioButton
-              stateValue={siteInfo.hasWaterHookup}
-              radioButtonName='hasWaterHookup'
-              handleChange={handleChange}
-              items={booleanRadioButtonItems}
-            />
-          }
-        />
-      </S.SectionContainer>
-      <S.SectionContainer>
-        <Section
-          sectionTitle='Campsite Reservation'
-          question='10. What is the booking method?'
-          inputComponent={
-            <Select
-              stateValue={siteInfo.reservation}
-              selectName='reservation'
-              handleChange={handleChange}
-              items={reservationTypesSelectItems}
-            />
-          }
-        />
-
-        {siteInfo.reservation === ReservationType.RESERVATION && (
+      <ScrollView>
+        <S.SectionContainer>
           <Section
-            question='10-1. How much is reservation fee?'
+            sectionTitle='Review'
+            question='How much are you satisfied?'
             inputComponent={
-              <Input
-                label='Reservation fee per booking'
-                isValid={true}
-                textInputConfig={{
-                  value: siteInfo.reservationFee,
-                  onChangeText: (text) => {
-                    handleChange({ name: 'reservationFee', value: text });
-                  },
-                  placeholder: '10',
-                  keyboardType: 'numeric',
+              <Rating
+                type='custom'
+                ratingColor='#FEB941'
+                ratingBackgroundColor='#F6E9B2'
+                tintColor='white'
+                ratingCount={5}
+                jumpValue={0.5}
+                fractions={1}
+                imageSize={30}
+                startingValue={
+                  siteInfo.rating ? parseFloat(siteInfo.rating) : 0
+                }
+                onFinishRating={(rate: number) => {
+                  handleChange({
+                    name: 'rating',
+                    value: rate.toString(),
+                  });
                 }}
+                style={{ paddingTop: 20 }}
               />
             }
           />
-        )}
 
-        <Section
-          question='11. How much is campsite fee?'
-          inputComponent={
-            <Input
-              label='Campsite fee per night'
-              isValid={true}
-              textInputConfig={{
-                value: siteInfo.siteFee,
-                onChangeText: (text) => {
-                  handleChange({ name: 'siteFee', value: text });
-                },
-                placeholder: '30',
-                keyboardType: 'numeric',
-              }}
-            />
-          }
-        />
-      </S.SectionContainer>
-
-      <S.SectionContainer>
-        <Section
-          sectionTitle='Campground Facilities'
-          question='12. Can I purchase fire wood?'
-          inputComponent={
-            <RadioButton
-              stateValue={siteInfo.canPurchaseFirewood}
-              radioButtonName='canPurchaseFirewood'
-              handleChange={handleChange}
-              items={booleanRadioButtonItems}
-            />
-          }
-        />
-
-        {siteInfo?.canPurchaseFirewood === 'true' && (
           <Section
-            question='12-1. Is fire wood provided unlimitedly?'
+            question='Is this one of your favourite site?'
             inputComponent={
               <RadioButton
-                stateValue={siteInfo.isFirewoodUnlimited}
-                radioButtonName='isFirewoodUnlimited'
+                stateValue={siteInfo.favourite}
+                radioButtonName='favourite'
                 handleChange={handleChange}
                 items={booleanRadioButtonItems}
               />
             }
           />
-        )}
+        </S.SectionContainer>
 
-        {siteInfo?.isFirewoodUnlimited === 'false' && (
+        {/* TODO: Add Campsite Image Here */}
+
+        <S.SectionContainer>
           <Section
-            question='12-2. How much is fire wood?'
+            sectionTitle='Campsite Info'
+            question='What is the campsite type?'
+            inputComponent={
+              <Select
+                stateValue={siteInfo.campingType}
+                selectName='campingType'
+                handleChange={handleChange}
+                items={campingTypesSelectItems}
+              />
+            }
+          />
+
+          <Section
+            question='What is the campsite size?'
+            inputComponent={
+              <Select
+                stateValue={siteInfo.siteSize}
+                selectName='siteSize'
+                handleChange={handleChange}
+                items={siteSizeSelectItems}
+              />
+            }
+          />
+
+          <Section
+            question='How is the campsite privacy?'
+            inputComponent={
+              <Select
+                stateValue={siteInfo.privacy}
+                selectName='privacy'
+                handleChange={handleChange}
+                items={privacySelectItems}
+              />
+            }
+          />
+
+          <Section
+            question='What is the car access type?'
+            inputComponent={
+              <Select
+                stateValue={siteInfo.carAccess}
+                selectName='carAccess'
+                handleChange={handleChange}
+                items={carAccessTypesSelectItems}
+              />
+            }
+          />
+
+          <Section
+            question='Is there a fire pit?'
+            inputComponent={
+              <RadioButton
+                stateValue={siteInfo.hasFirePit}
+                radioButtonName='hasFirePit'
+                handleChange={handleChange}
+                items={booleanRadioButtonItems}
+              />
+            }
+          />
+
+          <Section
+            question='Is the camp site waterfront?'
+            inputComponent={
+              <RadioButton
+                stateValue={siteInfo.isWaterfront}
+                radioButtonName='isWaterfront'
+                handleChange={handleChange}
+                items={booleanRadioButtonItems}
+              />
+            }
+          />
+
+          <Section
+            question='Is there phone signal?'
+            inputComponent={
+              <RadioButton
+                stateValue={siteInfo.hasSignal}
+                radioButtonName='hasSignal'
+                handleChange={handleChange}
+                items={booleanRadioButtonItems}
+              />
+            }
+          />
+
+          <Section
+            question='Is there a electricity hookup?'
+            inputComponent={
+              <RadioButton
+                stateValue={siteInfo.hasElectricity}
+                radioButtonName='hasElectricity'
+                handleChange={handleChange}
+                items={booleanRadioButtonItems}
+              />
+            }
+          />
+
+          <Section
+            question='Is there a water hookup?'
+            inputComponent={
+              <RadioButton
+                stateValue={siteInfo.hasWaterHookup}
+                radioButtonName='hasWaterHookup'
+                handleChange={handleChange}
+                items={booleanRadioButtonItems}
+              />
+            }
+          />
+        </S.SectionContainer>
+        <S.SectionContainer>
+          <Section
+            sectionTitle='Campsite Reservation'
+            question='What is the booking method?'
+            inputComponent={
+              <Select
+                stateValue={siteInfo.reservation}
+                selectName='reservation'
+                handleChange={handleChange}
+                items={reservationTypesSelectItems}
+              />
+            }
+          />
+
+          {siteInfo.reservation === ReservationType.RESERVATION && (
+            <Section
+              question='How much is reservation fee?'
+              inputComponent={
+                <Input
+                  label='Reservation fee per booking'
+                  isValid={true}
+                  textInputConfig={{
+                    value: siteInfo.reservationFee,
+                    onChangeText: (text) => {
+                      handleChange({ name: 'reservationFee', value: text });
+                    },
+                    placeholder: '10',
+                    keyboardType: 'numeric',
+                  }}
+                />
+              }
+            />
+          )}
+
+          <Section
+            question='How much is campsite fee?'
             inputComponent={
               <Input
-                label='Price of fire wood per bag'
+                label='Campsite fee per night'
                 isValid={true}
                 textInputConfig={{
-                  value: siteInfo.firewoodPrice,
+                  value: siteInfo.siteFee,
                   onChangeText: (text) => {
-                    handleChange({ name: 'firewoodPrice', value: text });
+                    handleChange({ name: 'siteFee', value: text });
                   },
-                  placeholder: '12',
+                  placeholder: '30',
                   keyboardType: 'numeric',
                 }}
               />
             }
           />
-        )}
+        </S.SectionContainer>
 
-        <Section
-          question='13. Are there water pumps?'
-          inputComponent={
-            <RadioButton
-              stateValue={siteInfo.hasWater}
-              radioButtonName='hasWater'
-              handleChange={handleChange}
-              items={booleanRadioButtonItems}
-            />
-          }
-        />
-
-        <Section
-          question='14. Are there drinkable water pumps?'
-          inputComponent={
-            <RadioButton
-              stateValue={siteInfo.hasDrinkableWater}
-              radioButtonName='hasDrinkableWater'
-              handleChange={handleChange}
-              items={booleanRadioButtonItems}
-            />
-          }
-        />
-
-        <Section
-          question='15. Is there dish sink?'
-          inputComponent={
-            <RadioButton
-              stateValue={siteInfo.hasSink}
-              radioButtonName='hasSink'
-              handleChange={handleChange}
-              items={booleanRadioButtonItems}
-            />
-          }
-        />
-
-        <Section
-          question='16. What is toilet type?'
-          inputComponent={
-            <Select
-              stateValue={siteInfo.toilet}
-              selectName='toilet'
-              handleChange={handleChange}
-              items={toiletTypesSelectItems}
-            />
-          }
-        />
-
-        <Section
-          question='17. Is there shower facility?'
-          inputComponent={
-            <RadioButton
-              stateValue={siteInfo.hasShower}
-              radioButtonName='hasShower'
-              handleChange={handleChange}
-              items={booleanRadioButtonItems}
-            />
-          }
-        />
-
-        {siteInfo.hasShower === 'true' && (
+        <S.SectionContainer>
           <Section
-            question='17-1. How much is shower token?'
+            sectionTitle='Campground Facilities'
+            question='Can I purchase fire wood?'
             inputComponent={
-              <Input
-                label='Price of shower token'
-                isValid={true}
-                textInputConfig={{
-                  value: siteInfo.showerCost,
-                  onChangeText: (text) => {
-                    handleChange({ name: 'showerCost', value: text });
-                  },
-                  placeholder: '1',
-                  keyboardType: 'numeric',
-                }}
+              <RadioButton
+                stateValue={siteInfo.canPurchaseFirewood}
+                radioButtonName='canPurchaseFirewood'
+                handleChange={handleChange}
+                items={booleanRadioButtonItems}
               />
             }
           />
-        )}
 
-        <Section
-          question='18. Is there shelter?'
-          inputComponent={
-            <RadioButton
-              stateValue={siteInfo.hasShelter}
-              radioButtonName='hasShelter'
-              handleChange={handleChange}
-              items={booleanRadioButtonItems}
+          {siteInfo?.canPurchaseFirewood === 'true' && (
+            <Section
+              question='Is fire wood provided unlimitedly?'
+              inputComponent={
+                <RadioButton
+                  stateValue={siteInfo.isFirewoodUnlimited}
+                  radioButtonName='isFirewoodUnlimited'
+                  handleChange={handleChange}
+                  items={booleanRadioButtonItems}
+                />
+              }
             />
-          }
-        />
+          )}
 
-        <Section
-          question='19. Is there store?'
-          inputComponent={
-            <RadioButton
-              stateValue={siteInfo.hasStores}
-              radioButtonName='hasStores'
-              handleChange={handleChange}
-              items={booleanRadioButtonItems}
+          {siteInfo?.isFirewoodUnlimited === 'false' && (
+            <Section
+              question='How much is fire wood?'
+              inputComponent={
+                <Input
+                  label='Price of fire wood per bag'
+                  isValid={true}
+                  textInputConfig={{
+                    value: siteInfo.firewoodPrice,
+                    onChangeText: (text) => {
+                      handleChange({ name: 'firewoodPrice', value: text });
+                    },
+                    placeholder: '12',
+                    keyboardType: 'numeric',
+                  }}
+                />
+              }
             />
-          }
-        />
+          )}
 
-        <Section
-          question='20. Is there sewer service?'
-          inputComponent={
-            <RadioButton
-              stateValue={siteInfo.hasSewerService}
-              radioButtonName='hasSewerService'
-              handleChange={handleChange}
-              items={booleanRadioButtonItems}
-            />
-          }
-        />
-
-        {siteInfo.hasSewerService === 'true' && (
           <Section
-            question='20-1. How much is sewer service fee?'
+            question='Are there water pumps?'
             inputComponent={
-              <Input
-                label='Price of sewer service'
-                isValid={true}
-                textInputConfig={{
-                  value: siteInfo.sewerServiceFee,
-                  onChangeText: (text) => {
-                    handleChange({ name: 'sewerServiceFee', value: text });
-                  },
-                  placeholder: '5',
-                  keyboardType: 'numeric',
-                }}
+              <RadioButton
+                stateValue={siteInfo.hasWater}
+                radioButtonName='hasWater'
+                handleChange={handleChange}
+                items={booleanRadioButtonItems}
               />
             }
           />
-        )}
-      </S.SectionContainer>
 
-      <S.SectionContainer>
-        <Section
-          sectionTitle='Park Pass'
-          question='21. Does campground need a park pass?'
-          inputComponent={
-            <RadioButton
-              stateValue={siteInfo.needParkPass}
-              radioButtonName='needParkPass'
-              handleChange={handleChange}
-              items={booleanRadioButtonItems}
-            />
-          }
-        />
-
-        {siteInfo.needParkPass === 'true' && (
           <Section
-            question='21-1. What is the name of park pass?'
+            question='Are there drinkable water pumps?'
+            inputComponent={
+              <RadioButton
+                stateValue={siteInfo.hasDrinkableWater}
+                radioButtonName='hasDrinkableWater'
+                handleChange={handleChange}
+                items={booleanRadioButtonItems}
+              />
+            }
+          />
+
+          <Section
+            question='Is there dish sink?'
+            inputComponent={
+              <RadioButton
+                stateValue={siteInfo.hasSink}
+                radioButtonName='hasSink'
+                handleChange={handleChange}
+                items={booleanRadioButtonItems}
+              />
+            }
+          />
+
+          <Section
+            question='What is toilet type?'
+            inputComponent={
+              <Select
+                stateValue={siteInfo.toilet}
+                selectName='toilet'
+                handleChange={handleChange}
+                items={toiletTypesSelectItems}
+              />
+            }
+          />
+
+          <Section
+            question='Is there shower facility?'
+            inputComponent={
+              <RadioButton
+                stateValue={siteInfo.hasShower}
+                radioButtonName='hasShower'
+                handleChange={handleChange}
+                items={booleanRadioButtonItems}
+              />
+            }
+          />
+
+          {siteInfo.hasShower === 'true' && (
+            <Section
+              question='How much is shower token?'
+              inputComponent={
+                <Input
+                  label='Price of shower token'
+                  isValid={true}
+                  textInputConfig={{
+                    value: siteInfo.showerCost,
+                    onChangeText: (text) => {
+                      handleChange({ name: 'showerCost', value: text });
+                    },
+                    placeholder: '1',
+                    keyboardType: 'numeric',
+                  }}
+                />
+              }
+            />
+          )}
+
+          <Section
+            question='Is there shelter?'
+            inputComponent={
+              <RadioButton
+                stateValue={siteInfo.hasShelter}
+                radioButtonName='hasShelter'
+                handleChange={handleChange}
+                items={booleanRadioButtonItems}
+              />
+            }
+          />
+
+          <Section
+            question='Is there store?'
+            inputComponent={
+              <RadioButton
+                stateValue={siteInfo.hasStores}
+                radioButtonName='hasStores'
+                handleChange={handleChange}
+                items={booleanRadioButtonItems}
+              />
+            }
+          />
+
+          <Section
+            question='Is there sewer service?'
+            inputComponent={
+              <RadioButton
+                stateValue={siteInfo.hasSewerService}
+                radioButtonName='hasSewerService'
+                handleChange={handleChange}
+                items={booleanRadioButtonItems}
+              />
+            }
+          />
+
+          {siteInfo.hasSewerService === 'true' && (
+            <Section
+              question='How much is sewer service fee?'
+              inputComponent={
+                <Input
+                  label='Price of sewer service'
+                  isValid={true}
+                  textInputConfig={{
+                    value: siteInfo.sewerServiceFee,
+                    onChangeText: (text) => {
+                      handleChange({ name: 'sewerServiceFee', value: text });
+                    },
+                    placeholder: '5',
+                    keyboardType: 'numeric',
+                  }}
+                />
+              }
+            />
+          )}
+        </S.SectionContainer>
+
+        <S.SectionContainer>
+          <Section
+            sectionTitle='Park Pass'
+            question='Does campground need a park pass?'
+            inputComponent={
+              <RadioButton
+                stateValue={siteInfo.needParkPass}
+                radioButtonName='needParkPass'
+                handleChange={handleChange}
+                items={booleanRadioButtonItems}
+              />
+            }
+          />
+
+          {siteInfo.needParkPass === 'true' && (
+            <Section
+              question='What is the name of park pass?'
+              inputComponent={
+                <Input
+                  label='Park Pass Name'
+                  isValid={true}
+                  textInputConfig={{
+                    value: siteInfo?.parkPassName ?? '',
+                    onChangeText: (text) => {
+                      handleChange({ name: 'parkPassName', value: text });
+                    },
+                    placeholder: 'Discovery Pass',
+                    keyboardType: 'default',
+                  }}
+                  style={{ marginBottom: 20 }}
+                />
+              }
+            />
+          )}
+        </S.SectionContainer>
+
+        <S.SectionContainer>
+          <Section
+            sectionTitle='Notes'
+            question='Any additional notes?'
             inputComponent={
               <Input
-                label='Park Pass Name'
+                label=''
                 isValid={true}
                 textInputConfig={{
-                  value: siteInfo?.parkPassName ?? '',
+                  value: siteInfo?.note ?? '',
                   onChangeText: (text) => {
-                    handleChange({ name: 'parkPassName', value: text });
+                    handleChange({ name: 'note', value: text });
                   },
-                  placeholder: 'Discovery Pass',
+                  placeholder: 'Enter notes here...',
                   keyboardType: 'default',
-                  autoFocus: true,
+                  multiline: true,
+                  numberOfLines: 6,
                 }}
-                style={{ marginBottom: 20 }}
+                style={{ marginTop: -10 }}
               />
             }
           />
-        )}
-      </S.SectionContainer>
-
-      <S.SectionContainer>
-        <Section
-          sectionTitle='Notes'
-          question='22. Any additional notes?'
-          inputComponent={
-            <Input
-              label='Leave additional campsite information'
-              isValid={true}
-              textInputConfig={{
-                value: siteInfo?.note ?? '',
-                onChangeText: (text) => {
-                  handleChange({ name: 'note', value: text });
-                },
-                placeholder: 'Enter notes here...',
-                keyboardType: 'default',
-                multiline: true,
-                numberOfLines: 6,
-              }}
-            />
-          }
-        />
-      </S.SectionContainer>
+        </S.SectionContainer>
+      </ScrollView>
       <Button
         text='Save Information'
-        textSize={20}
+        textSize={18}
         borderRadius={5}
         onPress={handleSubmit}
-        paddingVertical={15}
-        marginVertical={30}
+        paddingVertical={10}
+        marginVertical={10}
+        bgColor={ColorMap['grey'].dark}
       />
     </PaperProvider>
   );
