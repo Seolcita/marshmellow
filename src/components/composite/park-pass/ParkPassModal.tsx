@@ -1,6 +1,6 @@
-import { Alert, Modal, Platform, Pressable } from 'react-native';
+import { Alert, Modal, Platform, Pressable, ScrollView } from 'react-native';
 import { Calendar } from 'react-native-calendars';
-import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
@@ -86,7 +86,7 @@ const ParkPassModal = ({
       return false;
     } else if (
       expiryDate?.date &&
-      new Date(expiryDate.date + 'z') <= new Date()
+      new Date(expiryDate.date + 'T00:00:00') <= new Date()
     ) {
       setExpiryDate((prev) => ({
         ...prev,
@@ -95,7 +95,6 @@ const ParkPassModal = ({
 
       return false;
     }
-
     return true;
   };
 
@@ -165,82 +164,93 @@ const ParkPassModal = ({
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <View style={styles.contents}>
-            <Text style={styles.title}>
-              {isEdit ? 'Edit Park Passes' : 'Add Park Passes'}
-            </Text>
-            <Input
-              label='Park Pass Name'
-              isValid={true}
-              textInputConfig={{
-                value: parkPassName.name.trim(),
-                onChangeText: (text: string) =>
-                  setParkPassName({ name: text, error: '' }),
-                placeholder: 'Discovery Pass',
-                keyboardType: 'default',
-              }}
-              error={parkPassName.error}
-              style={{ borderColor: 'red' }}
-            />
-            <View>
-              <Pressable
-                onPress={() => setShowCalendar(!showCalendar)}
-                style={styles.dateSection}
-              >
-                <Text style={styles.text}>Park Pass Expiry Date</Text>
-                <FontAwesome name='calendar-plus-o' size={24} color='black' />
-              </Pressable>
-              {!expiryDate.error && (
-                <Text style={[styles.date]}>{expiryDate.date ?? '-'}</Text>
-              )}
-              {expiryDate.error && (
-                <View style={styles.errorContainer}>
-                  <Ionicons
-                    name='warning-outline'
-                    size={15}
-                    color={ColorMap['red'].main}
+          <Pressable onPress={handleCancel} style={{ alignSelf: 'flex-end' }}>
+            <AntDesign name='close' size={15} color='black' />
+          </Pressable>
+          <ScrollView
+            style={{ padding: 0, margin: 0, width: '100%' }}
+            overScrollMode='auto'
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={styles.contents}>
+              <Text style={styles.title}>
+                {isEdit ? 'Edit Park Passes' : 'Add Park Passes'}
+              </Text>
+              <Input
+                label='Park Pass Name'
+                isValid={true}
+                textInputConfig={{
+                  value: parkPassName.name.trim(),
+                  onChangeText: (text: string) =>
+                    setParkPassName({ name: text, error: '' }),
+                  placeholder: 'Discovery Pass',
+                  keyboardType: 'default',
+                }}
+                error={parkPassName.error}
+                style={{ borderColor: 'red' }}
+              />
+              <View>
+                <Pressable
+                  onPress={() => setShowCalendar(!showCalendar)}
+                  style={styles.dateSection}
+                >
+                  <Text style={styles.text}>Park Pass Expiry Date</Text>
+                  <FontAwesome name='calendar-plus-o' size={24} color='black' />
+                </Pressable>
+                {!expiryDate.error && (
+                  <Text style={[styles.date]}>{expiryDate.date ?? '-'}</Text>
+                )}
+                {expiryDate.error && (
+                  <View style={styles.errorContainer}>
+                    <Ionicons
+                      name='warning-outline'
+                      size={15}
+                      color={ColorMap['red'].main}
+                    />
+                    <Text style={styles.error}>{expiryDate.error}</Text>
+                  </View>
+                )}
+                {showCalendar && (
+                  <Calendar
+                    onDayPress={(day) => handleChange(day.dateString)}
+                    markedDates={{
+                      [expiryDate.date]: {
+                        selected: true,
+                        marked: true,
+                        selectedColor: 'skyblue',
+                      },
+                    }}
                   />
-                  <Text style={styles.error}>{expiryDate.error}</Text>
-                </View>
-              )}
-              {showCalendar && (
-                <Calendar
-                  onDayPress={(day) => handleChange(day.dateString)}
-                  markedDates={{
-                    [expiryDate.date]: {
-                      selected: true,
-                      marked: true,
-                      selectedColor: 'skyblue',
-                    },
-                  }}
-                />
-              )}
+                )}
+              </View>
             </View>
-          </View>
-          <View style={styles.buttons}>
-            <Button
-              text='Cancel'
-              onPress={handleCancel}
-              bgColor={ColorMap['grey'].main}
-              paddingHorizontal={10}
-              paddingVertical={10}
-              borderRadius={5}
-              width={105}
-            />
-            <Button
-              text='Save'
-              onPress={
-                isEdit && initialValue
-                  ? () => handleEdit(initialValue.id)
-                  : handleSave
-              }
-              bgColor={ColorMap['blue'].main}
-              paddingHorizontal={10}
-              paddingVertical={10}
-              borderRadius={5}
-              width={105}
-            />
-          </View>
+            <View style={styles.buttons}>
+              <View style={{ width: '48%' }}>
+                <Button
+                  text='Cancel'
+                  onPress={handleCancel}
+                  bgColor={ColorMap['grey'].main}
+                  paddingHorizontal={10}
+                  paddingVertical={10}
+                  borderRadius={5}
+                />
+              </View>
+              <View style={{ width: '48%' }}>
+                <Button
+                  text='Save'
+                  onPress={
+                    isEdit && initialValue
+                      ? () => handleEdit(initialValue.id)
+                      : handleSave
+                  }
+                  bgColor={ColorMap['blue'].main}
+                  paddingHorizontal={10}
+                  paddingVertical={10}
+                  borderRadius={5}
+                />
+              </View>
+            </View>
+          </ScrollView>
         </View>
       </View>
     </Modal>

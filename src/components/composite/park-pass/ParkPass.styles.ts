@@ -28,14 +28,14 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   listContainer: {
-    padding: 4,
+    padding: 2,
     width: '100%',
   },
   list: {
     borderRadius: 5,
     shadowColor: '#000',
     shadowOpacity: 0.25,
-    elevation: 5,
+    elevation: 4,
     marginVertical: 5,
     width: '100%',
     padding: 20,
@@ -56,9 +56,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 15,
   },
+  noParkPassContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    paddingLeft: 40,
+    marginBottom: 30,
+  },
   noParkPass: {
     fontSize: 18,
     paddingTop: 10,
+    fontWeight: 'bold',
   },
   name: {
     fontSize: 18,
