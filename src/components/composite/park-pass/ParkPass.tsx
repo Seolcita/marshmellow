@@ -55,7 +55,9 @@ export const ParkPass = () => {
       </View>
       <View>
         {data && data.length <= 0 ? (
-          <Text style={styles.noParkPass}>- Please add Park Passes</Text>
+          <View style={styles.noParkPassContainer}>
+            <Text style={styles.noParkPass}>* Please add Park Passes!</Text>
+          </View>
         ) : (
           <View style={styles.listContainer}>
             {data?.map((item) => (

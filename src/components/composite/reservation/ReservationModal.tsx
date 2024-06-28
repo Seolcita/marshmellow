@@ -191,7 +191,9 @@ export const ReservationModal = ({
   return (
     <>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-        <S.ModalTitle>Add Camping Trip</S.ModalTitle>
+        <S.ModalTitle>
+          {isEdit ? 'Edit Camping Trip' : 'Add Camping Trip'}
+        </S.ModalTitle>
         <Calendar
           onDayPress={(day) => handleDayPress(day)}
           markingType={'period'}

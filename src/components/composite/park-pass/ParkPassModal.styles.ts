@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+
 import ColorMap from '../../../styles/Color';
 
 const styles = StyleSheet.create({
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 35,
+    padding: 30,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     elevation: 5,
-    width: '80%',
+    width: '90%',
   },
   contents: {
     width: '100%',
