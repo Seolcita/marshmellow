@@ -88,6 +88,7 @@ export interface CampSiteInfo {
   hasShelter?: boolean;
   isFirewoodUnlimited?: boolean;
   isWaterfront?: boolean;
+  imageUrl?: string;
   needParkPass?: boolean;
   note?: string;
   parkPassName?: string;

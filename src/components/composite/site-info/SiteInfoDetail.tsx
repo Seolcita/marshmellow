@@ -22,6 +22,7 @@ interface SiteInfoDetailProps {
 const SiteInfoDetail = ({ id }: SiteInfoDetailProps) => {
   const { data: siteInfo, error } = useCampSiteInfo(id);
 
+  console.log('siteInfo-Display', siteInfo?.imageUrl);
   return (
     <ScrollView>
       <S.SectionTitle>Review</S.SectionTitle>

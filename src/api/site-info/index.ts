@@ -112,6 +112,7 @@ export const useCampSiteInfo = (id: string) => {
           siteNumber: info.site_number,
           siteSize: info.site_size,
           toilet: info.toilet,
+          imageUrl: info.image_url,
         };
       });
 
@@ -181,7 +182,9 @@ export const useUpdateCampSiteInfo = ({ id, userId }: UseUpdateSiteInfo) => {
       reservation,
       sewerServiceFee,
       favourite,
+      imageUrl,
     }: CampSiteInfo) {
+      console.log('UpdateImageUrl🐶', imageUrl);
       const { error, data: updatedSiteInfo } = await supabase
         .from('site_info')
         .update({
@@ -215,6 +218,7 @@ export const useUpdateCampSiteInfo = ({ id, userId }: UseUpdateSiteInfo) => {
           site_size: siteSize,
           toilet,
           favourite,
+          image_url: imageUrl,
           updated_at: new Date(),
         })
         .eq('id', id)
