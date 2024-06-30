@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Rating } from 'react-native-ratings';
+import * as ImagePicker from 'expo-image-picker';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 import {
@@ -68,15 +70,47 @@ const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
   };
 
   const handleSubmit = () => {
+    console.log('SUMBITTING');
+    console.log('siteInfo-Before-Submit', siteInfo);
     const convertedSiteInfo = convertType(siteInfo);
     updateSiteInfo(convertedSiteInfo);
+    console.log('convertedSiteInfo', updateSiteInfo(convertedSiteInfo));
     setIsEditMode(false);
   };
-  console.log('siteInfo FV', siteInfo.favourite);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.5,
+    });
+
+    if (!result.canceled) {
+      handleChange({ name: 'imageUrl', value: result.assets[0].uri });
+    }
+  };
+  console.log(siteInfo.imageUrl);
 
   return (
     <PaperProvider>
       <ScrollView>
+        <S.SectionContainer>
+          <S.UploadImageContainer>
+            {siteInfo.imageUrl ? (
+              <S.UploadedImage source={{ uri: siteInfo.imageUrl }} />
+            ) : (
+              <S.DefaultImage
+                source={require('../../../../assets/images/upload-default.png')}
+              />
+            )}
+
+            <S.UploadImageButton onPress={pickImage}>
+              <FontAwesome5 name='upload' size={20} color='black' />
+              <S.Text>Upload Image</S.Text>
+            </S.UploadImageButton>
+          </S.UploadImageContainer>
+        </S.SectionContainer>
         <S.SectionContainer>
           <Section
             sectionTitle='Review'
@@ -117,8 +151,6 @@ const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
             }
           />
         </S.SectionContainer>
-
-        {/* TODO: Add Campsite Image Here */}
 
         <S.SectionContainer>
           <Section
