@@ -29,4 +29,5 @@ export const initialValues = {
   siteFee: undefined,
   siteSize: undefined,
   toilet: undefined,
+  imageUrl: undefined,
 };

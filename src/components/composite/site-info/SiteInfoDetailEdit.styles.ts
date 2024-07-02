@@ -9,7 +9,14 @@ export const SectionContainer = styled.View`
 
 export const UploadImageContainer = styled.View`
   align-items: center;
-  margin-vertical: 30px;
+  margin-bottom: 30px;
+  margin-top: 10px;
+`;
+
+export const PreviewImage = styled.Image`
+  width: 300px;
+  height: 200px;
+  border-radius: 10px;
 `;
 
 export const DefaultImage = styled.Image`
@@ -18,11 +25,15 @@ export const DefaultImage = styled.Image`
   margin-bottom: 20px;
 `;
 
-export const UploadedImage = styled.Image`
-  width: 300px;
-  height: 200px;
+export const UploadedImage = styled.View`
   margin-bottom: 20px;
   border-radius: 10px;
+`;
+
+export const ButtonsContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
 `;
 
 export const UploadImageButton = styled.Pressable`

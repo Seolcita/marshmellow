@@ -1,7 +1,9 @@
+import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Rating } from 'react-native-ratings';
+import { Alert, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome6 } from '@expo/vector-icons';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 import {
@@ -14,19 +16,23 @@ import {
   toiletTypesSelectItems,
 } from './lib/input-options';
 import Section from './Section';
+import ColorMap from '../../../styles/Color';
 import Input from '../../atomic/input/Input';
+import Button from '../../atomic/button/Button';
 import Select from '../../atomic/select/Select';
 import * as S from './SiteInfoDetailEdit.styles';
-import RadioButton from '../../atomic/radio-button/RadioButton';
 import { ReservationType } from '../../../types';
 import { initialValues } from './lib/initial-values';
-import Button from '../../atomic/button/Button';
+import { useAuth } from '../../../providers/AuthProvider';
+import RadioButton from '../../atomic/radio-button/RadioButton';
+import RemoteImage from '../../atomic/remote-Image/RemoteImage';
 import { convertType, convertTypeForInitialValues } from './lib/convert-type';
 import { useCampSiteInfo, useUpdateCampSiteInfo } from '../../../api/site-info';
-import { Alert, ScrollView } from 'react-native';
-import { router } from 'expo-router';
-import { useAuth } from '../../../providers/AuthProvider';
-import ColorMap from '../../../styles/Color';
+import {
+  useDeleteExistingSiteImage,
+  useSaveSiteImage,
+} from '../../../api/storage';
+import { Text } from '../../Themed';
 
 interface SiteInfoDetailProps {
   id: string;
@@ -39,6 +45,8 @@ export interface SiteInfoDetail {
 
 const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
   const [siteInfo, setSiteInfo] = useState<SiteInfoDetail>(initialValues);
+  const [previewImage, setPreviewImage] = useState<string | undefined>();
+  const [previewLoading, setPreviewLoading] = useState<boolean>(false);
 
   const { session } = useAuth();
   const userId = session?.user.id;
@@ -69,16 +77,19 @@ const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
     }));
   };
 
-  const handleSubmit = () => {
-    console.log('SUMBITTING');
-    console.log('siteInfo-Before-Submit', siteInfo);
+  const handleSubmit = async () => {
     const convertedSiteInfo = convertType(siteInfo);
-    updateSiteInfo(convertedSiteInfo);
-    console.log('convertedSiteInfo', updateSiteInfo(convertedSiteInfo));
+
+    updateSiteInfo({ ...convertedSiteInfo });
     setIsEditMode(false);
   };
 
   const pickImage = async () => {
+    // If image is exists, delete the image from storage before uploading new image
+    if (siteInfo.imageUrl) {
+      useDeleteExistingSiteImage(siteInfo.imageUrl);
+    }
+
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -87,26 +98,68 @@ const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
     });
 
     if (!result.canceled) {
-      handleChange({ name: 'imageUrl', value: result.assets[0].uri });
+      setPreviewImage(result.assets[0].uri);
+    }
+
+    result.assets &&
+      result.assets[0].uri &&
+      (await handleSaveImage(result.assets[0].uri));
+  };
+
+  const uploadImage = async (path: string) => {
+    if (!path?.startsWith('file://')) {
+      return;
+    }
+
+    setPreviewLoading(true);
+
+    const storedImagePath = await useSaveSiteImage(path);
+
+    storedImagePath && setPreviewLoading(false);
+
+    return storedImagePath;
+  };
+
+  const handleSaveImage = async (path: string) => {
+    const storedImagePath = await uploadImage(path);
+
+    storedImagePath &&
+      handleChange({ name: 'imageUrl', value: storedImagePath });
+  };
+
+  const setSiteImage = () => {
+    if (previewLoading) {
+      // TODO: Change Text to Spinner
+      return <Text>Loading</Text>;
+    } else if (!!siteInfo.imageUrl) {
+      return (
+        <S.UploadedImage>
+          <RemoteImage path={siteInfo.imageUrl} />
+        </S.UploadedImage>
+      );
+    } else if (!!previewImage) {
+      return (
+        <S.UploadedImage>
+          <S.PreviewImage source={{ uri: previewImage }} />
+        </S.UploadedImage>
+      );
+    } else {
+      return (
+        <S.DefaultImage
+          source={require('../../../../assets/images/upload-default.png')}
+        />
+      );
     }
   };
-  console.log(siteInfo.imageUrl);
 
   return (
     <PaperProvider>
       <ScrollView>
         <S.SectionContainer>
           <S.UploadImageContainer>
-            {siteInfo.imageUrl ? (
-              <S.UploadedImage source={{ uri: siteInfo.imageUrl }} />
-            ) : (
-              <S.DefaultImage
-                source={require('../../../../assets/images/upload-default.png')}
-              />
-            )}
-
+            {setSiteImage()}
             <S.UploadImageButton onPress={pickImage}>
-              <FontAwesome5 name='upload' size={20} color='black' />
+              <FontAwesome6 name='upload' size={20} color='black' />
               <S.Text>Upload Image</S.Text>
             </S.UploadImageButton>
           </S.UploadImageContainer>

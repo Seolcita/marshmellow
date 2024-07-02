@@ -1,5 +1,11 @@
 import styled from 'styled-components/native';
+
 import ColorMap from '../../../styles/Color';
+
+export const ImageContainer = styled.View`
+  align-items: center;
+  margin-vertical: 20px;
+`;
 
 export const ReviewContainer = styled.View`
   align-self: flex-start;

@@ -184,7 +184,6 @@ export const useUpdateCampSiteInfo = ({ id, userId }: UseUpdateSiteInfo) => {
       favourite,
       imageUrl,
     }: CampSiteInfo) {
-      console.log('UpdateImageUrl🐶', imageUrl);
       const { error, data: updatedSiteInfo } = await supabase
         .from('site_info')
         .update({
