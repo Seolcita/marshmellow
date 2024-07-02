@@ -14,6 +14,7 @@ import { ScrollView } from 'react-native';
 import * as S from './SiteInfoDetail.styles';
 import SiteInfoDetailItem from './SiteInfoDetailItem';
 import { useCampSiteInfo } from '../../../api/site-info';
+import RemoteImage from '../../atomic/remote-Image/RemoteImage';
 
 interface SiteInfoDetailProps {
   id: string;
@@ -22,9 +23,13 @@ interface SiteInfoDetailProps {
 const SiteInfoDetail = ({ id }: SiteInfoDetailProps) => {
   const { data: siteInfo, error } = useCampSiteInfo(id);
 
-  console.log('siteInfo-Display', siteInfo?.imageUrl);
   return (
     <ScrollView>
+      {siteInfo?.imageUrl && (
+        <S.ImageContainer>
+          <RemoteImage path={siteInfo.imageUrl} />
+        </S.ImageContainer>
+      )}
       <S.SectionTitle>Review</S.SectionTitle>
       <S.ReviewContainer style={{ alignSelf: 'flex-start', paddingLeft: 10 }}>
         <Rating
@@ -34,8 +39,6 @@ const SiteInfoDetail = ({ id }: SiteInfoDetailProps) => {
           style={{ marginBottom: 15 }}
         />
       </S.ReviewContainer>
-
-      {/* TODO: Add Campsite Image Here */}
 
       <S.SectionTitle>Campsite Info</S.SectionTitle>
 
