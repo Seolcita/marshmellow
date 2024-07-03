@@ -8,7 +8,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import styles from './ParkPass.styles';
 import { Text, View } from '../../Themed';
 import ColorMap from '../../../styles/Color';
-import { useDeleteParkPass } from '../../../api/park-pass';
+import { ParkPassDeleteModal } from './ParkPassDeleteModal';
 
 interface ParkPassItemProps {
   item: any;
@@ -20,8 +20,8 @@ const ParkPassItem = ({ item, userId, handleEdit }: ParkPassItemProps) => {
   const [expiryDate, setExpiryDate] = useState('');
   const [warningMessage, setWarningMessage] = useState<null | string>(null);
   const [isAboutToExpire, setIsAboutToExpire] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { mutate: deleteParkPass } = useDeleteParkPass(userId);
   const warningDate = 10;
 
   const expiry = new Date(item.expiry_date + 'T00:00:00');
@@ -66,10 +66,6 @@ const ParkPassItem = ({ item, userId, handleEdit }: ParkPassItemProps) => {
     return () => clearInterval(intervalId);
   }, [expiryDate]);
 
-  const handleDelete = (id: string) => {
-    deleteParkPass(id);
-  };
-
   return (
     <View style={styles.list}>
       <View style={styles.titleContainer}>
@@ -89,13 +85,8 @@ const ParkPassItem = ({ item, userId, handleEdit }: ParkPassItemProps) => {
               }
             />
           </Pressable>
-          <Pressable>
-            <MaterialIcons
-              name='delete-outline'
-              size={20}
-              color='black'
-              onPress={() => handleDelete(item.id)}
-            />
+          <Pressable onPress={() => setIsModalOpen((prev) => !prev)}>
+            <MaterialIcons name='delete-outline' size={20} color='black' />
           </Pressable>
         </View>
       </View>
@@ -112,6 +103,13 @@ const ParkPassItem = ({ item, userId, handleEdit }: ParkPassItemProps) => {
           </View>
         )}
       </View>
+      <ParkPassDeleteModal
+        id={item.id}
+        userId={userId}
+        name={item.name}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
     </View>
   );
 };
