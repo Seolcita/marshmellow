@@ -40,6 +40,7 @@ export const ConfirmMessage = styled.Text`
   color: ${ColorMap['red'].main};
   font-size: 18px;
   font-weight: bold;
+  text-align: center;
 `;
 
 export const ModalButtonContainer = styled(TwoButtonContainer)``;
