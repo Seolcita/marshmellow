@@ -9,16 +9,23 @@ import {
 
 import { supabase } from '../lib/supabase';
 
+type Tokens = {
+  access_token: string;
+  refresh_token: string;
+};
+
 type AuthContextType = {
   session: Session | null;
   profile: any | null;
   isLoading: boolean;
+  loginWithToken: ({ access_token, refresh_token }: Tokens) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType>({
   session: null,
   profile: null,
   isLoading: true,
+  loginWithToken: async () => {},
 });
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
@@ -66,8 +73,33 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     });
   }, []);
 
+  const loginWithToken = async ({ access_token, refresh_token }: Tokens) => {
+    const signIn = async () => {
+      await supabase.auth.setSession({
+        access_token,
+        refresh_token,
+      });
+
+      const data = await supabase.auth.refreshSession();
+      const {
+        data: { session: newSession },
+      } = data;
+      newSession && setSession(newSession);
+
+      return data;
+    };
+
+    const {
+      data: { user: supabaseUser },
+    } = await signIn();
+
+    setProfile(supabaseUser);
+  };
+
   return (
-    <AuthContext.Provider value={{ session, profile, isLoading }}>
+    <AuthContext.Provider
+      value={{ session, profile, isLoading, loginWithToken }}
+    >
       {children}
     </AuthContext.Provider>
   );
