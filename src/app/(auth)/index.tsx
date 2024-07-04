@@ -11,16 +11,13 @@ export default function AuthIndex() {
         source={require('../../../assets/images/first-screen.png')}
         style={styles.image}
       />
-
       <View style={styles.textContainer}>
         <Text style={styles.title}>Marsh Mellow</Text>
-
         <Text style={styles.subTitle}>
           Easily organize park passes, gears, favorite campsites, and share
           information with Friends!
         </Text>
       </View>
-
       <View style={styles.buttons}>
         <Button
           text='Log In'

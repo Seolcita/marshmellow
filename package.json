@@ -23,13 +23,14 @@
     "@supabase/supabase-js": "^2.43.1",
     "@tanstack/react-query": "^5.35.1",
     "base64-arraybuffer": "^1.0.2",
+    "buffer": "^6.0.3",
     "date-fns": "^3.6.0",
     "expo": "^51.0.14",
     "expo-crypto": "^13.0.2",
     "expo-file-system": "~17.0.1",
     "expo-font": "~11.10.3",
     "expo-image-picker": "^15.0.6",
-    "expo-linking": "~6.2.2",
+    "expo-linking": "~6.3.1",
     "expo-router": "~3.4.10",
     "expo-secure-store": "~12.8.1",
     "expo-splash-screen": "~0.26.5",
@@ -49,7 +50,9 @@
     "react-native-url-polyfill": "^2.0.0",
     "react-native-vector-icons": "^10.1.0",
     "react-native-web": "~0.19.6",
-    "styled-components": "^6.1.11"
+    "styled-components": "^6.1.11",
+    "expo-dev-client": "~4.0.19",
+    "expo-auth-session": "~5.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
