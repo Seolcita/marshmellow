@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import { View } from '../../Themed';
@@ -9,17 +10,23 @@ import Button from '../../atomic/button/Button';
 import { useCampSiteInfo } from '../../../api/site-info';
 import SiteInfoDetail from '../../composite/site-info/SiteInfoDetail';
 import SiteInfoDetailEdit from '../../composite/site-info/SiteInfoDetailEdit';
+import { useAuth } from '../../../providers/AuthProvider';
 
 interface SiteInfoDetailProps {
   id: string;
 }
 
 const SiteInfoDetailScreen = ({ id }: SiteInfoDetailProps) => {
+  const { session } = useAuth();
+  const userId = session?.user.id;
+
   const [isEditMode, setIsEditMode] = useState(false);
 
   const { error, isLoading, data: siteInfo } = useCampSiteInfo(id);
 
   const navigation = useNavigation();
+  console.log('USERID🤬', userId);
+  console.log('SITEINFO🚙', siteInfo?.userId);
 
   return (
     <>
@@ -55,6 +62,15 @@ const SiteInfoDetailScreen = ({ id }: SiteInfoDetailProps) => {
               <S.FavouriteIcon
                 source={require('../../../../assets/images/like.png')}
               />
+            )}
+            {siteInfo?.share ? (
+              <FontAwesome
+                name='group'
+                size={20}
+                color={ColorMap['blue'].dark}
+              />
+            ) : (
+              <View style={{ width: 22, height: 20 }}></View>
             )}
           </View>
         </S.SiteInfoCardContainer>

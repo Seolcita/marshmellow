@@ -5,8 +5,8 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { supabase } from '../../lib/supabase';
 import { CampSiteInfo } from '../../types';
+import { supabase } from '../../lib/supabase';
 
 interface UseDeleteSiteInfo {
   id: string;
@@ -15,6 +15,38 @@ interface UseDeleteSiteInfo {
 
 interface UseUpdateSiteInfo extends UseDeleteSiteInfo {}
 
+export const useSharedCampSitesInfo = () => {
+  return useQuery({
+    queryKey: ['all-sites-info'],
+    queryFn: async () => {
+      const { error, data: siteInfo } = await supabase
+        .from('site_info')
+        .select('*')
+        .eq('share', true);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      const formattedAllCampSiteInfo = siteInfo.map((info) => {
+        return {
+          id: info.id,
+          userId: info.user_id,
+          campgroundName: info.campground_name,
+          campgroundSiteNumber: info.site_number,
+          favourite: info.favourite,
+          rate: info.rating,
+          reservationType: info.reservation,
+          share: info.share,
+          imageUrl: info.image_url,
+        };
+      });
+
+      return formattedAllCampSiteInfo;
+    },
+  });
+};
+
 export const useCampSitesPartialInfo = (userId: string) => {
   return useQuery({
     queryKey: ['camp-sites-partial-info', userId],
@@ -22,7 +54,7 @@ export const useCampSitesPartialInfo = (userId: string) => {
       const { error, data: siteInfo } = await supabase
         .from('site_info')
         .select(
-          'id, user_id, campground_name, site_number, favourite, rating, reservation'
+          'id, user_id, campground_name, site_number, favourite, rating, reservation, share'
         )
         .eq('user_id', userId);
 
@@ -39,6 +71,7 @@ export const useCampSitesPartialInfo = (userId: string) => {
           favourite: info.favourite,
           rate: info.rating,
           reservationType: info.reservation,
+          share: info.share,
         };
       });
 
@@ -98,7 +131,7 @@ export const useCampSiteInfo = (id: string) => {
           hasWater: info.has_water,
           hasWaterHookup: info.has_water_hookup,
           isFirewoodUnlimited: info.is_firewood_unlimited,
-          isWaterfront: info.is_water_front,
+          isWaterfront: info.is_waterfront,
           needParkPass: info.need_park_pass,
           note: info.note,
           parkPassName: info.park_pass_name,
@@ -111,8 +144,10 @@ export const useCampSiteInfo = (id: string) => {
           siteFee: info.site_fee,
           siteNumber: info.site_number,
           siteSize: info.site_size,
+          share: info.share,
           toilet: info.toilet,
           imageUrl: info.image_url,
+          userId: info.user_id,
         };
       });
 
@@ -183,6 +218,7 @@ export const useUpdateCampSiteInfo = ({ id, userId }: UseUpdateSiteInfo) => {
       sewerServiceFee,
       favourite,
       imageUrl,
+      share,
     }: CampSiteInfo) {
       const { error, data: updatedSiteInfo } = await supabase
         .from('site_info')
@@ -213,6 +249,7 @@ export const useUpdateCampSiteInfo = ({ id, userId }: UseUpdateSiteInfo) => {
           reservation_fee: reservationFee,
           sewer_service_fee: sewerServiceFee,
           shower_cost: showerCost,
+          share,
           site_fee: siteFee,
           site_size: siteSize,
           toilet,

@@ -1,25 +1,28 @@
 import { router } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { Rating } from 'react-native-ratings';
 import { Ionicons } from '@expo/vector-icons';
 import { Alert, ScrollView } from 'react-native';
 
-import { ButtonWrapper } from '../../common-styles/CommonStyles';
-import { useEffect, useState } from 'react';
 import Input from '../../atomic/input/Input';
 import ColorMap from '../../../styles/Color';
-import * as S from './SiteInfoScreen.styles';
+import * as S from './SharedSiteInfoScreen.styles';
 import Button from '../../atomic/button/Button';
 import { useAuth } from '../../../providers/AuthProvider';
-import { useCampSitesPartialInfo } from '../../../api/site-info';
-import SiteInfoCard from '../../composite/site-info/SiteInfoCard';
+import { useSharedCampSitesInfo } from '../../../api/site-info';
+import { ButtonWrapper } from '../../common-styles/CommonStyles';
+import SharedSiteInfoCard from '../../composite/shared-site-info/SharedSiteInfoCard';
 
-interface FilteredSiteInfo {
+export interface FilteredSiteInfo {
   id: string;
   userId: string;
   campgroundName: string;
-  campgroundSiteNumber: string;
-  favourite: boolean;
-  share: boolean;
+  campgroundSiteNumber?: string;
+  favourite?: boolean;
+  rate?: number;
+  reservationType?: string;
+  share?: boolean;
+  imageUrl?: string;
 }
 
 enum FilterType {
@@ -31,7 +34,7 @@ enum FilterType {
   ANY = 'ANY',
 }
 
-const SiteInfoScreen = () => {
+const SharedSiteInfoScreen = () => {
   const { session } = useAuth();
   const userId = session?.user.id;
   if (!userId) {
@@ -55,18 +58,19 @@ const SiteInfoScreen = () => {
   const defaultButtonBgColor = ColorMap['grey'].dark;
   const selectedButtonBgColor = ColorMap['yellow'].dark;
 
-  const { data, error, isLoading } = useCampSitesPartialInfo(userId);
+  const { data, error, isLoading } = useSharedCampSitesInfo();
 
   const updateSearchByKeyword = (searchValue: string) => {
     setSearch(searchValue);
     filterDataByKeyword(searchValue);
   };
 
+  console.log('Sared data📊', data);
   const filterDataByKeyword = (searchTerm: string) => {
     if (!data || data.length === 0) return;
 
     const filtered = data.filter((item) =>
-      item.campgroundName.toLowerCase().includes(searchTerm.toLowerCase())
+      item.campgroundName?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredData(filtered);
   };
@@ -135,7 +139,7 @@ const SiteInfoScreen = () => {
   return (
     <S.Container>
       <S.FilterHeaderContainer>
-        <S.Title>Site Information</S.Title>
+        <S.Title>Shared Site Info</S.Title>
         <S.FilterHeader
           onPress={() => setIsFilterOpen((prev) => !prev)}
           $isFilterOpen={isFilterOpen}
@@ -266,14 +270,17 @@ const SiteInfoScreen = () => {
       >
         {filteredData.length > 0 &&
           filteredData?.map((item) => (
-            <SiteInfoCard
+            <SharedSiteInfoCard
               key={item.id}
               id={item.id}
               userId={item.userId}
               campgroundName={item.campgroundName}
               campgroundSiteNumber={item.campgroundSiteNumber}
               favourite={item.favourite}
+              rate={item.rate}
+              reservationType={item.reservationType}
               share={item.share}
+              imageUrl={item.imageUrl}
             />
           ))}
       </ScrollView>
@@ -281,4 +288,4 @@ const SiteInfoScreen = () => {
   );
 };
 
-export default SiteInfoScreen;
+export default SharedSiteInfoScreen;

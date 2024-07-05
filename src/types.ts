@@ -99,6 +99,7 @@ export interface CampSiteInfo {
   siteFee?: number;
   siteNumber?: number;
   siteSize?: SiteSize;
+  share?: boolean;
   toilet?: ToiletType;
   userId?: string;
   hasWater?: boolean;
