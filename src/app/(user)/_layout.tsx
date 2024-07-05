@@ -1,7 +1,8 @@
 import { Tabs } from 'expo-router';
+
+import ColorMap from '../../styles/Color';
 import { useAuth } from '../../providers/AuthProvider';
 import TabBarIcon from '../../components/atomic/TabBarIcon/TabBarIcon';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const UserLayout = () => {
   const { session } = useAuth();
@@ -10,7 +11,7 @@ const UserLayout = () => {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: 'blue',
+        tabBarActiveTintColor: ColorMap['blue'].dark,
       }}
     >
       <Tabs.Screen
@@ -42,11 +43,19 @@ const UserLayout = () => {
       <Tabs.Screen
         name='site-info'
         options={{
-          title: 'Site Info',
+          title: 'My Sites',
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <TabBarIcon name='info-circle' color={color} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name='shared-site-info'
+        options={{
+          title: 'Shared info',
+          headerShown: false,
+          tabBarIcon: ({ color }) => <TabBarIcon name='group' color={color} />,
         }}
       />
     </Tabs>

@@ -203,6 +203,17 @@ const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
               />
             }
           />
+          <Section
+            question='Do you want to share this site info?'
+            inputComponent={
+              <RadioButton
+                stateValue={siteInfo.share}
+                radioButtonName='share'
+                handleChange={handleChange}
+                items={booleanRadioButtonItems}
+              />
+            }
+          />
         </S.SectionContainer>
 
         <S.SectionContainer>

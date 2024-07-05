@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 
-const SharedSiteInfoDetailLayout = () => {
+const SiteInfoDetailLayout = () => {
   return (
     <Stack>
       <Stack.Screen
@@ -13,4 +13,4 @@ const SharedSiteInfoDetailLayout = () => {
   );
 };
 
-export default SharedSiteInfoDetailLayout;
+export default SiteInfoDetailLayout;

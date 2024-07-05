@@ -1,8 +1,10 @@
 import { router } from 'expo-router';
 import { Pressable } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
-import * as S from './SiteInfoCard.styles';
 import { View } from '../../Themed';
+import * as S from './SiteInfoCard.styles';
+import ColorMap from '../../../styles/Color';
 
 interface SiteInfoCardProps {
   id: string;
@@ -10,6 +12,7 @@ interface SiteInfoCardProps {
   campgroundName: string;
   campgroundSiteNumber: string;
   favourite: boolean;
+  share: boolean;
 }
 
 const SiteInfoCard = ({
@@ -18,6 +21,7 @@ const SiteInfoCard = ({
   campgroundName,
   campgroundSiteNumber,
   favourite,
+  share,
 }: SiteInfoCardProps) => {
   return (
     <Pressable onPress={() => router.push(`/(user)/site-info/${id}`)}>
@@ -29,6 +33,11 @@ const SiteInfoCard = ({
             <S.FavouriteIcon
               source={require('../../../../assets/images/like.png')}
             />
+          ) : (
+            <View style={{ width: 22, height: 20 }}></View>
+          )}
+          {share ? (
+            <FontAwesome name='group' size={20} color={ColorMap['blue'].dark} />
           ) : (
             <View style={{ width: 22, height: 20 }}></View>
           )}
