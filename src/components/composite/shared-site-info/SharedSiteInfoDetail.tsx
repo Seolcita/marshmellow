@@ -1,7 +1,6 @@
 import { View } from '../../Themed';
 import * as S from './SiteInfoDetail.styles';
 import { useCampSiteInfo } from '../../../api/site-info';
-import SiteInfoDetail from '../site-info/SiteInfoDetail';
 import SiteInfoDetailContents from '../site-info/SiteInfoDetailContents';
 
 interface SharedSiteInfoDetailProps {

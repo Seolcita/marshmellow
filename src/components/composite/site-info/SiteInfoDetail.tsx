@@ -1,8 +1,4 @@
-import { ScrollView } from 'react-native';
-
-import SiteInfoDetailItem from './SiteInfoDetailItem';
 import { useCampSiteInfo } from '../../../api/site-info';
-import RemoteImage from '../../atomic/remote-Image/RemoteImage';
 import SiteInfoDetailContents from './SiteInfoDetailContents';
 
 interface SiteInfoDetailProps {

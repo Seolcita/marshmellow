@@ -1,8 +1,6 @@
-import { Rating } from 'react-native-ratings';
 import { ScrollView } from 'react-native';
-import { CampSiteInfo } from '../../../types';
-import RemoteImage from '../../atomic/remote-Image/RemoteImage';
-import * as S from './SiteInfoDetailContents.styles';
+import { Rating } from 'react-native-ratings';
+
 import {
   CampingTypeMap,
   CarAccessTypeMap,
@@ -14,6 +12,9 @@ import {
   convertCost,
 } from './lib/site-info-map';
 import SiteInfoDetailItem from './SiteInfoDetailItem';
+import { CampSiteInfo } from '../../../types';
+import * as S from './SiteInfoDetailContents.styles';
+import RemoteImage from '../../atomic/remote-Image/RemoteImage';
 
 interface SiteInfoDetailContentsProps {
   siteInfo: CampSiteInfo;
