@@ -1,16 +1,27 @@
-import { Link } from 'expo-router';
-import { Text, View } from '../../Themed';
+import * as S from './MainCheckListScreen.styles';
+import ImageTile from '../../atomic/image-tile/ImageTile';
 
 export const MainCheckListScreen = () => {
   return (
-    <View>
-      <Link href='/(user)/check-list/mine'>
-        <Text>My Check List</Text>
-      </Link>
-      <Link href='/(user)/check-list/shared'>
-        <Text>Shared Check List</Text>
-      </Link>
-    </View>
+    <S.Container>
+      <ImageTile
+        title='My Check List'
+        pushTo='/(user)/check-list/mine'
+        imageSource={require('../../../../assets/images/check-list.png')}
+      />
+      <ImageTile
+        title='Shared Check List'
+        pushTo='/(user)/check-list/shared'
+        imageSource={require('../../../../assets/images/check-list.png')}
+        bgColor='green'
+      />
+      <ImageTile
+        title='Invitations'
+        pushTo='/(user)/check-list/shared'
+        imageSource={require('../../../../assets/images/check-list.png')}
+        bgColor='red'
+      />
+    </S.Container>
   );
 };
 
