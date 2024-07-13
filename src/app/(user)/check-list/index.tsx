@@ -1,8 +1,7 @@
-import { View } from '../../../components/Themed';
-import CheckListScreen from '../../../components/screen/CheckList/CheckListScreen';
+import MainCheckListScreen from '../../../components/screen/MainCheckList/MainCheckListScreen';
 
-const CheckListIndex = () => {
-  return <CheckListScreen />;
+const MainCheckListIndex = () => {
+  return <MainCheckListScreen />;
 };
 
-export default CheckListIndex;
+export default MainCheckListIndex;

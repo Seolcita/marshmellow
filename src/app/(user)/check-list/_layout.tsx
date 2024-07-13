@@ -1,11 +1,13 @@
 import { Stack } from 'expo-router';
 
-const CheckListLayout = () => {
+const MainCheckListLayout = () => {
   return (
     <Stack>
       <Stack.Screen name='index' options={{ headerShown: false }} />
+      <Stack.Screen name='mine' options={{ headerShown: true }} />
+      <Stack.Screen name='shared' options={{ headerShown: true }} />
     </Stack>
   );
 };
 
-export default CheckListLayout;
+export default MainCheckListLayout;

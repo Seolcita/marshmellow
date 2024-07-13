@@ -2,7 +2,6 @@ import { ScrollView } from 'react-native';
 
 import * as S from './MainScreen.styles';
 import ParkPass from '../../../components/composite/park-pass/ParkPass';
-import CheckListCard from '../../../components/composite/check-list/CheckListCard';
 
 const MainScreen = () => {
   return (
@@ -18,7 +17,6 @@ const MainScreen = () => {
           />
         </S.ImageContainer>
         <ParkPass />
-        <CheckListCard />
       </ScrollView>
     </S.Container>
   );
