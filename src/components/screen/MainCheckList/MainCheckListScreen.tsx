@@ -17,7 +17,7 @@ export const MainCheckListScreen = () => {
       />
       <ImageTile
         title='Invitations'
-        pushTo='/(user)/check-list/shared'
+        pushTo='/(user)/check-list/invitations'
         imageSource={require('../../../../assets/images/check-list.png')}
         bgColor='red'
       />

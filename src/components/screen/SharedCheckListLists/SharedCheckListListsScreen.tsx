@@ -9,9 +9,17 @@ interface SharedSiteInfoDetailProps {
 const SharedCheckListListsScreen = () => {
   const id = '1234'; //temp
   return (
-    <Pressable onPress={() => router.push(`/(user)/check-list/shared/${id}`)}>
-      <Text>Shared Check List - {id}</Text>
-    </Pressable>
+    <>
+      {/* // TODO: Add Create Shared Check List Button */}
+      <Pressable
+        onPress={() => router.push(`/(user)/check-list/shared/create`)}
+      >
+        <Text>Create Shared Check List</Text>
+      </Pressable>
+      <Pressable onPress={() => router.push(`/(user)/check-list/shared/${id}`)}>
+        <Text>Shared Check List - {id}</Text>
+      </Pressable>
+    </>
   );
 };
 
