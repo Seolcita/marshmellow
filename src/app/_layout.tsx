@@ -61,15 +61,15 @@ function RootLayoutNav() {
       <AuthProvider>
         <QueryProvider>
           <SafeAreaView
+            edges={['top', 'left', 'right']}
             style={{
               flex: 1,
-              backgroundColor: ColorMap['blue'].dark,
             }}
           >
-            <StatusBar
+            {/* <StatusBar
               backgroundColor={ColorMap['blue'].dark}
               barStyle={'light-content'}
-            />
+            /> */}
             <Stack>
               <Stack.Screen name='(auth)' options={{ headerShown: false }} />
               <Stack.Screen name='(user)' options={{ headerShown: false }} />
