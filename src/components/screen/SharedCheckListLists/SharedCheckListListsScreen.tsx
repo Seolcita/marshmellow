@@ -1,25 +1,86 @@
 import { router } from 'expo-router';
-import { Text, View } from '../../Themed';
-import { Pressable } from 'react-native';
+import { useEffect, useState } from 'react';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Pressable, ScrollView } from 'react-native';
 
-interface SharedSiteInfoDetailProps {
-  id: string;
-}
+import {
+  MySharedCheckList,
+  useMySharedCheckList,
+} from '../../../api/my-shared-check-list';
+import Button from '../../atomic/button/Button';
+import { useAuth } from '../../../providers/AuthProvider';
+import * as S from './SharedCheckListListsScreen.styles';
+import SharedCheckListFormModal from '../../composite/create-shared-check-list/SharedCheckListFormModal';
 
 const SharedCheckListListsScreen = () => {
-  const id = '1234'; //temp
+  const { session } = useAuth();
+  const userId = session?.user.id;
+
+  if (!userId) {
+    router.push('/(auth)/sign-in');
+    return;
+  }
+
+  const [mySharedCheckList, setMySharedCheckList] = useState<
+    MySharedCheckList[]
+  >([]);
+
+  const { data, error } = useMySharedCheckList(userId);
+
+  useEffect(() => {
+    data && setMySharedCheckList(data);
+  }, [mySharedCheckList, data]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
-    <>
-      {/* // TODO: Add Create Shared Check List Button */}
-      <Pressable
-        onPress={() => router.push(`/(user)/check-list/shared/create`)}
+    <S.Container>
+      {/* // TODO: Update UI */}
+
+      <S.CreateButton>
+        <Button
+          text='+ Create'
+          marginVertical={20}
+          onPress={() => setIsModalOpen(true)}
+          borderRadius={50}
+          paddingVertical={15}
+          width={120}
+          textSize={18}
+        />
+      </S.CreateButton>
+
+      <ScrollView
+        style={{ padding: 0, margin: 0, width: '100%' }}
+        overScrollMode='auto'
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          padding: 2,
+          flex: 1,
+        }}
       >
-        <Text>Create Shared Check List</Text>
-      </Pressable>
-      <Pressable onPress={() => router.push(`/(user)/check-list/shared/${id}`)}>
-        <Text>Shared Check List - {id}</Text>
-      </Pressable>
-    </>
+        {mySharedCheckList?.map((list) => (
+          <Pressable
+            onPress={() =>
+              router.push(`/(user)/check-list/shared/${list.sharedCheckListId}`)
+            }
+          >
+            <S.MySharedCheckListTile>
+              <S.Text>{list.name}</S.Text>
+              <MaterialIcons
+                name='keyboard-arrow-right'
+                size={24}
+                color='black'
+              />
+            </S.MySharedCheckListTile>
+          </Pressable>
+        ))}
+      </ScrollView>
+
+      <SharedCheckListFormModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
+    </S.Container>
   );
 };
 

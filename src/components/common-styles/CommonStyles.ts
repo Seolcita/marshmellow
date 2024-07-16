@@ -43,3 +43,10 @@ export const ButtonWrapper = styled.View<ButtonWrapperProps>`
   width: ${({ width }) => width && `${width}%`};
   background-color: transparent;
 `;
+
+export const StickyButton = styled.View`
+  position: absolute;
+  bottom: 0px;
+  right: 20px;
+  z-index: 1;
+`;
