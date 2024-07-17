@@ -3,15 +3,15 @@ import SharedCheckListScreen from '../../../../../components/screen/SharedCheckL
 
 const SharedCheckListIndex = () => {
   const { id } = useLocalSearchParams();
-  let siteInfoId: string;
+  let sharedCheckListId: number;
 
   if (typeof id !== 'string') {
-    siteInfoId = id[0];
+    sharedCheckListId = +id[0];
   } else {
-    siteInfoId = id;
+    sharedCheckListId = +id;
   }
 
-  return <SharedCheckListScreen id={siteInfoId} />;
+  return <SharedCheckListScreen id={sharedCheckListId} />;
 };
 
 export default SharedCheckListIndex;

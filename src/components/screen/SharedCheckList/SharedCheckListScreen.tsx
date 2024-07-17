@@ -1,26 +1,39 @@
 import { Alert } from 'react-native';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
+import { FontAwesome } from '@expo/vector-icons';
 
 import { View } from '../../Themed';
 import { Category } from '../../../types';
 import ColorMap from '../../../styles/Color';
 import * as S from '../CheckList/CheckListScreen.styles';
+import * as s from './SharedCheckListScreen.styles';
 import Button from '../../atomic/button/Button';
 import { useCategories } from '../../../api/category';
 import { useAuth } from '../../../providers/AuthProvider';
 import { useClearCheckList } from '../../../api/check-list';
 import AddSharedCategory from '../../composite/shared-category/AddSharedCategory';
 import SharedCategories from '../../composite/shared-category/SharedCategories';
+import {
+  useMySharedCheckList,
+  useMySharedCheckListForAdmin,
+} from '../../../api/my-shared-check-list';
+import CreateInvitationForm from '../../composite/invitation/CreateInvitationForm';
+import InvitationStatus from '../../composite/invitation/InvitationStatusList';
 
 interface SharedCheckListScreenProps {
-  id: string;
+  id: number;
 }
 
 const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isEditMode, setIsEditMode] = useState(true);
   const [isClearCheckList, setIsClearCheckList] = useState(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [isCreateInvitationOpen, setIsCreateInvitationOpen] = useState(false);
+  const [isInvitationStatusListOpen, setIsInvitationStatusListOpen] =
+    useState(true);
+  const [sharedCheckListName, setSharedCheckListName] = useState('');
 
   const { session } = useAuth();
   const userId = session?.user.id;
@@ -31,8 +44,18 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
     return;
   }
 
+  const { data: adminInfo, error: fetchingAdminInfoError } =
+    useMySharedCheckListForAdmin(id);
+
   const { error, data: existCategories } = useCategories(userId);
   const { mutate: clearCheckList } = useClearCheckList();
+
+  useEffect(() => {
+    if (adminInfo?.isAdmin) {
+      setIsAdmin(adminInfo.isAdmin);
+      setSharedCheckListName(adminInfo.name);
+    }
+  }, [existCategories]);
 
   useEffect(() => {
     if (existCategories) {
@@ -52,11 +75,40 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
     <>
       {userId && (
         <S.ScrollViewContainer>
-          <S.ImageBackgroundContainer>
-            <S.ImageBackground
-              source={require('../../../../assets/images/camping-gears.png')}
+          <s.Accordion
+            onPress={() => setIsCreateInvitationOpen((prev) => !prev)}
+          >
+            <s.CreaeteInvitationText>Create Invitation</s.CreaeteInvitationText>
+            <FontAwesome
+              name={isCreateInvitationOpen ? 'caret-up' : 'caret-down'}
+              size={24}
+              color='black'
             />
-          </S.ImageBackgroundContainer>
+          </s.Accordion>
+
+          {isAdmin && isCreateInvitationOpen && (
+            <CreateInvitationForm
+              inviterId={userId}
+              sharedCheckListName={sharedCheckListName}
+              sharedCheckListId={id}
+            />
+          )}
+
+          <s.Accordion
+            $marginTop={isCreateInvitationOpen ? 48 : 0}
+            onPress={() => setIsInvitationStatusListOpen((prev) => !prev)}
+          >
+            <s.CreaeteInvitationText>Invitation Status</s.CreaeteInvitationText>
+
+            <FontAwesome
+              name={isCreateInvitationOpen ? 'caret-up' : 'caret-down'}
+              size={24}
+              color='black'
+            />
+          </s.Accordion>
+          {isAdmin && isInvitationStatusListOpen && (
+            <InvitationStatus sharedCheckListId={id} />
+          )}
           <S.ContentsContainer>
             <AddSharedCategory userId={userId} />
             <S.ButtonsContainer>
