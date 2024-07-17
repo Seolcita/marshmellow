@@ -67,6 +67,12 @@ export enum ToiletType {
   VAULT = 'VAULT',
 }
 
+export enum InvitationStatus {
+  PENDING = 'PENDING',
+  ACCEPTED = 'ACCEPTED',
+  REJECTED = 'REJECTED',
+}
+
 export interface CampSiteInfo {
   id?: string;
   arrivalDate?: string;
@@ -106,4 +112,14 @@ export interface CampSiteInfo {
   hasWaterHookup?: boolean;
   reservation?: ReservationType;
   sewerServiceFee?: number;
+}
+
+export interface Invitation {
+  id?: number;
+  inviterId: string;
+  inviteeEmail: string;
+  inviteeName: string;
+  sharedCheckListId: number;
+  sharedCheckListName: string;
+  status?: InvitationStatus;
 }
