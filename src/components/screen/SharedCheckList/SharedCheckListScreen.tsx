@@ -6,20 +6,18 @@ import { FontAwesome } from '@expo/vector-icons';
 import { View } from '../../Themed';
 import { Category } from '../../../types';
 import ColorMap from '../../../styles/Color';
-import * as S from '../CheckList/CheckListScreen.styles';
-import * as s from './SharedCheckListScreen.styles';
 import Button from '../../atomic/button/Button';
+import * as s from './SharedCheckListScreen.styles';
 import { useCategories } from '../../../api/category';
+import * as S from '../CheckList/CheckListScreen.styles';
 import { useAuth } from '../../../providers/AuthProvider';
 import { useClearCheckList } from '../../../api/check-list';
-import AddSharedCategory from '../../composite/shared-category/AddSharedCategory';
-import SharedCategories from '../../composite/shared-category/SharedCategories';
-import {
-  useMySharedCheckList,
-  useMySharedCheckListForAdmin,
-} from '../../../api/my-shared-check-list';
-import CreateInvitationForm from '../../composite/invitation/CreateInvitationForm';
 import InvitationStatus from '../../composite/invitation/InvitationStatusList';
+import SharedCategories from '../../composite/shared-category/SharedCategories';
+import { useMySharedCheckListForAdmin } from '../../../api/my-shared-check-list';
+import AddSharedCategory from '../../composite/shared-category/AddSharedCategory';
+import CreateInvitationForm from '../../composite/invitation/CreateInvitationForm';
+import InvitationAcceptedMembers from '../../composite/invitation/InvitationAcceptedMembers';
 
 interface SharedCheckListScreenProps {
   id: number;
@@ -33,6 +31,7 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
   const [isCreateInvitationOpen, setIsCreateInvitationOpen] = useState(false);
   const [isInvitationStatusListOpen, setIsInvitationStatusListOpen] =
     useState(true);
+  const [isMembersOpen, setIsMembersOpen] = useState(true);
   const [sharedCheckListName, setSharedCheckListName] = useState('');
 
   const { session } = useAuth();
@@ -75,39 +74,59 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
     <>
       {userId && (
         <S.ScrollViewContainer>
-          <s.Accordion
-            onPress={() => setIsCreateInvitationOpen((prev) => !prev)}
-          >
-            <s.CreaeteInvitationText>Create Invitation</s.CreaeteInvitationText>
-            <FontAwesome
-              name={isCreateInvitationOpen ? 'caret-up' : 'caret-down'}
-              size={24}
-              color='black'
-            />
-          </s.Accordion>
-
           {isAdmin && isCreateInvitationOpen && (
-            <CreateInvitationForm
-              inviterId={userId}
-              sharedCheckListName={sharedCheckListName}
-              sharedCheckListId={id}
-            />
+            <>
+              <s.Accordion
+                onPress={() => setIsCreateInvitationOpen((prev) => !prev)}
+              >
+                <s.CreaeteInvitationText>
+                  Create Invitation
+                </s.CreaeteInvitationText>
+                <FontAwesome
+                  name={isCreateInvitationOpen ? 'caret-up' : 'caret-down'}
+                  size={24}
+                  color='black'
+                />
+              </s.Accordion>
+
+              <CreateInvitationForm
+                inviterId={userId}
+                sharedCheckListName={sharedCheckListName}
+                sharedCheckListId={id}
+              />
+            </>
           )}
 
-          <s.Accordion
-            $marginTop={isCreateInvitationOpen ? 48 : 0}
-            onPress={() => setIsInvitationStatusListOpen((prev) => !prev)}
-          >
-            <s.CreaeteInvitationText>Invitation Status</s.CreaeteInvitationText>
+          {isAdmin && isInvitationStatusListOpen && (
+            <>
+              <s.Accordion
+                $marginTop={isCreateInvitationOpen ? 48 : 0}
+                onPress={() => setIsInvitationStatusListOpen((prev) => !prev)}
+              >
+                <s.CreaeteInvitationText>
+                  Invitation Status
+                </s.CreaeteInvitationText>
 
+                <FontAwesome
+                  name={isCreateInvitationOpen ? 'caret-up' : 'caret-down'}
+                  size={24}
+                  color='black'
+                />
+              </s.Accordion>
+              <InvitationStatus sharedCheckListId={id} />
+            </>
+          )}
+
+          <s.Accordion onPress={() => setIsMembersOpen((prev) => !prev)}>
+            <s.CreaeteInvitationText>Members</s.CreaeteInvitationText>
             <FontAwesome
-              name={isCreateInvitationOpen ? 'caret-up' : 'caret-down'}
+              name={isMembersOpen ? 'caret-up' : 'caret-down'}
               size={24}
               color='black'
             />
           </s.Accordion>
-          {isAdmin && isInvitationStatusListOpen && (
-            <InvitationStatus sharedCheckListId={id} />
+          {!isAdmin && isMembersOpen && (
+            <InvitationAcceptedMembers sharedCheckListId={id} />
           )}
           <S.ContentsContainer>
             <AddSharedCategory userId={userId} />

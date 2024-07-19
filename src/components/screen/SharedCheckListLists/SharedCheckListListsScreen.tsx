@@ -1,10 +1,11 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { MaterialIcons } from '@expo/vector-icons';
 import { Pressable, ScrollView } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import {
   MySharedCheckList,
+  useDeleteMySharedCheckList,
   useMySharedCheckList,
 } from '../../../api/my-shared-check-list';
 import Button from '../../atomic/button/Button';
@@ -26,6 +27,8 @@ const SharedCheckListListsScreen = () => {
   >([]);
 
   const { data, error } = useMySharedCheckList(userId);
+  const { mutate: deleteMySharedCheckList } =
+    useDeleteMySharedCheckList(userId);
 
   useEffect(() => {
     data && setMySharedCheckList(data);
@@ -56,23 +59,30 @@ const SharedCheckListListsScreen = () => {
         contentContainerStyle={{
           padding: 2,
           flex: 1,
+          marginBottom: 40,
         }}
       >
         {mySharedCheckList?.map((list) => (
-          <Pressable
-            onPress={() =>
-              router.push(`/(user)/check-list/shared/${list.sharedCheckListId}`)
-            }
-          >
-            <S.MySharedCheckListTile>
+          <S.MySharedCheckListTile>
+            <Pressable
+              onPress={() =>
+                router.push(
+                  `/(user)/check-list/shared/${list.sharedCheckListId}`
+                )
+              }
+            >
               <S.Text>{list.name}</S.Text>
-              <MaterialIcons
-                name='keyboard-arrow-right'
+            </Pressable>
+            <Pressable
+              onPress={() => deleteMySharedCheckList(list.sharedCheckListId)}
+            >
+              <MaterialCommunityIcons
+                name='delete-forever-outline'
                 size={24}
                 color='black'
               />
-            </S.MySharedCheckListTile>
-          </Pressable>
+            </Pressable>
+          </S.MySharedCheckListTile>
         ))}
       </ScrollView>
 
