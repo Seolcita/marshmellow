@@ -3,6 +3,10 @@ import styled from 'styled-components/native';
 import ColorMap from '../../../styles/Color';
 import { TwoButtonContainer } from '../../common-styles/CommonStyles';
 
+interface ConfirmMessageProps {
+  color?: string;
+}
+
 export const Header = styled.View`
   flex-direction: row;
   justify-content: space-between;
@@ -36,8 +40,8 @@ export const MessageContainer = styled.View`
   margin-bottom: 40px;
 `;
 
-export const ConfirmMessage = styled.Text`
-  color: ${ColorMap['red'].main};
+export const ConfirmMessage = styled.Text<ConfirmMessageProps>`
+  color: ${({ color }) => color ?? ColorMap['red'].main};
   font-size: 18px;
   font-weight: bold;
   text-align: center;

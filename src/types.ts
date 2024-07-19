@@ -122,4 +122,5 @@ export interface Invitation {
   sharedCheckListId: number;
   sharedCheckListName: string;
   status?: InvitationStatus;
+  isHidden?: boolean;
 }

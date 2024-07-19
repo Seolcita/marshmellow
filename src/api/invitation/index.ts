@@ -7,13 +7,25 @@ import {
 import { Alert } from 'react-native';
 
 import { supabase } from '../../lib/supabase';
-import { Invitation } from '../../types';
+import { Invitation, InvitationStatus } from '../../types';
 
-export interface InsertInvitationResult {
-  id: string;
+interface useInsertInvitationProps {
+  sharedCheckListId: number;
 }
 
-export const useInsertInvitation = (sharedCheckListId: number) => {
+export interface ResponseInvitationProps {
+  status: InvitationStatus;
+}
+
+export interface InsertMySharedCheckListProps {
+  id: number;
+  userId: string;
+  sharedCheckListId: number;
+}
+
+export const useInsertInvitation = ({
+  sharedCheckListId,
+}: useInsertInvitationProps) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -44,32 +56,9 @@ export const useInsertInvitation = (sharedCheckListId: number) => {
         console.log('createdInvitationID 🎄', createdInvitation[0].id);
         return createdInvitation[0].id;
       }
-
-      // if (createdInvitation) {
-      //   const name = createdInvitation[0].shared_check_list_name;
-      //   const sharedCheckListId = createdInvitation[0].shared_check_list_id;
-
-      //   const { error, data: addedMySharedCheckList } = await supabase
-      //     .from('my_shared_check_list')
-      //     .insert({
-      //       shared_check_list_id: sharedCheckListId,
-      //       shared_check_list_name: name,
-      //       uid: userId,
-      //       is_admin: false,
-      //     })
-      //     .select();
-
-      //   if (error) {
-      //     console.log('Failed to add it to my shared check list.', error);
-      //     // Alert.alert('Failed to Accept. Please try again');
-
-      //     return;
-      //   }
-      // }
     },
 
     async onSuccess() {
-      console.log('Invitation ID 🎄🎄🎄🎄', sharedCheckListId);
       await queryClient.invalidateQueries([
         'invitation',
         sharedCheckListId,
@@ -88,7 +77,7 @@ export const useInvitationWithInvitationId = (invitationId: string) => {
     queryKey: ['invitation', invitationId],
     queryFn: async () => {
       const { error, data: invitationInfo } = await supabase
-        .from('site_info')
+        .from('invitation')
         .select('*')
         .eq('id', invitationId);
 
@@ -105,6 +94,7 @@ export const useInvitationWithInvitationId = (invitationId: string) => {
           sharedCheckListId: info.shared_check_list_id,
           sharedCheckListName: info.shared_check_list_name,
           status: info.status,
+          isHidden: info.is_hidden,
         };
       });
 
@@ -137,8 +127,40 @@ export const useInvitationWithSharedCheckListId = (
           sharedCheckListId: info.shared_check_list_id,
           sharedCheckListName: info.shared_check_list_name,
           status: info.status,
+          isHidden: info.is_hidden,
         };
       });
+      return invitations;
+    },
+  });
+};
+
+export const useInvitationWithUserEmail = (userEmail: string) => {
+  return useQuery({
+    queryKey: ['invitation', userEmail],
+    queryFn: async () => {
+      const { error, data: myInvitationInfo } = await supabase
+        .from('invitation')
+        .select('*')
+        .eq('invitee_email', userEmail);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      const invitations: Invitation[] = myInvitationInfo.map((info) => {
+        return {
+          id: info.id,
+          inviterId: info.inviter_id,
+          inviteeEmail: info.invitee_email,
+          inviteeName: info.invitee_name,
+          sharedCheckListId: info.shared_check_list_id,
+          sharedCheckListName: info.shared_check_list_name,
+          status: info.status,
+          isHidden: info.is_hidden,
+        };
+      });
+
       return invitations;
     },
   });
@@ -166,6 +188,131 @@ export const useDeleteInvitation = (sharedCheckListId: number) => {
     onError(error) {
       //TODO: Handle error
       console.log(error);
+    },
+  });
+};
+
+export const useUpdateInvitation = ({
+  id,
+  userId,
+  sharedCheckListId,
+}: InsertMySharedCheckListProps) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    async mutationFn({ status }: ResponseInvitationProps) {
+      const { error, data: updatedInvitation } = await supabase
+        .from('invitation')
+        .update({
+          status,
+        })
+        .eq('id', id)
+        .select();
+
+      if (error) {
+        Alert.alert('Failed to Creat invitation. Please try again');
+        return;
+      }
+
+      if (
+        updatedInvitation &&
+        updatedInvitation.length > 0 &&
+        updatedInvitation[0].status === 'ACCEPTED'
+      ) {
+        console.log('updatedInvitation 🎄', updatedInvitation);
+
+        const name = updatedInvitation[0].shared_check_list_name;
+        const sharedCheckListId = updatedInvitation[0].shared_check_list_id;
+
+        const { error, data: addedMySharedCheckList } = await supabase
+          .from('my_shared_check_list')
+          .insert({
+            shared_check_list_id: sharedCheckListId,
+            shared_check_list_name: name,
+            uid: userId,
+            is_admin: false,
+          })
+          .select();
+
+        if (error) {
+          console.log('Failed to add it to my shared check list.', error);
+          console.log('updatedInvitation', updatedInvitation);
+          return;
+        }
+
+        return addedMySharedCheckList;
+      }
+    },
+
+    async onSuccess() {
+      await queryClient.invalidateQueries([
+        'invitation',
+        sharedCheckListId,
+      ] as InvalidateQueryFilters);
+    },
+
+    onError(error) {
+      //TODO: Handle error
+      console.log(error);
+    },
+  });
+};
+
+export const useHideInvitation = (sharedCheckListId: number) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    async mutationFn(id: number) {
+      const { error } = await supabase
+        .from('invitation')
+        .update({ is_hidden: true })
+        .eq('id', id);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+    },
+
+    async onSuccess() {
+      await queryClient.invalidateQueries([
+        'invitation',
+        sharedCheckListId,
+      ] as InvalidateQueryFilters);
+    },
+
+    onError(error) {
+      //TODO: Handle error
+      console.log(error);
+    },
+  });
+};
+
+export const useInvitationAcceptedMembers = (sharedCheckListId: number) => {
+  return useQuery({
+    queryKey: ['invitation', sharedCheckListId],
+    queryFn: async () => {
+      const { error, data: invitationAcceptedMembers } = await supabase
+        .from('invitation')
+        .select('*')
+        .eq('shared_check_list_id', sharedCheckListId)
+        .eq('status', InvitationStatus.ACCEPTED);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      const members: Invitation[] = invitationAcceptedMembers.map((info) => {
+        return {
+          id: info.id,
+          inviterId: info.inviter_id,
+          inviteeEmail: info.invitee_email,
+          inviteeName: info.invitee_name,
+          sharedCheckListId: info.shared_check_list_id,
+          sharedCheckListName: info.shared_check_list_name,
+          status: info.status,
+        };
+      });
+      return members;
     },
   });
 };

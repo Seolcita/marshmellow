@@ -30,7 +30,9 @@ const CreateInvitationForm = ({
     },
   });
 
-  const { mutate: insertInvitation } = useInsertInvitation(sharedCheckListId);
+  const { mutate: insertInvitation } = useInsertInvitation({
+    sharedCheckListId,
+  });
 
   const handleInputChange = (inputIdentifier: string, enteredValue: string) => {
     setInputs((prevState) => ({
