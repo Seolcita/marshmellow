@@ -11,12 +11,13 @@ import { useCategories } from '../../../api/category';
 import { useAuth } from '../../../providers/AuthProvider';
 import { useClearCheckList } from '../../../api/check-list';
 import Categories from '../../composite/category/Categories';
-import AddCategory from '../../composite/category/AddCategory';
+import CreateCategoryModal from '../../composite/category/CreateCategoryModal';
 
 const CheckListScreen = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isEditMode, setIsEditMode] = useState(true);
   const [isClearCheckList, setIsClearCheckList] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { session } = useAuth();
   const userId = session?.user.id;
@@ -47,54 +48,63 @@ const CheckListScreen = () => {
   return (
     <>
       {userId && (
-        <S.ScrollViewContainer>
-          <S.ImageBackgroundContainer>
-            <S.ImageBackground
-              source={require('../../../../assets/images/camping-gears.png')}
-            />
-          </S.ImageBackgroundContainer>
-          <S.ContentsContainer>
-            <AddCategory userId={userId} />
-            <S.ButtonsContainer>
-              <View style={{ width: '49%' }}>
-                <Button
-                  text='Clear all Checkbox'
-                  onPress={() => {
-                    setIsClearCheckList((prev) => !prev);
-                    handleClearCheckList();
-                  }}
-                  borderRadius={5}
-                  bgColor={ColorMap['blue'].dark}
-                  textColor={ColorMap['white'].main}
-                />
-              </View>
-              <View style={{ width: '49%' }}>
-                {isEditMode ? (
+        <>
+          <S.ScrollViewContainer>
+            <S.ContentsContainer>
+              <S.ButtonsContainer>
+                <View style={{ width: '49%' }}>
                   <Button
-                    text='Check Mode'
-                    onPress={() => setIsEditMode((prev) => !prev)}
+                    text='Clear all Checkbox'
+                    onPress={() => {
+                      setIsClearCheckList((prev) => !prev);
+                      handleClearCheckList();
+                    }}
                     borderRadius={5}
                     bgColor={ColorMap['blue'].dark}
+                    textColor={ColorMap['white'].main}
                   />
-                ) : (
-                  <Button
-                    text='Manage Mode'
-                    onPress={() => setIsEditMode((prev) => !prev)}
-                    borderRadius={5}
-                    bgColor={ColorMap['blue'].main}
-                  />
-                )}
-              </View>
-            </S.ButtonsContainer>
-            <Categories
-              categories={categories}
-              userId={userId}
-              isEditMode={isEditMode}
-              isClearCheckList={isClearCheckList}
-              setIsClearCheckList={setIsClearCheckList}
+                </View>
+                <View style={{ width: '49%' }}>
+                  {isEditMode ? (
+                    <Button
+                      text='Check Mode'
+                      onPress={() => setIsEditMode((prev) => !prev)}
+                      borderRadius={5}
+                      bgColor={ColorMap['blue'].dark}
+                    />
+                  ) : (
+                    <Button
+                      text='Manage Mode'
+                      onPress={() => setIsEditMode((prev) => !prev)}
+                      borderRadius={5}
+                      bgColor={ColorMap['blue'].main}
+                    />
+                  )}
+                </View>
+              </S.ButtonsContainer>
+              <Categories
+                categories={categories}
+                userId={userId}
+                isEditMode={isEditMode}
+                isClearCheckList={isClearCheckList}
+                setIsClearCheckList={setIsClearCheckList}
+              />
+            </S.ContentsContainer>
+          </S.ScrollViewContainer>
+          <S.CreateCategoryStickyButton>
+            <Button
+              text='+  Add Category'
+              onPress={() => setIsModalOpen(true)}
+              paddingVertical={16}
+              paddingHorizontal={24}
             />
-          </S.ContentsContainer>
-        </S.ScrollViewContainer>
+          </S.CreateCategoryStickyButton>
+          <CreateCategoryModal
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            userId={userId}
+          />
+        </>
       )}
     </>
   );

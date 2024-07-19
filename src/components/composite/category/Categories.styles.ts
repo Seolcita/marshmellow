@@ -65,13 +65,6 @@ export const AddCategoryContainer = styled.View`
 
 export const AddCategoryImageBackground = styled.ImageBackground``;
 
-export const AddInputContainer = styled.View`
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-`;
-
 export const ButtonContainer = styled.View<ButtonContainerProps>`
   margin-bottom: ${({ error }) => (error ? '22px' : '-2px')};
 `;

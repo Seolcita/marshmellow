@@ -2,6 +2,7 @@ import styled from 'styled-components/native';
 
 import ColorMap from '../../../styles/Color';
 import {
+  StickyButton,
   TopScreenImageBackground,
   TopScreenImageBackgroundContainer,
 } from '../../common-styles/CommonStyles';
@@ -48,4 +49,8 @@ export const Button = styled.Pressable`
   padding-vertical: 10px;
   padding-horizontal: 20px;
   border-radius: 5px;
+`;
+
+export const CreateCategoryStickyButton = styled(StickyButton)`
+  margin-bottom: 40px;
 `;

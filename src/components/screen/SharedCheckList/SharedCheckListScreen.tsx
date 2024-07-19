@@ -15,9 +15,10 @@ import { useClearCheckList } from '../../../api/check-list';
 import InvitationStatus from '../../composite/invitation/InvitationStatusList';
 import SharedCategories from '../../composite/shared-category/SharedCategories';
 import { useMySharedCheckListForAdmin } from '../../../api/my-shared-check-list';
-import AddSharedCategory from '../../composite/shared-category/AddSharedCategory';
 import CreateInvitationForm from '../../composite/invitation/CreateInvitationForm';
 import InvitationAcceptedMembers from '../../composite/invitation/InvitationAcceptedMembers';
+import CreateCategoryModal from '../../composite/category/CreateCategoryModal';
+import CreateSharedCategoryModal from '../../composite/shared-category/CreateSharedCategoryModal';
 
 interface SharedCheckListScreenProps {
   id: number;
@@ -32,6 +33,8 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
   const [isInvitationStatusListOpen, setIsInvitationStatusListOpen] =
     useState(true);
   const [isMembersOpen, setIsMembersOpen] = useState(true);
+  const [isCreateCategoryModalOpen, setIsCreateCategoryModalOpen] =
+    useState(false);
   const [sharedCheckListName, setSharedCheckListName] = useState('');
 
   const { session } = useAuth();
@@ -129,7 +132,7 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
             <InvitationAcceptedMembers sharedCheckListId={id} />
           )}
           <S.ContentsContainer>
-            <AddSharedCategory userId={userId} />
+            {/* <AddSharedCategory userId={userId} /> TODO: Change this to Modal */}
             <S.ButtonsContainer>
               <View style={{ width: '49%' }}>
                 <Button
@@ -171,6 +174,19 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
           </S.ContentsContainer>
         </S.ScrollViewContainer>
       )}
+      <S.CreateCategoryStickyButton>
+        <Button
+          text='+  Add Category'
+          onPress={() => setIsCreateCategoryModalOpen(true)}
+          paddingVertical={16}
+          paddingHorizontal={24}
+        />
+      </S.CreateCategoryStickyButton>
+      <CreateSharedCategoryModal
+        isModalOpen={isCreateCategoryModalOpen}
+        setIsModalOpen={setIsCreateCategoryModalOpen}
+        userId={userId}
+      />
     </>
   );
 };
