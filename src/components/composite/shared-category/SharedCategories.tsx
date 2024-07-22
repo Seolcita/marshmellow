@@ -1,21 +1,21 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FlatList, Pressable } from 'react-native';
-import { FontAwesome6 } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { Octicons } from '@expo/vector-icons';
+import { Pressable } from 'react-native';
 import { useEffect, useState } from 'react';
+import { Octicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome6 } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import * as S from '../category/Categories.styles';
 import { Text, View } from '../../Themed';
 import { Category } from '../../../types';
-import AddCheckList from '../check-list/AddCheckList';
-import DeleteSharedCategoryModal from './DeleteSharedCategoryModal';
 import ColorMap from '../../../styles/Color';
+import * as S from '../category/Categories.styles';
+import AddCheckList from '../check-list/AddCheckList';
 import EditSharedCategoryModal from './EditSharedCategoryModal';
+import DeleteSharedCategoryModal from './DeleteSharedCategoryModal';
 
 interface CategoriesProps {
   categories: Category[];
-  userId: string;
+  sharedCheckListId: number;
   isEditMode: boolean;
   isClearCheckList: boolean;
   setIsClearCheckList: (isClearCheckList: boolean) => void;
@@ -41,7 +41,7 @@ const IconSize = 20;
 
 const SharedCategories = ({
   categories,
-  userId,
+  sharedCheckListId,
   isEditMode,
   isClearCheckList,
   setIsClearCheckList,
@@ -243,13 +243,13 @@ const SharedCategories = ({
         isEditModalOpen={isEditModalOpen}
         setIsEditModalOpen={setIsEditModalOpen}
         eidtCategory={editCategory}
-        userId={userId}
+        sharedCheckListId={sharedCheckListId}
       />
 
       <DeleteSharedCategoryModal
         isDeleteModalOpen={isDeleteModalOpen}
         setIsDeleteModalOpen={setIsDeleteModalOpen}
-        userId={userId}
+        sharedCheckListId={sharedCheckListId}
         deleteCategory={deleteCategory}
       />
     </View>

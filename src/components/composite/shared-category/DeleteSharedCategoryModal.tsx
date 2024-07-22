@@ -1,54 +1,30 @@
-import { View } from '../../Themed';
-import * as S from '../category/Categories.styles';
-import ColorMap from '../../../styles/Color';
 import Modal from '../../atomic/modal/Modal';
 import { DeleteSharedCategory } from './SharedCategories';
-import Button from '../../atomic/button/Button';
-import { useDeleteCategory } from '../../../api/category';
-import { TwoButtonContainer } from '../../common-styles/CommonStyles';
+import DeleteCategoryModalContent from '../category/DeleteCategoryModalContent';
+import { useDeleteSharedCategory } from '../../../api/shared-category';
 
 interface DeleteCategoryModalProps {
   isDeleteModalOpen: boolean;
   setIsDeleteModalOpen: (isEditModalOpen: boolean) => void;
-  userId: string;
   deleteCategory: DeleteSharedCategory;
+  sharedCheckListId: number;
 }
 
 const DeleteSharedCategoryModal = ({
   isDeleteModalOpen,
   setIsDeleteModalOpen,
-  userId,
-  deleteCategory: { categoryId, name },
+  sharedCheckListId,
+  deleteCategory,
 }: DeleteCategoryModalProps) => {
-  const { mutate: deleteCategory } = useDeleteCategory(userId);
-
-  const handleDelete = () => {
-    deleteCategory(categoryId);
-    setIsDeleteModalOpen(false);
-  };
+  const { mutate: removeCategory } = useDeleteSharedCategory(sharedCheckListId);
 
   return (
     <Modal isOpen={isDeleteModalOpen} setIsOpen={setIsDeleteModalOpen}>
-      <S.ModalTitle>Delete Category</S.ModalTitle>
-      <S.ConfirmMessage>{`Are you sure you want to delete '${name}' category?`}</S.ConfirmMessage>
-      <TwoButtonContainer>
-        <View style={{ width: '48%' }}>
-          <Button
-            onPress={() => setIsDeleteModalOpen(false)}
-            text='Cancel'
-            borderRadius={5}
-            bgColor={ColorMap['grey'].main}
-          />
-        </View>
-        <View style={{ width: '48%' }}>
-          <Button
-            onPress={handleDelete}
-            text='Delete'
-            borderRadius={5}
-            bgColor={ColorMap['blue'].dark}
-          />
-        </View>
-      </TwoButtonContainer>
+      <DeleteCategoryModalContent
+        setIsDeleteModalOpen={setIsDeleteModalOpen}
+        removeCategory={removeCategory}
+        deleteCategory={deleteCategory}
+      />
     </Modal>
   );
 };

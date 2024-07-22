@@ -166,7 +166,7 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
             {categories && (
               <SharedCategories
                 categories={categories}
-                userId={userId}
+                sharedCheckListId={id}
                 isEditMode={isEditMode}
                 isClearCheckList={isClearCheckList}
                 setIsClearCheckList={setIsClearCheckList}
