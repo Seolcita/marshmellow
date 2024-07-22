@@ -8,7 +8,6 @@ import { Category } from '../../../types';
 import ColorMap from '../../../styles/Color';
 import Button from '../../atomic/button/Button';
 import * as s from './SharedCheckListScreen.styles';
-import { useCategories } from '../../../api/category';
 import * as S from '../CheckList/CheckListScreen.styles';
 import { useAuth } from '../../../providers/AuthProvider';
 import { useClearCheckList } from '../../../api/check-list';
@@ -17,8 +16,8 @@ import SharedCategories from '../../composite/shared-category/SharedCategories';
 import { useMySharedCheckListForAdmin } from '../../../api/my-shared-check-list';
 import CreateInvitationForm from '../../composite/invitation/CreateInvitationForm';
 import InvitationAcceptedMembers from '../../composite/invitation/InvitationAcceptedMembers';
-import CreateCategoryModal from '../../composite/category/CreateCategoryModal';
 import CreateSharedCategoryModal from '../../composite/shared-category/CreateSharedCategoryModal';
+import { useSharedCategories } from '../../../api/shared-category';
 
 interface SharedCheckListScreenProps {
   id: number;
@@ -49,28 +48,26 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
   const { data: adminInfo, error: fetchingAdminInfoError } =
     useMySharedCheckListForAdmin(id);
 
-  const { error, data: existCategories } = useCategories(userId);
+  const {
+    data: existSharedCategories,
+    error: fetchingExistSharedCategoriesError,
+  } = useSharedCategories(id);
   const { mutate: clearCheckList } = useClearCheckList();
 
   useEffect(() => {
     if (adminInfo?.isAdmin) {
       setIsAdmin(adminInfo.isAdmin);
-      setSharedCheckListName(adminInfo.name);
     }
-  }, [existCategories]);
+  }, [adminInfo]);
 
   useEffect(() => {
-    if (existCategories) {
-      const formattedCategories = existCategories.map((category) => ({
-        name: category.name,
-        id: category.id,
-      }));
-      setCategories(formattedCategories);
+    if (existSharedCategories) {
+      setCategories(existSharedCategories);
     }
-  }, [existCategories]);
+  }, [existSharedCategories]);
 
   const handleClearCheckList = () => {
-    clearCheckList(userId);
+    clearCheckList(userId); //TODO:update this to clearCheckList(id)
   };
 
   return (
@@ -120,19 +117,21 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
             </>
           )}
 
-          <s.Accordion onPress={() => setIsMembersOpen((prev) => !prev)}>
-            <s.CreaeteInvitationText>Members</s.CreaeteInvitationText>
-            <FontAwesome
-              name={isMembersOpen ? 'caret-up' : 'caret-down'}
-              size={24}
-              color='black'
-            />
-          </s.Accordion>
+          {!isAdmin && (
+            <s.Accordion onPress={() => setIsMembersOpen((prev) => !prev)}>
+              <s.CreaeteInvitationText>Members</s.CreaeteInvitationText>
+              <FontAwesome
+                name={isMembersOpen ? 'caret-up' : 'caret-down'}
+                size={24}
+                color='black'
+              />
+            </s.Accordion>
+          )}
           {!isAdmin && isMembersOpen && (
             <InvitationAcceptedMembers sharedCheckListId={id} />
           )}
+
           <S.ContentsContainer>
-            {/* <AddSharedCategory userId={userId} /> TODO: Change this to Modal */}
             <S.ButtonsContainer>
               <View style={{ width: '49%' }}>
                 <Button
@@ -164,13 +163,15 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
                 )}
               </View>
             </S.ButtonsContainer>
-            <SharedCategories
-              categories={categories}
-              userId={userId}
-              isEditMode={isEditMode}
-              isClearCheckList={isClearCheckList}
-              setIsClearCheckList={setIsClearCheckList}
-            />
+            {categories && (
+              <SharedCategories
+                categories={categories}
+                userId={userId}
+                isEditMode={isEditMode}
+                isClearCheckList={isClearCheckList}
+                setIsClearCheckList={setIsClearCheckList}
+              />
+            )}
           </S.ContentsContainer>
         </S.ScrollViewContainer>
       )}
@@ -185,7 +186,7 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
       <CreateSharedCategoryModal
         isModalOpen={isCreateCategoryModalOpen}
         setIsModalOpen={setIsCreateCategoryModalOpen}
-        userId={userId}
+        sharedCheckListId={id}
       />
     </>
   );

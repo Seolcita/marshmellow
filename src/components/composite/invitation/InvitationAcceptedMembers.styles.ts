@@ -5,6 +5,7 @@ import ColorMap from '../../../styles/Color';
 export const Container = styled.View`
   flex-direction: row;
   padding-horizontal: 20px;
+  margin-bottom: 40px;
 `;
 
 export const Name = styled.Text`

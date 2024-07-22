@@ -9,6 +9,7 @@ import {
 
 export const ScrollViewContainer = styled.ScrollView`
   width: 100%;
+  margin-bottom: 80px;
 `;
 
 export const ImageBackgroundContainer = styled(
@@ -52,5 +53,5 @@ export const Button = styled.Pressable`
 `;
 
 export const CreateCategoryStickyButton = styled(StickyButton)`
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 `;
