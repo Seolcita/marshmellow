@@ -10,6 +10,7 @@ export const CheckBoxContainer = styled.View`
 export const Label = styled.Text`
   font-size: 18px;
   font-weight: bold;
+  margin-right: 10px;
 `;
 
 export const DeleteButton = styled.Pressable`
