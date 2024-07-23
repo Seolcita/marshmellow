@@ -18,7 +18,7 @@ export interface UpdateCategory {
 
 export const useSharedCategories = (sharedCheckListId: number) => {
   return useQuery({
-    queryKey: ['shared_categories', sharedCheckListId],
+    queryKey: ['shared-categories', sharedCheckListId],
     queryFn: async () => {
       const { error, data: sharedCategory } = await supabase
         .from('shared_categories')
@@ -57,7 +57,7 @@ export const useInsertSharedCategory = (sharedCheckListId: number) => {
 
     async onSuccess() {
       queryClient.invalidateQueries([
-        'shared_categories',
+        'shared-categories',
         sharedCheckListId,
       ] as InvalidateQueryFilters);
     },
@@ -90,7 +90,7 @@ export const useUpdateSharedCategory = (sharedCheckListId: number) => {
 
     async onSuccess() {
       queryClient.invalidateQueries([
-        'shared_categories',
+        'shared-categories',
         sharedCheckListId,
       ] as InvalidateQueryFilters);
     },
@@ -119,7 +119,7 @@ export const useDeleteSharedCategory = (sharedCheckListId: number) => {
 
     async onSuccess() {
       queryClient.invalidateQueries([
-        'shared_categories',
+        'shared-categories',
         sharedCheckListId,
       ] as InvalidateQueryFilters);
     },
@@ -131,29 +131,28 @@ export const useDeleteSharedCategory = (sharedCheckListId: number) => {
   });
 };
 
-// export const useSharedCategorySubscription = (sharedCheckListId: string) => {
-//   const queryClient = useQueryClient();
+export const useCategorySubscription = (sharedCheckListId: number) => {
+  const queryClient = useQueryClient();
 
-//   const categories = supabase
-//     .channel('custom-all-channel')
-//     .on(
-//       'postgres_changes',
-//       {
-//         event: '*',
-//         schema: 'public',
-//         table: 'shared_categories',
-//         filter: `shared_check_list.id=eq.${sharedCheckListId}`,
-//       },
-//       (payload) => {
-//         queryClient.invalidateQueries([
-//           'shared_categories',
-//           sharedCheckListId,
-//         ] as InvalidateQueryFilters);
-//       }
-//     )
-//     .subscribe();
-
-//   return () => {
-//     categories.unsubscribe();
-//   };
-// };
+  const sharedCategories = supabase
+    .channel('custom-all-channel')
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'shared_categories',
+        filter: `shared_check_list_id=eq.${sharedCheckListId}`,
+      },
+      (payload) => {
+        queryClient.invalidateQueries([
+          'shared-categories',
+          sharedCheckListId,
+        ] as InvalidateQueryFilters);
+      }
+    )
+    .subscribe();
+  return () => {
+    sharedCategories.unsubscribe();
+  };
+};

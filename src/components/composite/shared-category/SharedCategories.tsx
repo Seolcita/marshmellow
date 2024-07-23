@@ -9,9 +9,9 @@ import { Text, View } from '../../Themed';
 import { Category } from '../../../types';
 import ColorMap from '../../../styles/Color';
 import * as S from '../category/Categories.styles';
-import AddCheckList from '../check-list/AddCheckList';
 import EditSharedCategoryModal from './EditSharedCategoryModal';
 import DeleteSharedCategoryModal from './DeleteSharedCategoryModal';
+import AddSharedCheckList from '../shared-check-list/AddSharedCheckList';
 
 interface CategoriesProps {
   categories: Category[];
@@ -228,12 +228,13 @@ const SharedCategories = ({
           {activeAccordion &&
             activeAccordion[item.name] &&
             activeAccordion[item.name].isOpen && (
-              <AddCheckList
+              <AddSharedCheckList
                 categoryId={item.id}
                 isInputVisible={isVisible && activeButtonIndex === index}
                 isEditMode={isEditMode}
                 isClearCheckList={isClearCheckList}
                 setIsClearCheckList={setIsClearCheckList}
+                sharedCheckListId={sharedCheckListId}
               />
             )}
         </S.Wrapper>

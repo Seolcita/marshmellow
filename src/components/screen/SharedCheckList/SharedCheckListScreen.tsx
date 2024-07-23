@@ -10,14 +10,14 @@ import Button from '../../atomic/button/Button';
 import * as s from './SharedCheckListScreen.styles';
 import * as S from '../CheckList/CheckListScreen.styles';
 import { useAuth } from '../../../providers/AuthProvider';
-import { useClearCheckList } from '../../../api/check-list';
+import { useSharedCategories } from '../../../api/shared-category';
+import { useClearSharedCheckList } from '../../../api/shared-check-list-item';
 import InvitationStatus from '../../composite/invitation/InvitationStatusList';
 import SharedCategories from '../../composite/shared-category/SharedCategories';
 import { useMySharedCheckListForAdmin } from '../../../api/my-shared-check-list';
 import CreateInvitationForm from '../../composite/invitation/CreateInvitationForm';
 import InvitationAcceptedMembers from '../../composite/invitation/InvitationAcceptedMembers';
 import CreateSharedCategoryModal from '../../composite/shared-category/CreateSharedCategoryModal';
-import { useSharedCategories } from '../../../api/shared-category';
 
 interface SharedCheckListScreenProps {
   id: number;
@@ -46,17 +46,18 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
   }
 
   const { data: adminInfo, error: fetchingAdminInfoError } =
-    useMySharedCheckListForAdmin(id);
+    useMySharedCheckListForAdmin({ id, userId });
 
   const {
     data: existSharedCategories,
     error: fetchingExistSharedCategoriesError,
   } = useSharedCategories(id);
-  const { mutate: clearCheckList } = useClearCheckList();
+  const { mutate: clearCheckList } = useClearSharedCheckList();
 
   useEffect(() => {
     if (adminInfo?.isAdmin) {
       setIsAdmin(adminInfo.isAdmin);
+      setSharedCheckListName(adminInfo.name);
     }
   }, [adminInfo]);
 
@@ -67,14 +68,14 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
   }, [existSharedCategories]);
 
   const handleClearCheckList = () => {
-    clearCheckList(userId); //TODO:update this to clearCheckList(id)
+    clearCheckList(id);
   };
 
   return (
     <>
       {userId && (
         <S.ScrollViewContainer>
-          {isAdmin && isCreateInvitationOpen && (
+          {isAdmin && (
             <>
               <s.Accordion
                 onPress={() => setIsCreateInvitationOpen((prev) => !prev)}
@@ -88,16 +89,17 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
                   color='black'
                 />
               </s.Accordion>
-
-              <CreateInvitationForm
-                inviterId={userId}
-                sharedCheckListName={sharedCheckListName}
-                sharedCheckListId={id}
-              />
+              {isCreateInvitationOpen && (
+                <CreateInvitationForm
+                  inviterId={userId}
+                  sharedCheckListName={sharedCheckListName}
+                  sharedCheckListId={id}
+                />
+              )}
             </>
           )}
 
-          {isAdmin && isInvitationStatusListOpen && (
+          {isAdmin && (
             <>
               <s.Accordion
                 $marginTop={isCreateInvitationOpen ? 48 : 0}
@@ -108,12 +110,14 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
                 </s.CreaeteInvitationText>
 
                 <FontAwesome
-                  name={isCreateInvitationOpen ? 'caret-up' : 'caret-down'}
+                  name={isInvitationStatusListOpen ? 'caret-up' : 'caret-down'}
                   size={24}
                   color='black'
                 />
               </s.Accordion>
-              <InvitationStatus sharedCheckListId={id} />
+              {isInvitationStatusListOpen && (
+                <InvitationStatus sharedCheckListId={id} />
+              )}
             </>
           )}
 
@@ -127,6 +131,7 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
               />
             </s.Accordion>
           )}
+
           {!isAdmin && isMembersOpen && (
             <InvitationAcceptedMembers sharedCheckListId={id} />
           )}

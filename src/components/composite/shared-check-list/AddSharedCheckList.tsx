@@ -2,14 +2,17 @@ import { useState } from 'react';
 import { Alert } from 'react-native';
 import { router } from 'expo-router';
 
-import * as S from '../check-list/AddCheckList.styles';
 import Input from '../../atomic/input/Input';
 import ColorMap from '../../../styles/Color';
-import SharedCheckListItems from './SharedCheckListItems';
 import Button from '../../atomic/button/Button';
 import * as s from '../../common-styles/CommonStyles';
 import { useAuth } from '../../../providers/AuthProvider';
-import { useCheckList, useInsertCheckList } from '../../../api/check-list';
+import {
+  useInsertSharedCheckListItem,
+  useSharedCheckList,
+} from '../../../api/shared-check-list-item';
+import * as S from '../check-list/AddCheckList.styles';
+import SharedCheckListItems from './SharedCheckListItems';
 
 interface AddSharedCheckListProps {
   categoryId: string;
@@ -17,6 +20,7 @@ interface AddSharedCheckListProps {
   isEditMode: boolean;
   isClearCheckList: boolean;
   setIsClearCheckList: (isClearCheckList: boolean) => void;
+  sharedCheckListId: number;
 }
 
 const AddSharedCheckList = ({
@@ -25,6 +29,7 @@ const AddSharedCheckList = ({
   isEditMode,
   isClearCheckList,
   setIsClearCheckList,
+  sharedCheckListId,
 }: AddSharedCheckListProps) => {
   const [item, setItem] = useState({
     name: '',
@@ -41,25 +46,27 @@ const AddSharedCheckList = ({
     return;
   }
 
-  const { mutate: insertCheckListItem } = useInsertCheckList({
-    userId,
-    categoryId,
-  });
+  const { mutate: insertSharedCheckListItem } =
+    useInsertSharedCheckListItem(categoryId);
 
-  const { error, data: checkList } = useCheckList(categoryId);
+  const { error, data: sharedCheckList } = useSharedCheckList(categoryId);
 
   const handleChange = (text: string) => {
     setItem({ name: text, error: '' });
   };
 
   const handleAdd = () => {
-    console.log('ADD CLICKED');
     if (item.name === '') {
       setItem({ ...item, error: 'Check List Item is required' });
       return;
     }
 
-    insertCheckListItem({ name: item.name, categoryId });
+    insertSharedCheckListItem({
+      name: item.name,
+      categoryId,
+      sharedCheckListId,
+    });
+
     setItem({ name: '', error: '' });
   };
 
@@ -95,13 +102,14 @@ const AddSharedCheckList = ({
         </S.InputContainer>
       )}
 
-      {checkList && (
+      {sharedCheckList && (
         <SharedCheckListItems
-          items={checkList}
+          items={sharedCheckList}
           categoryId={categoryId}
           isEditMode={isEditMode}
           isClearCheckList={isClearCheckList}
           setIsClearCheckList={setIsClearCheckList}
+          sharedCheckListId={sharedCheckListId}
         />
       )}
     </>

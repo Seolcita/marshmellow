@@ -11,6 +11,7 @@ import { Invitation, InvitationStatus } from '../../types';
 
 interface useInsertInvitationProps {
   sharedCheckListId: number;
+  sharedCheckListName: string;
 }
 
 export interface ResponseInvitationProps {

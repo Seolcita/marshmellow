@@ -15,4 +15,5 @@ export const Name = styled.Text`
   background-color: ${ColorMap['blue'].extraLight};
   border-radius: 5px;
   font-weight: bold;
+  margin-right: 10px;
 `;

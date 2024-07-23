@@ -42,14 +42,21 @@ export const useMySharedCheckList = (userId: string) => {
   });
 };
 
-export const useMySharedCheckListForAdmin = (id: number) => {
+export const useMySharedCheckListForAdmin = ({
+  id,
+  userId,
+}: {
+  id: number;
+  userId: string;
+}) => {
   return useQuery({
-    queryKey: ['my_shared_check_list', id],
+    queryKey: ['my_shared_check_list', id, userId],
     queryFn: async () => {
       const { error, data } = await supabase
         .from('my_shared_check_list')
         .select('is_admin, shared_check_list_name')
-        .eq('shared_check_list_id', id);
+        .eq('shared_check_list_id', id)
+        .eq('uid', userId);
 
       if (error) {
         console.log('error', error);

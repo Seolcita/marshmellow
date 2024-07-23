@@ -23,10 +23,20 @@ export interface Category {
 }
 
 export interface CheckList {
-  name: string;
   id: string;
+  name: string;
   categoryId: string;
   checked: boolean;
+}
+
+export interface SharedCheckList {
+  id: string;
+  name: string;
+  checked: boolean;
+  sharedCheckListId: string;
+  sharedCategoryId: string;
+  isAssigned: boolean;
+  assignedTo?: string;
 }
 
 export enum CampingType {

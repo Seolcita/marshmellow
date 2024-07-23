@@ -12,7 +12,7 @@ interface InsertSharedCheckList {
   adminEmail: string;
 }
 
-export const useInsertSharedCheckList = () => {
+export const useInsertSharedCheckList = (userId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -57,7 +57,39 @@ export const useInsertSharedCheckList = () => {
           return;
         }
 
-        console.log('addedMySharedCheckList🚙', addedMySharedCheckList);
+        if (addedMySharedCheckList) {
+          const { error, data: createdInvitationForAdmin } = await supabase
+            .from('invitation')
+            .insert({
+              inviter_id: userId,
+              invitee_email: adminEmail,
+              invitee_name: 'Admin', //TODO: get the name from the user
+              shared_check_list_id: id,
+              shared_check_list_name: name,
+              status: 'ACCEPTED',
+              is_hide: true,
+            })
+            .select();
+
+          if (error) {
+            console.log(
+              'Failed to Creat invitation for Admin. Please try again'
+            );
+
+            const { error: deletingSharedCheckListError } = await supabase
+              .from('shared_check_list')
+              .delete()
+              .match({ id });
+
+            console.log('deletingError', deletingSharedCheckListError);
+
+            // Check if the shared_check_list is deleted by deleting shared check list (cascading)
+            // const { error: deleteMySharedCheckListError } = await supabase
+            //   .from('my_shared_check_list')
+            //   .delete()
+            //   .match({ shared_check_list_id: id });
+          }
+        }
       }
     },
 

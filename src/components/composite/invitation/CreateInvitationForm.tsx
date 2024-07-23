@@ -32,6 +32,7 @@ const CreateInvitationForm = ({
 
   const { mutate: insertInvitation } = useInsertInvitation({
     sharedCheckListId,
+    sharedCheckListName,
   });
 
   const handleInputChange = (inputIdentifier: string, enteredValue: string) => {
