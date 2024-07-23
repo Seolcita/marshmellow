@@ -57,7 +57,7 @@ export const InvitationsScreen = () => {
   return (
     <>
       <s.Accordion onPress={() => setIsPendingOpen((prev) => !prev)}>
-        <s.CreaeteInvitationText>Pending Invitations</s.CreaeteInvitationText>
+        <s.Text>Pending Invitations</s.Text>
         <FontAwesome
           name={isPendingOpen ? 'caret-up' : 'caret-down'}
           size={24}
@@ -79,7 +79,7 @@ export const InvitationsScreen = () => {
         $marginTop={isPendingOpen ? 48 : 0}
         onPress={() => setIsAcceptedOpen((prev) => !prev)}
       >
-        <s.CreaeteInvitationText>Accepted Invitations</s.CreaeteInvitationText>
+        <s.Text>Accepted Invitations</s.Text>
         <FontAwesome
           name={isAcceptedOpen ? 'caret-up' : 'caret-down'}
           size={24}
@@ -101,7 +101,7 @@ export const InvitationsScreen = () => {
         $marginTop={isAcceptedOpen ? 48 : 0}
         onPress={() => setIsRejectedOpen((prev) => !prev)}
       >
-        <s.CreaeteInvitationText>Rejected Invitations</s.CreaeteInvitationText>
+        <s.Text>Rejected Invitations</s.Text>
         <FontAwesome
           name={isRejectedOpen ? 'caret-up' : 'caret-down'}
           size={24}

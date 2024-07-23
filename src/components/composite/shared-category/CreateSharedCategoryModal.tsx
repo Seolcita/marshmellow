@@ -1,26 +1,27 @@
 import Modal from '../../atomic/modal/Modal';
-import { useInsertCategory } from '../../../api/category';
 import CreateCategoryModalContent from '../category/CreateCategoryModalContent';
+import { useInsertSharedCategory } from '../../../api/shared-category';
 
 interface CreateCategoryModalProps {
   isModalOpen: boolean;
   setIsModalOpen: (isModalOpen: boolean) => void;
-  userId: string;
+  sharedCheckListId: number;
 }
 
 const CreateSharedCategoryModal = ({
   isModalOpen,
   setIsModalOpen,
-  userId,
+  sharedCheckListId,
 }: CreateCategoryModalProps) => {
   //TODO: Update this to useInsertSharedCategory
-  const { mutate: insertCategory } = useInsertCategory(userId);
+  const { mutate: insertSharedCategory } =
+    useInsertSharedCategory(sharedCheckListId);
 
   return (
     <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
       <CreateCategoryModalContent
         setIsModalOpen={setIsModalOpen}
-        insertCategory={insertCategory}
+        insertCategory={insertSharedCategory}
       />
     </Modal>
   );

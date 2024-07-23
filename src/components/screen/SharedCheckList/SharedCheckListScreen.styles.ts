@@ -13,7 +13,7 @@ export const Accordion = styled.Pressable<AccordionProps>`
   margin-top: ${({ $marginTop }) => $marginTop ?? 20}px;
 `;
 
-export const CreaeteInvitationText = styled.Text`
-  font-size: 24px;
+export const Text = styled.Text`
+  font-size: 20px;
   font-weight: bold;
 `;

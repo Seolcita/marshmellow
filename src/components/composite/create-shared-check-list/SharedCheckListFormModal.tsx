@@ -8,6 +8,8 @@ import Button from '../../atomic/button/Button';
 import * as S from './SharedCheckListFormModal.styles';
 import { useAuth } from '../../../providers/AuthProvider';
 import { useInsertSharedCheckList } from '../../../api/shared-check-list';
+import { Alert } from 'react-native';
+import { router } from 'expo-router';
 
 interface SharedCheckListFormModalProps {
   isModalOpen: boolean;
@@ -18,9 +20,18 @@ const SharedCheckListFormModal = ({
   isModalOpen,
   setIsModalOpen,
 }: SharedCheckListFormModalProps) => {
-  const { mutate: insertSharedCheckList } = useInsertSharedCheckList();
   const { session } = useAuth();
   const userEmail = session?.user.email;
+  const userId = session?.user.id;
+
+  if (!userEmail || !userId) {
+    Alert.alert('Session is not valid, please login again');
+    console.log('User not found');
+    router.push('/(auth)/sign-in');
+    return;
+  }
+
+  const { mutate: insertSharedCheckList } = useInsertSharedCheckList(userId);
 
   const [name, setName] = useState('');
   const [error, setError] = useState('');

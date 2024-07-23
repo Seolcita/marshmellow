@@ -1,17 +1,17 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FlatList, Pressable } from 'react-native';
-import { FontAwesome6 } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { Octicons } from '@expo/vector-icons';
+import { Pressable } from 'react-native';
 import { useEffect, useState } from 'react';
+import { Octicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome6 } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import * as S from './Categories.styles';
-import { Text, View } from '../../Themed';
+import { View } from '../../Themed';
 import { Category } from '../../../types';
+import ColorMap from '../../../styles/Color';
 import EditCategoryModal from './EditCategoryModal';
 import AddCheckList from '../check-list/AddCheckList';
 import DeleteCategoryModal from './DeleteCategoryModal';
-import ColorMap from '../../../styles/Color';
 
 interface CategoriesProps {
   categories: Category[];
