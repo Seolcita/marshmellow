@@ -1,5 +1,11 @@
 import styled from 'styled-components/native';
+
 import { Row } from '../../common-styles/CommonStyles';
+import ColorMap, { Colors } from '../../../styles/Color';
+
+interface AssignedUserProps {
+  $bgColor?: Colors;
+}
 
 export const CheckBoxContainer = styled.View`
   flex-direction: row;
@@ -20,6 +26,15 @@ export const DeleteButton = styled.Pressable`
 
 export const Wrapper = styled(Row)`
   background-color: #f1f1f1;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   padding-vertical: 2.5px;
+`;
+
+export const AssignedUser = styled.Text<AssignedUserProps>`
+  font-size: 14px;
+  background-color: ${({ $bgColor }) =>
+    ColorMap[$bgColor ?? 'blue'].extraLight};
+  padding-horizontal: 12px;
+  padding-vertical: 2px;
+  border-radius: 150px;
 `;

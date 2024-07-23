@@ -18,6 +18,7 @@ export const ImageBackgroundContainer = styled(
 
 export const ContentsContainer = styled.View`
   padding-horizontal: 10px;
+  margin-top: 40px;
 `;
 
 export const ImageBackground = styled(TopScreenImageBackground)`

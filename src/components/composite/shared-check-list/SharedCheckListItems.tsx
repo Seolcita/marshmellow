@@ -3,8 +3,8 @@ import { CheckBox } from '@rneui/themed';
 import { useEffect, useState } from 'react';
 import { Feather } from '@expo/vector-icons';
 import { Alert, Pressable } from 'react-native';
-import { Text, View } from '../../Themed';
-import { FontAwesome6 } from '@expo/vector-icons';
+import { View } from '../../Themed';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import {
   useDeleteSharedCheckList,
@@ -15,7 +15,7 @@ import * as S from '../check-list/CheckListItems.styles';
 import { useAuth } from '../../../providers/AuthProvider';
 import { Invitation, SharedCheckList } from '../../../types';
 import { useInvitationWithSharedCheckListId } from '../../../api/invitation';
-import { useMySharedCheckListForAdmin } from '../../../api/my-shared-check-list';
+import ColorMap from '../../../styles/Color';
 
 interface SharedCheckListItemsProps {
   items: SharedCheckList[];
@@ -116,7 +116,16 @@ const SharedCheckListItems = ({
   const findInviteeName = (assignedUser?: string) => {
     if (!assignedUser) return null;
 
-    console.log('assignedUser🐶', assignedUser);
+    const invitation = invitations.find(
+      (invitation) => invitation.inviteeEmail === assignedUser
+    );
+
+    return invitation?.inviteeName;
+  };
+
+  const findMyAssignedItems = (assignedUser?: string) => {
+    if (!assignedUser) return null;
+
     const invitation = invitations.find(
       (invitation) => invitation.inviteeEmail === assignedUser
     );
@@ -140,25 +149,42 @@ const SharedCheckListItems = ({
               containerStyle={{ padding: 2, backgroundColor: 'transparent' }}
             />
             <S.Label>{item.name}</S.Label>
-
-            {/* Hand Icon & Assigend User UI update */}
-            {(userEmail === item.assignedTo || !item.isAssigned) && (
-              <Pressable
-                onPress={() =>
-                  toggleCheckListAssignedItemStatus({
-                    itemId: item.id,
-                    isAssigned: item.isAssigned,
-                  })
-                }
-              >
-                <FontAwesome6 name='hand' size={18} color='black' />
-              </Pressable>
+            {isEditMode &&
+              (userEmail === item.assignedTo || !item.isAssigned) && (
+                <Pressable
+                  onPress={() =>
+                    toggleCheckListAssignedItemStatus({
+                      itemId: item.id,
+                      isAssigned: item.isAssigned,
+                    })
+                  }
+                >
+                  <MaterialCommunityIcons
+                    name={
+                      item.isAssigned
+                        ? 'hand-front-right'
+                        : 'hand-front-right-outline'
+                    }
+                    size={18}
+                    color={ColorMap['blue'].dark}
+                    style={{ marginRight: 10 }}
+                  />
+                </Pressable>
+              )}
+            {isEditMode && item.isAssigned && (
+              <S.AssignedUser>
+                {findInviteeName(item.assignedTo)}
+              </S.AssignedUser>
             )}
-            {item.isAssigned && (
-              <View>
-                <Text> {findInviteeName(item.assignedTo)}</Text>
-              </View>
-            )}
+            {!isEditMode &&
+              item.isAssigned &&
+              item.assignedTo === userEmail && (
+                <View>
+                  <S.AssignedUser>
+                    {findMyAssignedItems(item.assignedTo)}
+                  </S.AssignedUser>
+                </View>
+              )}
           </S.CheckBoxContainer>
           {isEditMode && (
             <S.DeleteButton onPress={() => handleDelete(item.id)}>
