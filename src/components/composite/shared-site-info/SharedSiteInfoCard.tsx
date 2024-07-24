@@ -5,7 +5,7 @@ import { Rating } from 'react-native-ratings';
 import * as S from './SharedSiteInfoCard.styles';
 import { ReservationType } from '../../../types';
 import RemoteImage from '../../atomic/remote-Image/RemoteImage';
-import { FilteredSiteInfo } from '../../screen/SharedSiteInfo/SharedSiteInfoScreen';
+import { FilteredSiteInfo } from './SharedSiteInfo';
 
 interface SharedSiteInfoCardProps extends FilteredSiteInfo {}
 
