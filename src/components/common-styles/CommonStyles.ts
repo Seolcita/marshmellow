@@ -46,7 +46,7 @@ export const ButtonWrapper = styled.View<ButtonWrapperProps>`
 
 export const StickyButton = styled.View`
   position: absolute;
-  bottom: 0px;
+  bottom: 20px;
   right: 20px;
   z-index: 1;
 `;
