@@ -1,18 +1,37 @@
 import { router } from 'expo-router';
 import { Pressable } from 'react-native';
 import { Rating } from 'react-native-ratings';
+import { Ionicons } from '@expo/vector-icons';
 
 import * as S from './SharedSiteInfoCard.styles';
 import { ReservationType } from '../../../types';
-import RemoteImage from '../../atomic/remote-Image/RemoteImage';
+import { useUpdateWish } from '../../../api/wish';
 import { FilteredSiteInfo } from './SharedSiteInfo';
+import RemoteImage from '../../atomic/remote-Image/RemoteImage';
 
-interface SharedSiteInfoCardProps extends FilteredSiteInfo {}
+interface SharedSiteInfoCardProps extends FilteredSiteInfo {
+  isWish: boolean;
+}
 
 interface ReservationTypeInfo {
   bgColor: string;
   text: string;
 }
+
+const ReservationTypeInfoMap: Record<ReservationType, ReservationTypeInfo> = {
+  [ReservationType.FCFS]: {
+    bgColor: '#BED7DC',
+    text: 'FCFS',
+  },
+  [ReservationType.RESERVATION]: {
+    bgColor: '#D9EDBF',
+    text: 'Reservation',
+  },
+  [ReservationType.ANY]: {
+    bgColor: '#F7E7DC',
+    text: 'Any',
+  },
+};
 
 const SharedSiteInfoCard = ({
   id,
@@ -21,20 +40,14 @@ const SharedSiteInfoCard = ({
   rate,
   reservationType,
   imageUrl,
+  userId,
+  isWish,
 }: SharedSiteInfoCardProps) => {
-  const ReservationTypeInfoMap: Record<ReservationType, ReservationTypeInfo> = {
-    [ReservationType.FCFS]: {
-      bgColor: '#BED7DC',
-      text: 'FCFS',
-    },
-    [ReservationType.RESERVATION]: {
-      bgColor: '#D9EDBF',
-      text: 'Reservation',
-    },
-    [ReservationType.ANY]: {
-      bgColor: '#F7E7DC',
-      text: 'Any',
-    },
+  const { mutate: updateWish } = useUpdateWish(userId);
+
+  const handleWish = (id: string) => {
+    console.log('wish id:', id);
+    updateWish(id);
   };
 
   return (
@@ -84,6 +97,13 @@ const SharedSiteInfoCard = ({
             <S.EmptyView />
           )}
         </S.DetailContainer>
+        <S.WishIconButton onPress={() => handleWish(id)}>
+          <Ionicons
+            name={isWish ? 'heart-sharp' : 'heart-outline'}
+            size={24}
+            color={isWish ? 'red' : 'black'}
+          />
+        </S.WishIconButton>
       </S.SiteInfoCardContainer>
     </Pressable>
   );
