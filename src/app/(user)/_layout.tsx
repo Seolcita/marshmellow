@@ -4,6 +4,7 @@ import ColorMap from '../../styles/Color';
 import { useAuth } from '../../providers/AuthProvider';
 import TabBarIcon from '../../components/atomic/TabBarIcon/TabBarIcon';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { View } from '../../components/Themed';
 
 const UserLayout = () => {
   const { session } = useAuth();
@@ -23,10 +24,11 @@ const UserLayout = () => {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: ColorMap['blue'].dark,
+        tabBarStyle: { paddingBottom: 4 },
       }}
     >
       <Tabs.Screen
-        name='main'
+        name='shared-site-info'
         options={{
           title: 'Home',
           headerShown: false,
@@ -59,14 +61,6 @@ const UserLayout = () => {
           tabBarIcon: ({ color }) => (
             <TabBarIcon name='info-circle' color={color} />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name='shared-site-info'
-        options={{
-          title: 'Shared info',
-          headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name='group' color={color} />,
         }}
       />
     </Tabs>
