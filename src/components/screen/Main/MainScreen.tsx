@@ -1,7 +1,6 @@
 import { ScrollView } from 'react-native';
 
 import * as S from './MainScreen.styles';
-import ParkPass from '../../../components/composite/park-pass/ParkPass';
 
 const MainScreen = () => {
   return (
@@ -16,7 +15,6 @@ const MainScreen = () => {
             source={require('../../../../assets/images/main-screen.png')}
           />
         </S.ImageContainer>
-        <ParkPass />
       </ScrollView>
     </S.Container>
   );

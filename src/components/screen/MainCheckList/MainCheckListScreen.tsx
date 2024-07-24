@@ -21,6 +21,12 @@ export const MainCheckListScreen = () => {
         imageSource={require('../../../../assets/images/check-list.png')}
         bgColor='red'
       />
+      <ImageTile
+        title='Park Passes'
+        pushTo='/(user)/check-list/park-pass'
+        imageSource={require('../../../../assets/images/check-list.png')}
+        bgColor='yellow'
+      />
     </S.Container>
   );
 };

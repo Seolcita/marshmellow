@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
-import { Alert, Image, Pressable } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 
 import styles from './ParkPass.styles';
 import { Text, View } from '../../Themed';
 import ParkPassItem from './ParkPassItem';
 import ParkPassModal from './ParkPassModal';
+import Button from '../../atomic/button/Button';
 import { useParkPasses } from '../../../api/park-pass';
 import { useAuth } from '../../../providers/AuthProvider';
+import { StickyButton } from '../../common-styles/CommonStyles';
 
 export interface InitialValue {
   id: string;
@@ -36,41 +37,39 @@ export const ParkPass = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.titleWrapper}>
-          <Image
-            source={require('../../../../assets/images/park.png')}
-            style={styles.image}
-          />
-          <Text style={styles.title}>Park Passes</Text>
-        </View>
-        <Pressable
+    <View style={{ position: 'relative', flex: 1 }}>
+      <View style={styles.container}>
+        <ScrollView overScrollMode='auto' showsVerticalScrollIndicator={false}>
+          <View style={{ paddingBottom: 80 }}>
+            {data && data.length <= 0 ? (
+              <View style={styles.noParkPassContainer}>
+                <Text style={styles.noParkPass}>* Please add Park Passes!</Text>
+              </View>
+            ) : (
+              <View style={styles.listContainer}>
+                {data?.map((item) => (
+                  <ParkPassItem
+                    key={item.id}
+                    item={item}
+                    handleEdit={handleEdit}
+                    userId={userId}
+                  />
+                ))}
+              </View>
+            )}
+          </View>
+        </ScrollView>
+      </View>
+      <StickyButton>
+        <Button
+          text='+ Add Park Pass'
           onPress={() => {
             setIsEdit(false), setIsOpen(true);
           }}
-        >
-          <Ionicons name='add-circle-outline' size={30} color='black' />
-        </Pressable>
-      </View>
-      <View>
-        {data && data.length <= 0 ? (
-          <View style={styles.noParkPassContainer}>
-            <Text style={styles.noParkPass}>* Please add Park Passes!</Text>
-          </View>
-        ) : (
-          <View style={styles.listContainer}>
-            {data?.map((item) => (
-              <ParkPassItem
-                key={item.id}
-                item={item}
-                handleEdit={handleEdit}
-                userId={userId}
-              />
-            ))}
-          </View>
-        )}
-      </View>
+          paddingVertical={16}
+          paddingHorizontal={24}
+        />
+      </StickyButton>
       <ParkPassModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
