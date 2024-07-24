@@ -4,6 +4,7 @@ import { Rating } from 'react-native-ratings';
 import { Ionicons } from '@expo/vector-icons';
 import { Alert, ScrollView } from 'react-native';
 
+import { useWish } from '../../../api/wish';
 import Input from '../../atomic/input/Input';
 import ColorMap from '../../../styles/Color';
 import * as S from './SharedSiteInfo.styles';
@@ -23,6 +24,7 @@ export interface FilteredSiteInfo {
   reservationType?: string;
   share?: boolean;
   imageUrl?: string;
+  wish?: boolean;
 }
 
 enum FilterType {
@@ -44,6 +46,10 @@ const SharedSiteInfo = () => {
     return;
   }
 
+  const [sharedCampSites, setSharedCampSites] = useState<FilteredSiteInfo[]>(
+    []
+  );
+  const [wish, setWish] = useState<string[]>([]);
   const [search, setSearch] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filteredData, setFilteredData] = useState<FilteredSiteInfo[]>([]);
@@ -58,7 +64,31 @@ const SharedSiteInfo = () => {
   const defaultButtonBgColor = ColorMap['grey'].dark;
   const selectedButtonBgColor = ColorMap['yellow'].dark;
 
-  const { data, error, isLoading } = useSharedCampSitesInfo();
+  const {
+    data: sharedCampSitesInfo,
+    error: sharedCampSitesInfoError,
+    isLoading: IsSharedCampSitesLoading,
+  } = useSharedCampSitesInfo();
+
+  const {
+    data: wishData,
+    error: wishError,
+    isLoading: isWishLoading,
+  } = useWish(userId);
+
+  useEffect(() => {
+    if (sharedCampSitesInfo) {
+      setSharedCampSites(sharedCampSitesInfo);
+
+      //const filteredData = sharedCampSitesInfo.filter((item) => wish.includes(item.id));
+    }
+  }, [sharedCampSitesInfo]);
+
+  useEffect(() => {
+    if (wishData) {
+      setWish(wishData);
+    }
+  }, [wishData]);
 
   const updateSearchByKeyword = (searchValue: string) => {
     setSearch(searchValue);
@@ -66,9 +96,9 @@ const SharedSiteInfo = () => {
   };
 
   const filterDataByKeyword = (searchTerm: string) => {
-    if (!data || data.length === 0) return;
+    if (!sharedCampSites || sharedCampSites.length === 0) return;
 
-    const filtered = data.filter((item) =>
+    const filtered = sharedCampSites.filter((item) =>
       item.campgroundName?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredData(filtered);
@@ -85,35 +115,37 @@ const SharedSiteInfo = () => {
   };
 
   const handleFilter = (filterType: FilterType) => {
-    if (!data || data.length === 0) return;
+    if (!sharedCampSites || sharedCampSites.length === 0) return;
 
     resetFilterStates();
 
     if (filterType === FilterType.ALL) {
-      setFilteredData(data);
+      setFilteredData(sharedCampSites);
       setShowAll(true);
     } else if (filterType === FilterType.REVIEW) {
-      const filtered = data.filter((item) => item.rate >= rate);
+      const filtered = sharedCampSites.filter((item) => item.rate === rate);
       setFilteredData(filtered);
       setShowReviewed(true);
     } else if (filterType === FilterType.FAVOURITE) {
-      const filtered = data.filter((item) => item.favourite === true);
+      const filtered = sharedCampSites.filter(
+        (item) => item.favourite === true
+      );
       setFilteredData(filtered);
       setFavourite(true);
     } else if (filterType === FilterType.RESERVATION) {
-      const filtered = data.filter(
+      const filtered = sharedCampSites.filter(
         (item) => item.reservationType === filterType
       );
       setFilteredData(filtered);
       setShowReservation(true);
     } else if (filterType === FilterType.FCFS) {
-      const filtered = data.filter(
+      const filtered = sharedCampSites.filter(
         (item) => item.reservationType === filterType
       );
       setFilteredData(filtered);
       setShowFCFS(true);
     } else if (filterType === FilterType.ANY) {
-      const filtered = data.filter(
+      const filtered = sharedCampSites.filter(
         (item) => item.reservationType === filterType
       );
       setFilteredData(filtered);
@@ -129,7 +161,7 @@ const SharedSiteInfo = () => {
 
   useEffect(() => {
     filterDataByKeyword(search);
-  }, [data]);
+  }, [sharedCampSites]);
 
   useEffect(() => {
     resetFilterStates();
@@ -272,7 +304,7 @@ const SharedSiteInfo = () => {
             <SharedSiteInfoCard
               key={item.id}
               id={item.id}
-              userId={item.userId}
+              userId={userId}
               campgroundName={item.campgroundName}
               campgroundSiteNumber={item.campgroundSiteNumber}
               favourite={item.favourite}
@@ -280,6 +312,7 @@ const SharedSiteInfo = () => {
               reservationType={item.reservationType}
               share={item.share}
               imageUrl={item.imageUrl}
+              isWish={wish.length === 0 ? false : wish.includes(item.id)}
             />
           ))}
       </ScrollView>

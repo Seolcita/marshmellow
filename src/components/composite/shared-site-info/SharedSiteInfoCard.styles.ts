@@ -26,6 +26,7 @@ export const DefaultImage = styled.Image`
 
 export const DetailContainer = styled.View`
   justify-content: space-between;
+  flex: 1;
 `;
 
 export const SiteNameText = styled.Text`
@@ -50,10 +51,7 @@ export const ReservationTypeText = styled.Text<ReservationTypeTextProps>`
   font-size: 12px;
 `;
 
-export const WishIcon = styled.Image`
-  width: 22px;
-  height: 20px;
-`;
+export const WishIconButton = styled.Pressable``;
 
 export const EmptyView = styled.View`
   width: 22px;
