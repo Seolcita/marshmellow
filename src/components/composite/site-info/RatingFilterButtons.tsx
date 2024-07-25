@@ -29,7 +29,7 @@ const RatingFilterButtons = ({
         }
       >
         <S.RateText>1</S.RateText>
-        <Octicons name='star-fill' size={20} color='white' />
+        <Octicons name='star-fill' size={16} color='white' />
       </S.RatingFilterButton>
       <S.RatingFilterButton
         bgColor={
@@ -40,7 +40,7 @@ const RatingFilterButtons = ({
         }
       >
         <S.RateText>2</S.RateText>
-        <Octicons name='star-fill' size={20} color='white' />
+        <Octicons name='star-fill' size={16} color='white' />
       </S.RatingFilterButton>
       <S.RatingFilterButton
         bgColor={
@@ -51,7 +51,7 @@ const RatingFilterButtons = ({
         }
       >
         <S.RateText>3</S.RateText>
-        <Octicons name='star-fill' size={20} color='white' />
+        <Octicons name='star-fill' size={16} color='white' />
       </S.RatingFilterButton>
       <S.RatingFilterButton
         bgColor={
@@ -62,7 +62,7 @@ const RatingFilterButtons = ({
         }
       >
         <S.RateText>4</S.RateText>
-        <Octicons name='star-fill' size={20} color='white' />
+        <Octicons name='star-fill' size={16} color='white' />
       </S.RatingFilterButton>
       <S.RatingFilterButton
         bgColor={
@@ -73,7 +73,7 @@ const RatingFilterButtons = ({
         }
       >
         <S.RateText>5</S.RateText>
-        <Octicons name='star-fill' size={20} color='white' />
+        <Octicons name='star-fill' size={16} color='white' />
       </S.RatingFilterButton>
     </>
   );

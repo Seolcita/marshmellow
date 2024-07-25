@@ -3,15 +3,6 @@ import { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Alert, ScrollView } from 'react-native';
 
-import { useWish } from '../../../api/wish';
-import Input from '../../atomic/input/Input';
-import ColorMap from '../../../styles/Color';
-import * as S from './SharedSiteInfo.styles';
-import Button from '../../atomic/button/Button';
-import { useAuth } from '../../../providers/AuthProvider';
-import { useSharedCampSitesInfo } from '../../../api/site-info';
-import { ButtonWrapper } from '../../common-styles/CommonStyles';
-import SharedSiteInfoCard from '../../composite/shared-site-info/SharedSiteInfoCard';
 import {
   defaultButtonBgColor,
   FilteredSiteInfo,
@@ -22,7 +13,16 @@ import {
   ReviewMap,
   selectedButtonBgColor,
 } from '../site-info/lib/filter';
+import { useWish } from '../../../api/wish';
+import Input from '../../atomic/input/Input';
+import ColorMap from '../../../styles/Color';
+import * as S from './SharedSiteInfo.styles';
+import Button from '../../atomic/button/Button';
+import { useAuth } from '../../../providers/AuthProvider';
+import { useSharedCampSitesInfo } from '../../../api/site-info';
+import { ButtonWrapper } from '../../common-styles/CommonStyles';
 import RatingFilterButtons from '../site-info/RatingFilterButtons';
+import SharedSiteInfoCard from '../../composite/shared-site-info/SharedSiteInfoCard';
 
 export interface FilteredSharedSiteInfo extends FilteredSiteInfo {
   wish?: boolean;
@@ -227,44 +227,34 @@ const SharedSiteInfo = () => {
   return (
     <S.Container>
       <S.FilterHeaderContainer>
-        <S.Title>Shared Site Info</S.Title>
-        <S.FilterHeader
+        <Input
+          label=''
+          isValid={true}
+          textInputConfig={{
+            value: search.trim(),
+            onChangeText: (text) => {
+              updateSearchByKeyword(text);
+            },
+            placeholder: 'Search by Campground Name',
+            keyboardType: 'default',
+            placeholderTextColor: ColorMap['grey'].light,
+          }}
+          style={{
+            width: '85%',
+            marginTop: -10,
+            marginBottom: 15,
+          }}
+          borderColor={ColorMap['black'].main}
+        />
+        <S.Filter
           onPress={() => setIsFilterOpen((prev) => !prev)}
           $isFilterOpen={isFilterOpen}
         >
-          <Ionicons
-            name='filter'
-            size={20}
-            color={
-              isFilterOpen ? ColorMap['blue'].dark : ColorMap['white'].main
-            }
-          />
-          <S.FilterHeaderText $isFilterOpen={isFilterOpen}>
-            Filter
-          </S.FilterHeaderText>
-        </S.FilterHeader>
+          <Ionicons name='filter' size={28} color={ColorMap['blue'].dark} />
+        </S.Filter>
       </S.FilterHeaderContainer>
       {isFilterOpen && (
         <S.FilterContainer>
-          <Input
-            label=''
-            isValid={true}
-            textInputConfig={{
-              value: search.trim(),
-              onChangeText: (text) => {
-                updateSearchByKeyword(text);
-              },
-              placeholder: '🔍 Search by Campground Name',
-              keyboardType: 'default',
-              placeholderTextColor: ColorMap['grey'].extraLight,
-            }}
-            style={{
-              width: '100%',
-              marginTop: -10,
-              marginBottom: 30,
-            }}
-            borderColor={ColorMap['white'].main}
-          />
           <S.ButtonsContainer>
             <ButtonWrapper width={48}>
               <Button
@@ -336,7 +326,7 @@ const SharedSiteInfo = () => {
         </S.FilterContainer>
       )}
       <ScrollView
-        style={{ padding: 0, margin: 0, width: '100%', marginTop: 20 }}
+        style={{ padding: 0, margin: 0, width: '100%', marginTop: 10 }}
         overScrollMode='auto'
         showsVerticalScrollIndicator={false}
       >
