@@ -29,12 +29,46 @@ export interface FilteredSiteInfo {
 
 enum FilterType {
   ALL = 'ALL',
-  FAVOURITE = 'FAVOURITE',
-  REVIEW = 'REVIEW',
+  REVIEW1 = 'REVIEW1',
+  REVIEW2 = 'REVIEW2',
+  REVIEW3 = 'REVIEW3',
+  REVIEW4 = 'REVIEW4',
+  REVIEW5 = 'REVIEW5',
   RESERVATION = 'RESERVATION',
   FCFS = 'FCFS',
   ANY = 'ANY',
+  WISH = 'WISH',
 }
+
+const reviewFilters = [
+  FilterType.REVIEW1,
+  FilterType.REVIEW2,
+  FilterType.REVIEW3,
+  FilterType.REVIEW4,
+  FilterType.REVIEW5,
+];
+
+const reviewedInitialState = {
+  review1: false,
+  review2: false,
+  review3: false,
+  review4: false,
+  review5: false,
+};
+
+const ReviewMap = (filterType: FilterType) => {
+  if (filterType === FilterType.REVIEW1) {
+    return 'review1';
+  } else if (filterType === FilterType.REVIEW2) {
+    return 'review2';
+  } else if (filterType === FilterType.REVIEW3) {
+    return 'review3';
+  } else if (filterType === FilterType.REVIEW4) {
+    return 'review4';
+  } else {
+    return 'review5';
+  }
+};
 
 const SharedSiteInfo = () => {
   const { session } = useAuth();
@@ -52,14 +86,17 @@ const SharedSiteInfo = () => {
   const [wish, setWish] = useState<string[]>([]);
   const [search, setSearch] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [activeFilters, setActiveFilters] = useState<FilterType[]>([]);
   const [filteredData, setFilteredData] = useState<FilteredSiteInfo[]>([]);
-  const [showAll, setShowAll] = useState(true);
-  const [showFavourite, setFavourite] = useState(false);
-  const [showReviewed, setShowReviewed] = useState(false);
+  const [showAll, setShowAll] = useState(false);
+  const [showReviewed, setShowReviewed] = useState(reviewedInitialState);
   const [showFCFS, setShowFCFS] = useState(false);
   const [showReservation, setShowReservation] = useState(false);
   const [showAny, setShowAny] = useState(false);
+  const [showWish, setShowWish] = useState(false);
   const [rate, setRate] = useState(0);
+
+  console.log('filter💕', activeFilters);
 
   const defaultButtonBgColor = ColorMap['grey'].dark;
   const selectedButtonBgColor = ColorMap['yellow'].dark;
@@ -79,8 +116,6 @@ const SharedSiteInfo = () => {
   useEffect(() => {
     if (sharedCampSitesInfo) {
       setSharedCampSites(sharedCampSitesInfo);
-
-      //const filteredData = sharedCampSitesInfo.filter((item) => wish.includes(item.id));
     }
   }, [sharedCampSitesInfo]);
 
@@ -104,59 +139,91 @@ const SharedSiteInfo = () => {
     setFilteredData(filtered);
   };
 
+  const handleReview = ({
+    filterType,
+    rateValue,
+  }: {
+    filterType: FilterType;
+    rateValue: number;
+  }) => {
+    handleFilter(filterType);
+    setRate(rateValue);
+  };
+
   const resetFilterStates = () => {
     setShowAll(false);
-    setFavourite(false);
-    setShowReviewed(false);
+    setShowReviewed(reviewedInitialState);
     setShowFCFS(false);
     setShowReservation(false);
     setShowAny(false);
     setSearch('');
+    setShowWish(false);
+  };
+
+  const resetReviewStates = () => {
+    setShowReviewed(reviewedInitialState);
   };
 
   const handleFilter = (filterType: FilterType) => {
     if (!sharedCampSites || sharedCampSites.length === 0) return;
 
-    resetFilterStates();
+    setActiveFilters((prevFilters) => {
+      let updatedFilters: FilterType[];
+      setShowAll(false);
 
-    if (filterType === FilterType.ALL) {
-      setFilteredData(sharedCampSites);
-      setShowAll(true);
-    } else if (filterType === FilterType.REVIEW) {
-      const filtered = sharedCampSites.filter((item) => item.rate === rate);
-      setFilteredData(filtered);
-      setShowReviewed(true);
-    } else if (filterType === FilterType.FAVOURITE) {
-      const filtered = sharedCampSites.filter(
-        (item) => item.favourite === true
-      );
-      setFilteredData(filtered);
-      setFavourite(true);
-    } else if (filterType === FilterType.RESERVATION) {
-      const filtered = sharedCampSites.filter(
-        (item) => item.reservationType === filterType
-      );
-      setFilteredData(filtered);
-      setShowReservation(true);
-    } else if (filterType === FilterType.FCFS) {
-      const filtered = sharedCampSites.filter(
-        (item) => item.reservationType === filterType
-      );
-      setFilteredData(filtered);
-      setShowFCFS(true);
-    } else if (filterType === FilterType.ANY) {
-      const filtered = sharedCampSites.filter(
-        (item) => item.reservationType === filterType
-      );
-      setFilteredData(filtered);
-      setShowAny(true);
-    } else {
-      return;
-    }
-  };
+      if (filterType === FilterType.ALL) {
+        resetFilterStates();
+        setShowAll(true);
+        updatedFilters = [];
+      } else if (filterType === FilterType.RESERVATION) {
+        setShowReservation(true);
+        setShowFCFS(false);
+        setShowAny(false);
+        const filtered = prevFilters.filter(
+          (filter) => filter !== FilterType.FCFS && filter !== FilterType.ANY
+        );
+        updatedFilters = [...filtered, filterType];
+      } else if (filterType === FilterType.FCFS) {
+        setShowFCFS(true);
+        setShowReservation(false);
+        setShowAny(false);
+        const filtered = prevFilters.filter(
+          (filter) =>
+            filter !== FilterType.RESERVATION && filter !== FilterType.ANY
+        );
+        updatedFilters = [...filtered, filterType];
+      } else if (filterType === FilterType.ANY) {
+        setShowAny(true);
+        setShowFCFS(false);
+        setShowReservation(false);
+        const filtered = prevFilters.filter(
+          (filter) =>
+            filter !== FilterType.RESERVATION && filter !== FilterType.FCFS
+        );
+        updatedFilters = [...filtered, filterType];
+      } else if (reviewFilters.includes(filterType)) {
+        if (ReviewMap(filterType)) {
+          resetReviewStates();
+          setShowReviewed((prev) => ({
+            ...prev,
+            [ReviewMap(filterType)]: true,
+          }));
+        }
 
-  const handleReview = (rate: number) => {
-    setRate(rate);
+        const filtered = prevFilters.filter(
+          (filter) => !reviewFilters.includes(filter)
+        );
+        updatedFilters = [...filtered, filterType];
+      } else if (prevFilters.includes(FilterType.WISH)) {
+        updatedFilters = prevFilters.filter(
+          (filter) => filter !== FilterType.WISH
+        );
+      } else {
+        updatedFilters = [...prevFilters, filterType];
+      }
+
+      return [...new Set(updatedFilters)];
+    });
   };
 
   useEffect(() => {
@@ -164,8 +231,50 @@ const SharedSiteInfo = () => {
   }, [sharedCampSites]);
 
   useEffect(() => {
-    resetFilterStates();
-  }, []);
+    if (!sharedCampSites || sharedCampSites.length === 0) return;
+
+    let filteredData = sharedCampSites;
+
+    activeFilters.forEach((filterType) => {
+      switch (filterType) {
+        case FilterType.REVIEW1:
+        case FilterType.REVIEW2:
+        case FilterType.REVIEW3:
+        case FilterType.REVIEW4:
+        case FilterType.REVIEW5:
+          filteredData = filteredData.filter((item) => item.rate === rate);
+          break;
+        case FilterType.WISH:
+          filteredData = filteredData.filter((item) => wish.includes(item.id));
+          break;
+        case FilterType.RESERVATION:
+          filteredData = filteredData.filter(
+            (item) => item.reservationType === FilterType.RESERVATION
+          );
+          break;
+        case FilterType.FCFS:
+          filteredData = filteredData.filter(
+            (item) => item.reservationType === FilterType.FCFS
+          );
+          break;
+        case FilterType.ANY:
+          filteredData = filteredData.filter(
+            (item) => item.reservationType === FilterType.ANY
+          );
+          break;
+        default:
+          break;
+      }
+    });
+
+    setFilteredData(filteredData);
+  }, [activeFilters, sharedCampSites]);
+
+  console.log('filteredData 🐸', filteredData);
+  const handleShowWish = () => {
+    setShowWish((prev) => !prev);
+    handleFilter(FilterType.WISH);
+  };
 
   return (
     <S.Container>
@@ -221,12 +330,12 @@ const SharedSiteInfo = () => {
             </ButtonWrapper>
             <ButtonWrapper width={48}>
               <Button
-                text='Favorites'
-                onPress={() => handleFilter(FilterType.FAVOURITE)}
+                text='Saved'
+                onPress={() => handleShowWish()}
                 borderRadius={5}
                 textSize={16}
                 bgColor={
-                  showFavourite ? selectedButtonBgColor : defaultButtonBgColor
+                  showWish ? selectedButtonBgColor : defaultButtonBgColor
                 }
                 paddingVertical={8}
               />
@@ -271,25 +380,60 @@ const SharedSiteInfo = () => {
           </S.ButtonsContainer>
           <S.FilterCategoryText>Rating</S.FilterCategoryText>
           <S.RatingContainer>
-            <Rating
-              type='custom'
-              ratingColor='#FEB941'
-              ratingBackgroundColor={ColorMap['grey'].light}
-              tintColor={ColorMap['blue'].dark}
-              ratingCount={5}
-              startingValue={0}
-              imageSize={35}
-              onFinishRating={(rate: number) => handleReview(rate)}
+            <Button
+              text='1'
+              onPress={() =>
+                handleReview({ filterType: FilterType.REVIEW1, rateValue: 1 })
+              }
+              bgColor={
+                showReviewed.review1
+                  ? selectedButtonBgColor
+                  : defaultButtonBgColor
+              }
             />
             <Button
-              text='Search'
-              onPress={() => handleFilter(FilterType.REVIEW)}
-              borderRadius={5}
-              textSize={16}
-              bgColor={
-                showReviewed ? selectedButtonBgColor : defaultButtonBgColor
+              text='2'
+              onPress={() =>
+                handleReview({ filterType: FilterType.REVIEW2, rateValue: 2 })
               }
-              paddingVertical={8}
+              bgColor={
+                showReviewed.review2
+                  ? selectedButtonBgColor
+                  : defaultButtonBgColor
+              }
+            />
+            <Button
+              text='3'
+              onPress={() =>
+                handleReview({ filterType: FilterType.REVIEW3, rateValue: 3 })
+              }
+              bgColor={
+                showReviewed.review3
+                  ? selectedButtonBgColor
+                  : defaultButtonBgColor
+              }
+            />
+            <Button
+              text='4'
+              onPress={() =>
+                handleReview({ filterType: FilterType.REVIEW4, rateValue: 4 })
+              }
+              bgColor={
+                showReviewed.review4
+                  ? selectedButtonBgColor
+                  : defaultButtonBgColor
+              }
+            />
+            <Button
+              text='5'
+              onPress={() =>
+                handleReview({ filterType: FilterType.REVIEW5, rateValue: 5 })
+              }
+              bgColor={
+                showReviewed.review5
+                  ? selectedButtonBgColor
+                  : defaultButtonBgColor
+              }
             />
           </S.RatingContainer>
         </S.FilterContainer>
