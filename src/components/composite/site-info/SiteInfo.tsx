@@ -3,15 +3,6 @@ import { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Alert, ScrollView } from 'react-native';
 
-import { useWish } from '../../../api/wish';
-import Input from '../../atomic/input/Input';
-import ColorMap from '../../../styles/Color';
-import * as S from './SharedSiteInfo.styles';
-import Button from '../../atomic/button/Button';
-import { useAuth } from '../../../providers/AuthProvider';
-import { useSharedCampSitesInfo } from '../../../api/site-info';
-import { ButtonWrapper } from '../../common-styles/CommonStyles';
-import SharedSiteInfoCard from '../../composite/shared-site-info/SharedSiteInfoCard';
 import {
   defaultButtonBgColor,
   FilteredSiteInfo,
@@ -21,14 +12,22 @@ import {
   reviewFilters,
   ReviewMap,
   selectedButtonBgColor,
-} from '../site-info/lib/filter';
-import RatingFilterButtons from '../site-info/RatingFilterButtons';
+} from './lib/filter';
+import * as S from './SiteInfo.styles';
+import ColorMap from '../../../styles/Color';
+import Input from '../../atomic/input/Input';
+import Button from '../../atomic/button/Button';
+import RatingFilterButtons from './RatingFilterButtons';
+import { useAuth } from '../../../providers/AuthProvider';
+import { useCampSitesPartialInfo } from '../../../api/site-info';
+import SiteInfoCard from '../../composite/site-info/SiteInfoCard';
+import { ButtonWrapper } from '../../common-styles/CommonStyles';
 
-export interface FilteredSharedSiteInfo extends FilteredSiteInfo {
-  wish?: boolean;
+interface FilteredMySiteInfo extends FilteredSiteInfo {
+  favourite?: boolean;
 }
 
-const SharedSiteInfo = () => {
+const SiteInfo = () => {
   const { session } = useAuth();
   const userId = session?.user.id;
   if (!userId) {
@@ -38,47 +37,31 @@ const SharedSiteInfo = () => {
     return;
   }
 
-  const [sharedCampSites, setSharedCampSites] = useState<
-    FilteredSharedSiteInfo[]
-  >([]);
-  const [wish, setWish] = useState<string[]>([]);
+  const [campSites, setCampSites] = useState<FilteredMySiteInfo[]>([]);
   const [search, setSearch] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [activeFilters, setActiveFilters] = useState<FilterType[]>([]);
-  const [filteredData, setFilteredData] = useState<FilteredSharedSiteInfo[]>(
-    []
-  );
-  const [showAll, setShowAll] = useState(false);
-  const [showReviewed, setShowReviewed] = useState(reviewedInitialState);
+  const [filteredData, setFilteredData] = useState<FilteredMySiteInfo[]>([]);
+  const [showAll, setShowAll] = useState(true);
+  const [showFavourite, setShowFavourite] = useState(false);
+  const [showShared, setShowShared] = useState(false);
   const [showFCFS, setShowFCFS] = useState(false);
   const [showReservation, setShowReservation] = useState(false);
   const [showAny, setShowAny] = useState(false);
-  const [showWish, setShowWish] = useState(false);
   const [rate, setRate] = useState(0);
+  const [showReviewed, setShowReviewed] = useState(reviewedInitialState);
+  const [activeFilters, setActiveFilters] = useState<FilterType[]>([]);
 
   const {
-    data: sharedCampSitesInfo,
-    error: sharedCampSitesInfoError,
-    isLoading: IsSharedCampSitesLoading,
-  } = useSharedCampSitesInfo();
-
-  const {
-    data: wishData,
-    error: wishError,
-    isLoading: isWishLoading,
-  } = useWish(userId);
+    data: campSitesInfo,
+    error,
+    isLoading,
+  } = useCampSitesPartialInfo(userId);
 
   useEffect(() => {
-    if (sharedCampSitesInfo) {
-      setSharedCampSites(sharedCampSitesInfo);
+    if (campSitesInfo) {
+      setCampSites(campSitesInfo);
     }
-  }, [sharedCampSitesInfo]);
-
-  useEffect(() => {
-    if (wishData) {
-      setWish(wishData);
-    }
-  }, [wishData]);
+  }, [campSitesInfo]);
 
   const updateSearchByKeyword = (searchValue: string) => {
     setSearch(searchValue);
@@ -86,10 +69,10 @@ const SharedSiteInfo = () => {
   };
 
   const filterDataByKeyword = (searchTerm: string) => {
-    if (!sharedCampSites || sharedCampSites.length === 0) return;
+    if (!campSites || campSites.length === 0) return;
 
-    const filtered = sharedCampSites.filter((item) =>
-      item.campgroundName?.toLowerCase().includes(searchTerm.toLowerCase())
+    const filtered = campSites.filter((item) =>
+      item.campgroundName.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredData(filtered);
   };
@@ -101,12 +84,13 @@ const SharedSiteInfo = () => {
 
   const resetFilterStates = () => {
     setShowAll(false);
+    setShowFavourite(false);
+    setShowShared(false);
     setShowReviewed(reviewedInitialState);
     setShowFCFS(false);
     setShowReservation(false);
     setShowAny(false);
     setSearch('');
-    setShowWish(false);
   };
 
   const resetReviewStates = () => {
@@ -114,7 +98,7 @@ const SharedSiteInfo = () => {
   };
 
   const handleFilter = (filterType: FilterType) => {
-    if (!sharedCampSites || sharedCampSites.length === 0) return;
+    if (!campSites || campSites.length === 0) return;
 
     setActiveFilters((prevFilters) => {
       let updatedFilters: FilterType[];
@@ -124,6 +108,19 @@ const SharedSiteInfo = () => {
         resetFilterStates();
         setShowAll(true);
         updatedFilters = [];
+      } else if (reviewFilters.includes(filterType)) {
+        if (ReviewMap(filterType)) {
+          resetReviewStates();
+          setShowReviewed((prev) => ({
+            ...prev,
+            [ReviewMap(filterType)]: true,
+          }));
+        }
+
+        const filtered = prevFilters.filter(
+          (filter) => !reviewFilters.includes(filter)
+        );
+        updatedFilters = [...filtered, filterType];
       } else if (filterType === FilterType.RESERVATION) {
         setShowReservation(true);
         setShowFCFS(false);
@@ -150,23 +147,8 @@ const SharedSiteInfo = () => {
             filter !== FilterType.RESERVATION && filter !== FilterType.FCFS
         );
         updatedFilters = [...filtered, filterType];
-      } else if (reviewFilters.includes(filterType)) {
-        if (ReviewMap(filterType)) {
-          resetReviewStates();
-          setShowReviewed((prev) => ({
-            ...prev,
-            [ReviewMap(filterType)]: true,
-          }));
-        }
-
-        const filtered = prevFilters.filter(
-          (filter) => !reviewFilters.includes(filter)
-        );
-        updatedFilters = [...filtered, filterType];
-      } else if (prevFilters.includes(FilterType.WISH)) {
-        updatedFilters = prevFilters.filter(
-          (filter) => filter !== FilterType.WISH
-        );
+      } else if (prevFilters.includes(filterType)) {
+        updatedFilters = prevFilters.filter((filter) => filter !== filterType);
       } else {
         updatedFilters = [...prevFilters, filterType];
       }
@@ -175,19 +157,24 @@ const SharedSiteInfo = () => {
     });
   };
 
-  const handleShowWish = () => {
-    setShowWish((prev) => !prev);
-    handleFilter(FilterType.WISH);
+  const handleShowFavourite = () => {
+    setShowFavourite((prev) => !prev);
+    handleFilter(FilterType.FAVOURITE);
+  };
+
+  const handleShowShare = () => {
+    setShowShared((prev) => !prev);
+    handleFilter(FilterType.SHARED);
   };
 
   useEffect(() => {
     filterDataByKeyword(search);
-  }, [sharedCampSites, search]);
+  }, [campSites, search]);
 
   useEffect(() => {
-    if (!sharedCampSites || sharedCampSites.length === 0) return;
+    if (!campSites || campSites.length === 0) return;
 
-    let filteredData = sharedCampSites;
+    let filteredData = campSites;
 
     activeFilters.forEach((filterType) => {
       switch (filterType) {
@@ -198,8 +185,11 @@ const SharedSiteInfo = () => {
         case FilterType.REVIEW5:
           filteredData = filteredData.filter((item) => item.rate === rate);
           break;
-        case FilterType.WISH:
-          filteredData = filteredData.filter((item) => wish.includes(item.id));
+        case FilterType.SHARED:
+          filteredData = filteredData.filter((item) => item.share === true);
+          break;
+        case FilterType.FAVOURITE:
+          filteredData = filteredData.filter((item) => item.favourite === true);
           break;
         case FilterType.RESERVATION:
           filteredData = filteredData.filter(
@@ -222,12 +212,12 @@ const SharedSiteInfo = () => {
     });
 
     setFilteredData(filteredData);
-  }, [activeFilters, sharedCampSites]);
+  }, [activeFilters, campSites]);
 
   return (
     <S.Container>
       <S.FilterHeaderContainer>
-        <S.Title>Shared Site Info</S.Title>
+        <S.Title>Site Information</S.Title>
         <S.FilterHeader
           onPress={() => setIsFilterOpen((prev) => !prev)}
           $isFilterOpen={isFilterOpen}
@@ -266,7 +256,7 @@ const SharedSiteInfo = () => {
             borderColor={ColorMap['white'].main}
           />
           <S.ButtonsContainer>
-            <ButtonWrapper width={48}>
+            <ButtonWrapper width={28}>
               <Button
                 text='All'
                 onPress={() => handleFilter(FilterType.ALL)}
@@ -276,14 +266,26 @@ const SharedSiteInfo = () => {
                 paddingVertical={8}
               />
             </ButtonWrapper>
-            <ButtonWrapper width={48}>
+            <ButtonWrapper width={28}>
               <Button
-                text='Saved'
-                onPress={() => handleShowWish()}
+                text='Shared'
+                onPress={() => handleShowShare()}
                 borderRadius={5}
                 textSize={16}
                 bgColor={
-                  showWish ? selectedButtonBgColor : defaultButtonBgColor
+                  showShared ? selectedButtonBgColor : defaultButtonBgColor
+                }
+                paddingVertical={8}
+              />
+            </ButtonWrapper>
+            <ButtonWrapper width={38}>
+              <Button
+                text='Favorites'
+                onPress={() => handleShowFavourite()}
+                borderRadius={5}
+                textSize={16}
+                bgColor={
+                  showFavourite ? selectedButtonBgColor : defaultButtonBgColor
                 }
                 paddingVertical={8}
               />
@@ -342,17 +344,13 @@ const SharedSiteInfo = () => {
       >
         {filteredData.length > 0 &&
           filteredData?.map((item) => (
-            <SharedSiteInfoCard
+            <SiteInfoCard
               key={item.id}
               id={item.id}
-              userId={userId}
               campgroundName={item.campgroundName}
               campgroundSiteNumber={item.campgroundSiteNumber}
-              rate={item.rate}
-              reservationType={item.reservationType}
+              favourite={item.favourite}
               share={item.share}
-              imageUrl={item.imageUrl}
-              isWish={wish.length === 0 ? false : wish.includes(item.id)}
             />
           ))}
       </ScrollView>
@@ -360,4 +358,4 @@ const SharedSiteInfo = () => {
   );
 };
 
-export default SharedSiteInfo;
+export default SiteInfo;

@@ -6,10 +6,10 @@ import { Ionicons } from '@expo/vector-icons';
 import * as S from './SharedSiteInfoCard.styles';
 import { ReservationType } from '../../../types';
 import { useUpdateWish } from '../../../api/wish';
-import { FilteredSiteInfo } from './SharedSiteInfo';
+import { FilteredSharedSiteInfo } from './SharedSiteInfo';
 import RemoteImage from '../../atomic/remote-Image/RemoteImage';
 
-interface SharedSiteInfoCardProps extends FilteredSiteInfo {
+interface SharedSiteInfoCardProps extends FilteredSharedSiteInfo {
   isWish: boolean;
 }
 

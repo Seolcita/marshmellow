@@ -8,16 +8,14 @@ import ColorMap from '../../../styles/Color';
 
 interface SiteInfoCardProps {
   id: string;
-  userId: string;
   campgroundName: string;
-  campgroundSiteNumber: string;
-  favourite: boolean;
-  share: boolean;
+  campgroundSiteNumber?: string;
+  favourite?: boolean;
+  share?: boolean;
 }
 
 const SiteInfoCard = ({
   id,
-  userId,
   campgroundName,
   campgroundSiteNumber,
   favourite,
