@@ -9,8 +9,6 @@ import { useCampSiteInfo } from '../../../api/site-info';
 import { useAuth } from '../../../providers/AuthProvider';
 import SiteInfoDetail from '../../composite/site-info/SiteInfoDetail';
 import SiteInfoDetailEdit from '../../composite/site-info/SiteInfoDetailEdit';
-import { View } from '../../Themed';
-import { FontAwesome } from '@expo/vector-icons';
 
 interface SiteInfoDetailProps {
   id: string;

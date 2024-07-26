@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-import { router } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -74,6 +74,15 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
 
   return (
     <>
+      <Stack.Screen
+        options={{
+          title: sharedCheckListName
+            ? sharedCheckListName
+            : 'Shared Check List Detail',
+          headerTitleAlign: 'center',
+          headerShown: true,
+        }}
+      />
       {userId && (
         <S.ScrollViewContainer>
           {isAdmin && (
