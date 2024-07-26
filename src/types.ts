@@ -134,3 +134,10 @@ export interface Invitation {
   status?: InvitationStatus;
   isHidden?: boolean;
 }
+
+export enum ScreenName {
+  HOME = 'HOME',
+  CHECK_LIST = 'CHECK_LIST',
+  TRIPS = 'TRIPS',
+  MY_SITES = 'MY_SITES',
+}

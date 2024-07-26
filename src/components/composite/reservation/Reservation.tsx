@@ -78,13 +78,6 @@ const Reservation = () => {
 
   return (
     <S.Container>
-      <S.ImageBackgroundContainer>
-        <S.ImageBackground
-          source={require('../../../../assets/images/trips.png')}
-          resizeMode='cover'
-        />
-      </S.ImageBackgroundContainer>
-
       <S.TitleContainer>
         <S.TitleImageContainer>
           <S.Image source={require('../../../../assets/images/combi.png')} />

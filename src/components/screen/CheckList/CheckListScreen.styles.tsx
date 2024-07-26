@@ -4,7 +4,6 @@ import ColorMap from '../../../styles/Color';
 import {
   StickyButton,
   TopScreenImageBackground,
-  TopScreenImageBackgroundContainer,
 } from '../../common-styles/CommonStyles';
 
 export const ScrollViewContainer = styled.ScrollView`
@@ -12,13 +11,9 @@ export const ScrollViewContainer = styled.ScrollView`
   margin-bottom: 80px;
 `;
 
-export const ImageBackgroundContainer = styled(
-  TopScreenImageBackgroundContainer
-)``;
-
 export const ContentsContainer = styled.View`
   padding-horizontal: 10px;
-  margin-top: 40px;
+  margin-top: 20px;
 `;
 
 export const ImageBackground = styled(TopScreenImageBackground)`

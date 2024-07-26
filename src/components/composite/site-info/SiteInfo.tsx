@@ -14,6 +14,7 @@ import {
   selectedButtonBgColor,
 } from './lib/filter';
 import * as S from './SiteInfo.styles';
+import * as s from '../shared-site-info/SharedSiteInfo.styles';
 import ColorMap from '../../../styles/Color';
 import Input from '../../atomic/input/Input';
 import Button from '../../atomic/button/Button';
@@ -22,6 +23,7 @@ import { useAuth } from '../../../providers/AuthProvider';
 import { useCampSitesPartialInfo } from '../../../api/site-info';
 import SiteInfoCard from '../../composite/site-info/SiteInfoCard';
 import { ButtonWrapper } from '../../common-styles/CommonStyles';
+import { View } from '../../Themed';
 
 interface FilteredMySiteInfo extends FilteredSiteInfo {
   favourite?: boolean;
@@ -215,46 +217,36 @@ const SiteInfo = () => {
   }, [activeFilters, campSites]);
 
   return (
-    <S.Container>
-      <S.FilterHeaderContainer>
-        <S.Title>Site Information</S.Title>
-        <S.FilterHeader
+    <s.Container>
+      <s.FilterHeaderContainer>
+        <Input
+          label=''
+          isValid={true}
+          textInputConfig={{
+            value: search.trim(),
+            onChangeText: (text) => {
+              updateSearchByKeyword(text);
+            },
+            placeholder: 'Search by Campground Name',
+            keyboardType: 'default',
+            placeholderTextColor: ColorMap['grey'].light,
+          }}
+          style={{
+            width: '85%',
+            marginTop: -10,
+            marginBottom: 15,
+          }}
+          borderColor={ColorMap['black'].main}
+        />
+        <s.Filter
           onPress={() => setIsFilterOpen((prev) => !prev)}
           $isFilterOpen={isFilterOpen}
         >
-          <Ionicons
-            name='filter'
-            size={20}
-            color={
-              isFilterOpen ? ColorMap['blue'].dark : ColorMap['white'].main
-            }
-          />
-          <S.FilterHeaderText $isFilterOpen={isFilterOpen}>
-            Filter
-          </S.FilterHeaderText>
-        </S.FilterHeader>
-      </S.FilterHeaderContainer>
+          <Ionicons name='filter' size={28} color={ColorMap['blue'].dark} />
+        </s.Filter>
+      </s.FilterHeaderContainer>
       {isFilterOpen && (
-        <S.FilterContainer>
-          <Input
-            label=''
-            isValid={true}
-            textInputConfig={{
-              value: search.trim(),
-              onChangeText: (text) => {
-                updateSearchByKeyword(text);
-              },
-              placeholder: '🔍 Search by Campground Name',
-              keyboardType: 'default',
-              placeholderTextColor: ColorMap['grey'].extraLight,
-            }}
-            style={{
-              width: '100%',
-              marginTop: -10,
-              marginBottom: 30,
-            }}
-            borderColor={ColorMap['white'].main}
-          />
+        <s.FilterContainer>
           <S.ButtonsContainer>
             <ButtonWrapper width={28}>
               <Button
@@ -291,7 +283,7 @@ const SiteInfo = () => {
               />
             </ButtonWrapper>
           </S.ButtonsContainer>
-          <S.FilterCategoryText>Reservation Type</S.FilterCategoryText>
+          <s.FilterCategoryText>Reservation Type</s.FilterCategoryText>
           <S.ButtonsContainer>
             <ButtonWrapper width={38}>
               <Button
@@ -328,17 +320,22 @@ const SiteInfo = () => {
               />
             </ButtonWrapper>
           </S.ButtonsContainer>
-          <S.FilterCategoryText>Rating</S.FilterCategoryText>
-          <S.RatingContainer>
+          <s.FilterCategoryText>Rating</s.FilterCategoryText>
+          <s.RatingContainer>
             <RatingFilterButtons
               showReviewed={showReviewed}
               handleReview={handleReview}
             />
-          </S.RatingContainer>
-        </S.FilterContainer>
+          </s.RatingContainer>
+        </s.FilterContainer>
       )}
       <ScrollView
-        style={{ padding: 0, margin: 0, width: '100%', marginTop: 20 }}
+        style={{
+          width: '104%',
+          marginTop: 10,
+          paddingHorizontal: 0,
+          marginHorizontal: 0,
+        }}
         overScrollMode='auto'
         showsVerticalScrollIndicator={false}
       >
@@ -354,7 +351,7 @@ const SiteInfo = () => {
             />
           ))}
       </ScrollView>
-    </S.Container>
+    </s.Container>
   );
 };
 

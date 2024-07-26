@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 20,
     overflow: 'visible',
+    marginBottom: 16,
   },
 
   titleContainer: {
