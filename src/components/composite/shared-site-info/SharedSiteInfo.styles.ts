@@ -13,7 +13,7 @@ interface FilterHeaderProps {
 export const Container = styled.View`
   flex: 1;
   align-items: center;
-  background-color: ${ColorMap['grey'].extraLight};
+  margin-top: 10px;
 `;
 
 export const FilterHeaderContainer = styled.View`
@@ -23,7 +23,7 @@ export const FilterHeaderContainer = styled.View`
   elevation: 5;
   align-items: center;
   justify-content: space-between;
-  background-color: ${ColorMap['white'].main};
+  z-index: 100;
 `;
 
 export const Filter = styled.Pressable<FilterHeaderProps>`

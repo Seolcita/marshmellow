@@ -13,7 +13,6 @@ const UserLayout = () => {
 
   // if (headerHeight === 0) edges.push('top');
 
-  console.log('UserLayout- session data', session);
   return (
     // <SafeAreaView
     //   edges={['left', 'right']}

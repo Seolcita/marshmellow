@@ -237,11 +237,11 @@ const SharedSiteInfo = () => {
             },
             placeholder: 'Search by Campground Name',
             keyboardType: 'default',
-            placeholderTextColor: ColorMap['grey'].light,
+            placeholderTextColor: ColorMap['grey'].main,
           }}
           style={{
             width: '85%',
-            marginTop: -10,
+            marginTop: -5,
             marginBottom: 15,
           }}
           borderColor={ColorMap['black'].main}
