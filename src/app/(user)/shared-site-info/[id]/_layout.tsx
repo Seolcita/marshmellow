@@ -6,7 +6,10 @@ const SiteInfoDetailLayout = () => {
       <Stack.Screen
         name='index'
         options={{
-          headerShown: false,
+          title: 'Site Info Detail',
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerBackTitle: 'Back',
         }}
       />
     </Stack>

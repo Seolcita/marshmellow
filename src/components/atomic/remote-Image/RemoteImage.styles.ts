@@ -7,7 +7,7 @@ interface ImageProps {
 }
 
 export const Image = styled.Image<ImageProps>`
-  width: ${({ width }) => width ?? 300}px;
-  height: ${({ height }) => height ?? 200}px;
+  width: ${({ width }) => (width ? `${width}px` : '100%')};
+  height: ${({ height }) => (height ? `${height}px` : '300px')};
   border-radius: ${({ borderRadius }) => borderRadius ?? 10}px;
 `;

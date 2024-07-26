@@ -11,11 +11,12 @@ export const UploadImageContainer = styled.View`
   align-items: center;
   margin-bottom: 30px;
   margin-top: 10px;
+  width: 100%;
 `;
 
 export const PreviewImage = styled.Image`
-  width: 300px;
-  height: 200px;
+  width: 100%;
+  height: 300px;
   border-radius: 10px;
 `;
 
@@ -28,6 +29,7 @@ export const DefaultImage = styled.Image`
 export const UploadedImage = styled.View`
   margin-bottom: 20px;
   border-radius: 10px;
+  width: 100%;
 `;
 
 export const ButtonsContainer = styled.View`

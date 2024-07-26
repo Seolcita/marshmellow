@@ -6,7 +6,9 @@ const SharedCheckListIdLayout = () => {
       <Stack.Screen
         name='index'
         options={{
-          headerShown: false,
+          title: 'Shared Check List Details',
+          headerTitleAlign: 'center',
+          headerShown: true,
         }}
       />
     </Stack>
