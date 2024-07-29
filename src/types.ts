@@ -141,3 +141,9 @@ export enum ScreenName {
   TRIPS = 'TRIPS',
   MY_SITES = 'MY_SITES',
 }
+
+export interface Profile {
+  id: string;
+  email: string;
+  name: string;
+}

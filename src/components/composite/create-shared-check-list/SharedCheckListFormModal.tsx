@@ -20,9 +20,10 @@ const SharedCheckListFormModal = ({
   isModalOpen,
   setIsModalOpen,
 }: SharedCheckListFormModalProps) => {
-  const { session } = useAuth();
+  const { session, profile } = useAuth();
   const userEmail = session?.user.email;
   const userId = session?.user.id;
+  const userName = profile?.name;
 
   if (!userEmail || !userId) {
     Alert.alert('Session is not valid, please login again');
@@ -52,7 +53,12 @@ const SharedCheckListFormModal = ({
       return;
     }
 
-    userEmail && insertSharedCheckList({ name, adminEmail: userEmail });
+    userEmail &&
+      insertSharedCheckList({
+        name,
+        adminEmail: userEmail,
+        adminName: userName,
+      });
     initiate();
   };
 

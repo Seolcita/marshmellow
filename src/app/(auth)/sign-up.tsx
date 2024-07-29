@@ -10,8 +10,8 @@ import { Link } from 'expo-router';
 
 import Button from '../../components/atomic/button/Button';
 import Input from '../../components/atomic/input/Input';
+import { signUpWithEmailAndPW } from '../../api/auth';
 import { Text } from '../../components/Themed';
-import { supabase } from '../../lib/supabase';
 import Colors from '../../constants/Colors';
 import ColorMap from '../../styles/Color';
 
@@ -33,6 +33,11 @@ export const SignUpScreen = () => {
       isValid: true,
       error: '',
     },
+    name: {
+      value: '',
+      isValid: true,
+      error: '',
+    },
   });
 
   const handleInputChange = (inputIdentifier: string, enteredValue: string) => {
@@ -42,14 +47,15 @@ export const SignUpScreen = () => {
     }));
   };
 
-  async function signUpWithEmail() {
+  async function handleSignUpWithEmailAndPW() {
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+
+    signUpWithEmailAndPW({
       email: inputs.email.value,
       password: inputs.password.value,
+      name: inputs.name.value,
     });
 
-    if (error) Alert.alert(error.message);
     setLoading(false);
   }
 
@@ -60,8 +66,14 @@ export const SignUpScreen = () => {
     const isPasswordValid = inputs.password.value.length > 6;
     const isConfirmPasswordValid =
       inputs.password.value === inputs.confirmPassword.value;
+    const isNameValid = inputs.name.value.length > 0;
 
-    if (!isEmailValid || !isPasswordValid || !isConfirmPasswordValid) {
+    if (
+      !isEmailValid ||
+      !isPasswordValid ||
+      !isConfirmPasswordValid ||
+      !isNameValid
+    ) {
       setInputs((prevState) => ({
         email: {
           value: prevState.email.value,
@@ -81,6 +93,11 @@ export const SignUpScreen = () => {
           error: !isConfirmPasswordValid
             ? 'Confirm password does not match with the password.'
             : '',
+        },
+        name: {
+          value: prevState.name.value,
+          isValid: isNameValid,
+          error: !isNameValid ? 'Please enter your name.' : '',
         },
       }));
 
@@ -103,9 +120,14 @@ export const SignUpScreen = () => {
         isValid: isConfirmPasswordValid,
         error: '',
       },
+      name: {
+        value: prevState.name.value,
+        isValid: isNameValid,
+        error: '',
+      },
     }));
 
-    signUpWithEmail();
+    handleSignUpWithEmailAndPW();
   };
 
   return (
@@ -116,6 +138,21 @@ export const SignUpScreen = () => {
           style={styles.image}
         />
         <Text style={styles.title}>Create Account</Text>
+        <Input
+          label='Name'
+          isValid={inputs.name.isValid}
+          textInputConfig={{
+            value: inputs.name.value.trim(),
+            onChangeText: handleInputChange.bind(this, 'name'),
+            placeholder: 'john',
+            placeholderTextColor: ColorMap['grey'].light,
+            keyboardType: 'default',
+          }}
+          error={inputs.name.error}
+          borderColor={ColorMap['white'].main}
+          labelColor={ColorMap['white'].main}
+          errorColor={ColorMap['red'].light}
+        />
         <Input
           label='Email'
           isValid={inputs.email.isValid}

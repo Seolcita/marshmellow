@@ -1,11 +1,11 @@
-import { View, Text, StyleSheet, Alert, ImageBackground } from 'react-native';
-import { Link } from 'expo-router';
 import { useState } from 'react';
+import { Link } from 'expo-router';
+import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 
-import Button from '../../components/atomic/button/Button';
-import Input from '../../components/atomic/input/Input';
-import { supabase } from '../../lib/supabase';
 import ColorMap from '../../styles/Color';
+import { signInWithEmailAndPW } from '../../api/auth';
+import Input from '../../components/atomic/input/Input';
+import Button from '../../components/atomic/button/Button';
 
 export const SignInScreen = () => {
   const [loading, setLoading] = useState(false);
@@ -29,16 +29,16 @@ export const SignInScreen = () => {
     }));
   };
 
-  async function signInWithEmail() {
+  const handleSignInWithEmailandPW = async () => {
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
+
+    signInWithEmailAndPW({
       email: inputs.email.value,
       password: inputs.password.value,
     });
 
-    if (error) Alert.alert(error.message);
     setLoading(false);
-  }
+  };
 
   const handleSubmit = () => {
     const rexec = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
@@ -78,7 +78,7 @@ export const SignInScreen = () => {
       },
     }));
 
-    signInWithEmail();
+    handleSignInWithEmailandPW();
   };
 
   return (

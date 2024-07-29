@@ -50,3 +50,9 @@ export const StickyButton = styled.View`
   right: 20px;
   z-index: 1;
 `;
+
+export const ModalTitle = styled.Text`
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+`;

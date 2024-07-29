@@ -3,23 +3,12 @@ import { Tabs } from 'expo-router';
 import ColorMap from '../../styles/Color';
 import { useAuth } from '../../providers/AuthProvider';
 import TabBarIcon from '../../components/atomic/TabBarIcon/TabBarIcon';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { View } from '../../components/Themed';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const UserLayout = () => {
   const { session } = useAuth();
 
-  // const edges = ['left', 'right'];
-
-  // if (headerHeight === 0) edges.push('top');
-
   return (
-    // <SafeAreaView
-    //   edges={['left', 'right']}
-    //   style={{
-    //     flex: 1,
-    //   }}
-    // >
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: ColorMap['blue'].dark,
@@ -62,8 +51,22 @@ const UserLayout = () => {
           ),
         }}
       />
+      <Tabs.Screen
+        name='profile'
+        options={{
+          title: 'Profile',
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons
+              name='account-circle'
+              size={24}
+              color='grey'
+              style={{ marginBottom: -5 }}
+            />
+          ),
+        }}
+      />
     </Tabs>
-    // </SafeAreaView>
   );
 };
 
