@@ -10,13 +10,14 @@ import { supabase } from '../../lib/supabase';
 interface InsertSharedCheckList {
   name: string;
   adminEmail: string;
+  adminName: string;
 }
 
 export const useInsertSharedCheckList = (userId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    async mutationFn({ name, adminEmail }: InsertSharedCheckList) {
+    async mutationFn({ name, adminEmail, adminName }: InsertSharedCheckList) {
       const { error, data: addedSharedCheckList } = await supabase
         .from('shared_check_list')
         .insert({
@@ -63,17 +64,18 @@ export const useInsertSharedCheckList = (userId: string) => {
             .insert({
               inviter_id: userId,
               invitee_email: adminEmail,
-              invitee_name: 'Admin', //TODO: get the name from the user
+              invitee_name: adminName, //TODO: get the name from the user
               shared_check_list_id: id,
               shared_check_list_name: name,
               status: 'ACCEPTED',
-              is_hide: true,
+              is_hidden: true,
             })
             .select();
 
           if (error) {
             console.log(
-              'Failed to Creat invitation for Admin. Please try again'
+              'Failed to Creat invitation for Admin. Please try again',
+              error
             );
 
             const { error: deletingSharedCheckListError } = await supabase
