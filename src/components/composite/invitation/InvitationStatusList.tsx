@@ -1,12 +1,13 @@
+import { router } from 'expo-router';
+import { Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 
-import { useInvitationWithSharedCheckListId } from '../../../api/invitation';
+import { Invitation } from '../../../types';
 import * as S from './InvitationStatusList.styles';
 import InvitationStatusItem from './InvitationStatusItem';
-import { Invitation } from '../../../types';
 import { useAuth } from '../../../providers/AuthProvider';
-import { Alert } from 'react-native';
-import { router } from 'expo-router';
+import { useInvitationWithSharedCheckListId } from '../../../api/invitation';
+import InvitationStatusSkeletons from '../skeleton/invitation-status/InvitationStatusSkeletons';
 
 interface InvitationStatusProps {
   sharedCheckListId: number;
@@ -24,9 +25,13 @@ const InvitationStatusList = ({ sharedCheckListId }: InvitationStatusProps) => {
   }
 
   const [invitations, setInvitations] = useState<Invitation[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const { data: invitationInfo, error } =
-    useInvitationWithSharedCheckListId(sharedCheckListId);
+  const {
+    data: invitationInfo,
+    error,
+    isLoading: isInvitationLoading,
+  } = useInvitationWithSharedCheckListId(sharedCheckListId);
 
   useEffect(() => {
     if (invitationInfo) {
@@ -35,14 +40,19 @@ const InvitationStatusList = ({ sharedCheckListId }: InvitationStatusProps) => {
       });
 
       setInvitations(filteredAdmin);
+      setIsLoading(false);
     }
   }, [invitationInfo]);
 
   return (
     <S.Container>
-      {invitations?.map((invitation) => (
-        <InvitationStatusItem key={invitation.id} invitation={invitation} />
-      ))}
+      {!isLoading && invitations ? (
+        invitations.map((invitation) => (
+          <InvitationStatusItem key={invitation.id} invitation={invitation} />
+        ))
+      ) : (
+        <InvitationStatusSkeletons />
+      )}
     </S.Container>
   );
 };

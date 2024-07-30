@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 
-import { Tile } from '../../common-styles/CommonStyles';
+import { Tile } from '../../../common-styles/CommonStyles';
 
 export const SiteInfoCardContainer = styled(Tile)`
   flex-direction: row;

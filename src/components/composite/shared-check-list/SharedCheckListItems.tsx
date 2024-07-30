@@ -135,8 +135,8 @@ const SharedCheckListItems = ({
 
   return (
     <>
-      {checkList.map((item) => (
-        <S.Wrapper key={item.id}>
+      {checkList.map((item, idx) => (
+        <S.Wrapper key={item.id} $isLastItem={checkList.length === idx + 1}>
           <S.CheckBoxContainer>
             <CheckBox
               checked={checkedItems[item.id] ?? item.checked}

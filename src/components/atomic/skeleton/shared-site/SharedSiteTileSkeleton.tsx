@@ -1,8 +1,8 @@
 import { Skeleton } from '@rneui/themed';
 import { Ionicons } from '@expo/vector-icons';
 
-import { View } from '../../Themed';
 import * as S from './SharedSiteTileSkeleton.styled';
+import { View } from '../../../Themed';
 
 const SharedSiteTileSkeleton = () => {
   return (

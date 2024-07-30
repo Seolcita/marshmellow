@@ -1,4 +1,4 @@
-import SharedSiteTileSkeleton from '../../../atomic/skeleton/SharedSiteTileSkeleton';
+import SharedSiteTileSkeleton from '../../../atomic/skeleton/shared-site/SharedSiteTileSkeleton';
 import * as S from './SharedSiteSkeletons.styles';
 
 const SharedSiteSkeletons = () => {

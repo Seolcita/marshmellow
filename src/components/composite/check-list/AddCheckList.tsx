@@ -11,7 +11,7 @@ import Button from '../../atomic/button/Button';
 import * as s from '../../common-styles/CommonStyles';
 import { useAuth } from '../../../providers/AuthProvider';
 import { useCheckList, useInsertCheckList } from '../../../api/check-list';
-import CheckListItemSkeleton from '../skeleton/check-list/CheckListItemSkeleton';
+import CheckListItemSkeleton from '../../atomic/skeleton/check-list/CheckListItemSkeleton';
 
 interface AddCheckListProps {
   categoryId: string;

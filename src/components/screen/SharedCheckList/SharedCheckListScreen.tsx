@@ -15,6 +15,8 @@ import InvitationStatus from '../../composite/invitation/InvitationStatusList';
 import SharedCategories from '../../composite/shared-category/SharedCategories';
 import { useMySharedCheckListForAdmin } from '../../../api/my-shared-check-list';
 import CreateInvitationForm from '../../composite/invitation/CreateInvitationForm';
+import CheckListSkeleton from '../../composite/skeleton/check-list/CheckListSkeleton';
+import AccordionSkeletons from '../../composite/skeleton/Accordion/AccordionSkeletons';
 import ClearAllCheckBoxModal from '../../composite/shared-check-list/ClearAllCheckBoxModal';
 import ClearAllAssigneeModal from '../../composite/shared-check-list/ClearAllAssigneeModal';
 import InvitationAcceptedMembers from '../../composite/invitation/InvitationAcceptedMembers';
@@ -31,7 +33,7 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [isCreateInvitationOpen, setIsCreateInvitationOpen] = useState(false);
   const [isInvitationStatusListOpen, setIsInvitationStatusListOpen] =
-    useState(true);
+    useState(false);
   const [isAdminSettingOpen, setIsAdminSettingOpen] = useState(false);
   const [isMembersOpen, setIsMembersOpen] = useState(true);
   const [isCreateCategoryModalOpen, setIsCreateCategoryModalOpen] =
@@ -41,6 +43,9 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
   const [isClearAssigneesModalOpen, setIsClearAssigneesModalOpen] =
     useState(false);
   const [sharedCheckListName, setSharedCheckListName] = useState('');
+  const [isAdminLoading, setIsAdminLoading] = useState(true);
+  const [isExistingCategoriesLoading, setIsExistingCategoriesLoading] =
+    useState(true);
 
   const { session } = useAuth();
   const userId = session?.user.id;
@@ -51,12 +56,16 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
     return;
   }
 
-  const { data: adminInfo, error: fetchingAdminInfoError } =
-    useMySharedCheckListForAdmin({ id, userId });
+  const {
+    data: adminInfo,
+    error: fetchingAdminInfoError,
+    isLoading: isAdminInfoLoading,
+  } = useMySharedCheckListForAdmin({ id, userId });
 
   const {
     data: existSharedCategories,
     error: fetchingExistSharedCategoriesError,
+    isLoading: isExistSharedCategoriesLoading,
   } = useSharedCategories(id);
 
   useEffect(() => {
@@ -64,11 +73,17 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
       setIsAdmin(adminInfo.isAdmin);
       setSharedCheckListName(adminInfo.name);
     }
+    if (!isAdminInfoLoading) {
+      setIsAdminLoading(false);
+    }
   }, [adminInfo]);
 
   useEffect(() => {
     if (existSharedCategories) {
       setCategories(existSharedCategories);
+    }
+    if (!isExistSharedCategoriesLoading) {
+      setIsExistingCategoriesLoading(false);
     }
   }, [existSharedCategories]);
 
@@ -85,7 +100,7 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
       />
       {userId && (
         <S.ScrollViewContainer>
-          {isAdmin && (
+          {isAdmin && !isAdminLoading && (
             <>
               <s.Accordion
                 onPress={() => setIsCreateInvitationOpen((prev) => !prev)}
@@ -94,7 +109,7 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
                 <FontAwesome
                   name={isCreateInvitationOpen ? 'caret-up' : 'caret-down'}
                   size={24}
-                  color='black'
+                  color='white'
                 />
               </s.Accordion>
               {isCreateInvitationOpen && (
@@ -104,11 +119,6 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
                   sharedCheckListId={id}
                 />
               )}
-            </>
-          )}
-
-          {isAdmin && (
-            <>
               <s.Accordion
                 $marginTop={isCreateInvitationOpen ? 48 : 0}
                 onPress={() => setIsInvitationStatusListOpen((prev) => !prev)}
@@ -118,17 +128,13 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
                 <FontAwesome
                   name={isInvitationStatusListOpen ? 'caret-up' : 'caret-down'}
                   size={24}
-                  color='black'
+                  color='white'
                 />
               </s.Accordion>
               {isInvitationStatusListOpen && (
                 <InvitationStatus sharedCheckListId={id} />
               )}
-            </>
-          )}
 
-          {isAdmin && (
-            <>
               <s.Accordion
                 $marginTop={isInvitationStatusListOpen ? 48 : 0}
                 onPress={() => setIsAdminSettingOpen((prev) => !prev)}
@@ -138,11 +144,11 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
                 <FontAwesome
                   name={isInvitationStatusListOpen ? 'caret-up' : 'caret-down'}
                   size={24}
-                  color='black'
+                  color='white'
                 />
               </s.Accordion>
               {isAdminSettingOpen && (
-                <View style={{ paddingHorizontal: 20 }}>
+                <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
                   <Button
                     text='Clear all Checkbox'
                     onPress={() => {
@@ -165,18 +171,20 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
             </>
           )}
 
-          {!isAdmin && (
+          {isAdmin && isAdminLoading && <AccordionSkeletons />}
+
+          {!isAdmin && !isAdminLoading && (
             <s.Accordion onPress={() => setIsMembersOpen((prev) => !prev)}>
               <s.Text>Members</s.Text>
               <FontAwesome
                 name={isMembersOpen ? 'caret-up' : 'caret-down'}
                 size={24}
-                color='black'
+                color='white'
               />
             </s.Accordion>
           )}
 
-          {!isAdmin && isMembersOpen && (
+          {!isAdmin && isMembersOpen && !isAdminLoading && (
             <InvitationAcceptedMembers sharedCheckListId={id} />
           )}
 
@@ -199,7 +207,7 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
                 />
               </View>
             </S.ButtonsContainer>
-            {categories && (
+            {categories && !isExistingCategoriesLoading ? (
               <SharedCategories
                 categories={categories}
                 sharedCheckListId={id}
@@ -207,6 +215,8 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
                 isClearCheckList={isClearCheckList}
                 setIsClearCheckList={setIsClearCheckList}
               />
+            ) : (
+              <CheckListSkeleton />
             )}
           </S.ContentsContainer>
         </S.ScrollViewContainer>

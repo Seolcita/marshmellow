@@ -1,19 +1,14 @@
 import styled from 'styled-components/native';
 
-import ColorMap from '../../../styles/Color';
+import ColorMap from '../../../../styles/Color';
 
-interface AccordionProps {
-  $marginTop?: number;
-}
-
-export const Accordion = styled.Pressable<AccordionProps>`
+export const Accordion = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-vertical: 20px;
   margin-horizontal: 10px;
-  margin-top: ${({ $marginTop }) => $marginTop ?? 20}px;
-  background-color: ${ColorMap['grey'].dark};
+  margin-top: 20px;
+  background-color: ${ColorMap['grey'].light};
   padding-vertical: 8px;
   padding-horizontal: 20px;
   border-radius: 5px;

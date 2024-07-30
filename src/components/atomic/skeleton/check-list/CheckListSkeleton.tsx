@@ -1,5 +1,5 @@
-import CategorySkeleton from '../../../atomic/skeleton/check-list/CategorySkeleton';
-import CheckListItemSkeleton from '../../../atomic/skeleton/check-list/CheckListItemSkeleton';
+import CategorySkeleton from './CategorySkeleton';
+import CheckListItemSkeleton from './CheckListItemSkeleton';
 
 const CheckListSkeleton = () => {
   return (
