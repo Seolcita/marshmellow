@@ -22,6 +22,7 @@ import { useAuth } from '../../../providers/AuthProvider';
 import { useSharedCampSitesInfo } from '../../../api/site-info';
 import { ButtonWrapper } from '../../common-styles/CommonStyles';
 import RatingFilterButtons from '../site-info/RatingFilterButtons';
+import SharedSiteSkeletons from '../skeleton/shared-site/SharedSiteSkeletons';
 import SharedSiteInfoCard from '../../composite/shared-site-info/SharedSiteInfoCard';
 
 export interface FilteredSharedSiteInfo extends FilteredSiteInfo {
@@ -325,27 +326,38 @@ const SharedSiteInfo = () => {
           </S.RatingContainer>
         </S.FilterContainer>
       )}
-      <ScrollView
-        style={{ padding: 0, margin: 0, width: '100%', marginTop: 10 }}
-        overScrollMode='auto'
-        showsVerticalScrollIndicator={false}
-      >
-        {filteredData.length > 0 &&
-          filteredData?.map((item) => (
-            <SharedSiteInfoCard
-              key={item.id}
-              id={item.id}
-              userId={userId}
-              campgroundName={item.campgroundName}
-              campgroundSiteNumber={item.campgroundSiteNumber}
-              rate={item.rate}
-              reservationType={item.reservationType}
-              share={item.share}
-              imageUrl={item.imageUrl}
-              isWish={wish.length === 0 ? false : wish.includes(item.id)}
-            />
-          ))}
-      </ScrollView>
+      {IsSharedCampSitesLoading || isWishLoading ? (
+        <SharedSiteSkeletons />
+      ) : (
+        <ScrollView
+          style={{ padding: 0, margin: 0, width: '100%', marginTop: 10 }}
+          overScrollMode='auto'
+          showsVerticalScrollIndicator={false}
+        >
+          {filteredData.length > 0 ? (
+            filteredData?.map((item) => (
+              <SharedSiteInfoCard
+                key={item.id}
+                id={item.id}
+                userId={userId}
+                campgroundName={item.campgroundName}
+                campgroundSiteNumber={item.campgroundSiteNumber}
+                rate={item.rate}
+                reservationType={item.reservationType}
+                share={item.share}
+                imageUrl={item.imageUrl}
+                isWish={wish.length === 0 ? false : wish.includes(item.id)}
+              />
+            ))
+          ) : (
+            <S.NoDataFoundContainer>
+              <S.NoDataFoundText>
+                Sorry, no data matches your search.
+              </S.NoDataFoundText>
+            </S.NoDataFoundContainer>
+          )}
+        </ScrollView>
+      )}
     </S.Container>
   );
 };
