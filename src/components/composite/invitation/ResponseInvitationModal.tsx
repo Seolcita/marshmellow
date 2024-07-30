@@ -5,6 +5,7 @@ import Button from '../../atomic/button/Button';
 import { InvitationStatus } from '../../../types';
 import * as S from '../reservation/ReservationDetail.styles';
 import { useUpdateInvitation } from '../../../api/invitation';
+import { router } from 'expo-router';
 
 interface ResponseInvitationModalProps {
   id: number;
@@ -33,6 +34,10 @@ export const ResponseInvitationModal = ({
     updateInvitation({
       status,
     });
+
+    if (status === InvitationStatus.ACCEPTED) {
+      router.push('/(user)/check-list/shared');
+    }
   };
 
   return (

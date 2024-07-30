@@ -11,8 +11,8 @@ import {
 import Button from '../../atomic/button/Button';
 import * as S from './SharedCheckListListsScreen.styles';
 import { useAuth } from '../../../providers/AuthProvider';
+import TileSkeletons from '../../composite/skeleton/tiles/TileSkeletons';
 import SharedCheckListFormModal from '../../composite/create-shared-check-list/SharedCheckListFormModal';
-import SharedCheckListTileSkeletons from '../../composite/skeleton/shared-check-list-tile/SharedCheckListTileSkeletons';
 
 const SharedCheckListListsScreen = () => {
   const { session } = useAuth();
@@ -101,7 +101,7 @@ const SharedCheckListListsScreen = () => {
               </S.MySharedCheckListTile>
             ))
           ) : (
-            <SharedCheckListTileSkeletons />
+            <TileSkeletons />
           )}
         </ScrollView>
 

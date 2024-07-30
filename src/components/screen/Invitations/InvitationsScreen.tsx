@@ -9,6 +9,7 @@ import { Invitation, InvitationStatus } from '../../../types';
 import * as s from '../SharedCheckList/SharedCheckListScreen.styles';
 import { useInvitationWithUserEmail } from '../../../api/invitation';
 import InvitationTile from '../../composite/invitation/InvitationTile';
+import TileSkeletons from '../../composite/skeleton/tiles/TileSkeletons';
 import PendingInvitationTile from '../../composite/invitation/PendingInvitationTile';
 
 export const InvitationsScreen = () => {
@@ -16,6 +17,7 @@ export const InvitationsScreen = () => {
   const [isPendingOpen, setIsPendingOpen] = useState(true);
   const [isAcceptedOpen, setIsAcceptedOpen] = useState(true);
   const [isRejectedOpen, setIsRejectedOpen] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { session } = useAuth();
   const userEmail = session?.user.email;
@@ -30,7 +32,7 @@ export const InvitationsScreen = () => {
 
   const {
     data: myInvitationList,
-    isLoading,
+    isLoading: isMyInvitationListLoading,
     isError,
   } = useInvitationWithUserEmail(userEmail);
 
@@ -38,7 +40,11 @@ export const InvitationsScreen = () => {
     if (myInvitationList) {
       setMyInvitations(myInvitationList);
     }
-  }, [myInvitationList]);
+
+    if (!isMyInvitationListLoading) {
+      setIsLoading(false);
+    }
+  }, [myInvitationList, isMyInvitationListLoading]);
 
   const pending = myInvitations.filter(
     (invitation) => invitation.status === InvitationStatus.PENDING
@@ -61,11 +67,13 @@ export const InvitationsScreen = () => {
         <FontAwesome
           name={isPendingOpen ? 'caret-up' : 'caret-down'}
           size={24}
-          color='black'
+          color='white'
         />
       </s.Accordion>
       <S.TileContainer>
-        {isPendingOpen &&
+        {!isLoading &&
+          isPendingOpen &&
+          pending.length > 0 &&
           pending.map((invitation) => (
             <PendingInvitationTile
               key={invitation.id}
@@ -73,6 +81,16 @@ export const InvitationsScreen = () => {
               userId={userId}
             />
           ))}
+        {!isLoading && isPendingOpen && pending.length === 0 && (
+          <S.NoMatchingResultText>
+            No pending invitations
+          </S.NoMatchingResultText>
+        )}
+        {isLoading && isPendingOpen && (
+          <S.SkeletonContainer>
+            <TileSkeletons />
+          </S.SkeletonContainer>
+        )}
       </S.TileContainer>
 
       <s.Accordion
@@ -83,11 +101,12 @@ export const InvitationsScreen = () => {
         <FontAwesome
           name={isAcceptedOpen ? 'caret-up' : 'caret-down'}
           size={24}
-          color='black'
+          color='white'
         />
       </s.Accordion>
       <S.TileContainer>
-        {isAcceptedOpen &&
+        {!isLoading &&
+          isAcceptedOpen &&
           accepted.map((invitation) => (
             <InvitationTile
               key={invitation.id}
@@ -95,6 +114,17 @@ export const InvitationsScreen = () => {
               userId={userId}
             />
           ))}
+        {!isLoading && isAcceptedOpen && accepted.length === 0 && (
+          <S.NoMatchingResultText>
+            No accepted invitations
+          </S.NoMatchingResultText>
+        )}
+
+        {isLoading && isAcceptedOpen && (
+          <S.SkeletonContainer>
+            <TileSkeletons />
+          </S.SkeletonContainer>
+        )}
       </S.TileContainer>
 
       <s.Accordion
@@ -105,11 +135,12 @@ export const InvitationsScreen = () => {
         <FontAwesome
           name={isRejectedOpen ? 'caret-up' : 'caret-down'}
           size={24}
-          color='black'
+          color='white'
         />
       </s.Accordion>
       <S.TileContainer>
-        {isRejectedOpen &&
+        {!isLoading &&
+          isRejectedOpen &&
           rejected.map((invitation) => (
             <InvitationTile
               key={invitation.id}
@@ -117,6 +148,16 @@ export const InvitationsScreen = () => {
               userId={userId}
             />
           ))}
+        {!isLoading && isRejectedOpen && rejected.length === 0 && (
+          <S.NoMatchingResultText>
+            No rejected invitations
+          </S.NoMatchingResultText>
+        )}
+        {isLoading && isRejectedOpen && (
+          <S.SkeletonContainer>
+            <TileSkeletons />
+          </S.SkeletonContainer>
+        )}
       </S.TileContainer>
     </>
   );

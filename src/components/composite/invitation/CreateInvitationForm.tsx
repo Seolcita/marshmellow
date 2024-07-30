@@ -78,9 +78,6 @@ const CreateInvitationForm = ({
       },
     }));
 
-    console.log('inputs🧪', inputs);
-    console.log('sharedCheckListName🧪', sharedCheckListName);
-
     // Send invitation
     insertInvitation({
       inviterId,
@@ -88,6 +85,19 @@ const CreateInvitationForm = ({
       inviteeName: inputs.name.value,
       sharedCheckListName,
       sharedCheckListId,
+    });
+
+    setInputs({
+      email: {
+        value: '',
+        isValid: true,
+        error: '',
+      },
+      name: {
+        value: '',
+        isValid: true,
+        error: '',
+      },
     });
   };
 
