@@ -24,6 +24,7 @@ import { ButtonWrapper } from '../../common-styles/CommonStyles';
 import RatingFilterButtons from '../site-info/RatingFilterButtons';
 import SharedSiteSkeletons from '../skeleton/shared-site/SharedSiteSkeletons';
 import SharedSiteInfoCard from '../../composite/shared-site-info/SharedSiteInfoCard';
+import { set } from 'date-fns';
 
 export interface FilteredSharedSiteInfo extends FilteredSiteInfo {
   wish?: boolean;
@@ -56,11 +57,13 @@ const SharedSiteInfo = () => {
   const [showAny, setShowAny] = useState(false);
   const [showWish, setShowWish] = useState(false);
   const [rate, setRate] = useState(0);
+  const [isCampSitesLoading, setIsLoading] = useState(true);
+  const [isWishesLoading, setIsWishesLoading] = useState(true);
 
   const {
     data: sharedCampSitesInfo,
     error: sharedCampSitesInfoError,
-    isLoading: IsSharedCampSitesLoading,
+    isLoading: isSharedCampSitesLoading,
   } = useSharedCampSitesInfo();
 
   const {
@@ -73,11 +76,17 @@ const SharedSiteInfo = () => {
     if (sharedCampSitesInfo) {
       setSharedCampSites(sharedCampSitesInfo);
     }
+    if (!isSharedCampSitesLoading) {
+      setIsLoading(false);
+    }
   }, [sharedCampSitesInfo]);
 
   useEffect(() => {
     if (wishData) {
       setWish(wishData);
+    }
+    if (!isWishLoading) {
+      setIsWishesLoading(false);
     }
   }, [wishData]);
 
@@ -326,7 +335,7 @@ const SharedSiteInfo = () => {
           </S.RatingContainer>
         </S.FilterContainer>
       )}
-      {IsSharedCampSitesLoading || isWishLoading ? (
+      {isCampSitesLoading || isWishesLoading ? (
         <SharedSiteSkeletons />
       ) : (
         <ScrollView

@@ -1,4 +1,5 @@
 import { Image } from 'react-native';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import React, { ComponentProps, useEffect, useState } from 'react';
 
 import * as S from './RemoteImage.styles';
@@ -19,6 +20,7 @@ const RemoteImage = ({
   ...imageProps
 }: RemoteImageProps) => {
   const [image, setImage] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!path) return;
@@ -38,20 +40,22 @@ const RemoteImage = ({
         fr.onload = () => {
           setImage(fr.result as string);
         };
+        setIsLoading(false);
       }
     })();
   }, [path]);
-  return (
-    image &&
-    image !== '' && (
-      <S.Image
-        source={{ uri: image }}
-        {...imageProps}
-        width={width}
-        height={height}
-        borderRadius={borderRadius}
-      />
-    )
+  return image && image !== '' && !isLoading ? (
+    <S.Image
+      source={{ uri: image }}
+      {...imageProps}
+      width={width}
+      height={height}
+      borderRadius={borderRadius}
+    />
+  ) : (
+    <S.LoadingImageContainer>
+      <FontAwesome name='spinner' size={40} color='black' />
+    </S.LoadingImageContainer>
   );
 };
 
