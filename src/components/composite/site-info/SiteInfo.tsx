@@ -14,16 +14,16 @@ import {
   selectedButtonBgColor,
 } from './lib/filter';
 import * as S from './SiteInfo.styles';
-import * as s from '../shared-site-info/SharedSiteInfo.styles';
 import ColorMap from '../../../styles/Color';
 import Input from '../../atomic/input/Input';
 import Button from '../../atomic/button/Button';
 import RatingFilterButtons from './RatingFilterButtons';
 import { useAuth } from '../../../providers/AuthProvider';
+import * as s from '../shared-site-info/SharedSiteInfo.styles';
 import { useCampSitesPartialInfo } from '../../../api/site-info';
 import SiteInfoCard from '../../composite/site-info/SiteInfoCard';
 import { ButtonWrapper } from '../../common-styles/CommonStyles';
-import { View } from '../../Themed';
+import MySitesSkeletons from '../skeleton/my-site/MySitesSkeletons';
 
 interface FilteredMySiteInfo extends FilteredSiteInfo {
   favourite?: boolean;
@@ -52,16 +52,20 @@ const SiteInfo = () => {
   const [rate, setRate] = useState(0);
   const [showReviewed, setShowReviewed] = useState(reviewedInitialState);
   const [activeFilters, setActiveFilters] = useState<FilterType[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     data: campSitesInfo,
     error,
-    isLoading,
+    isLoading: isCampSitesLoading,
   } = useCampSitesPartialInfo(userId);
 
   useEffect(() => {
     if (campSitesInfo) {
       setCampSites(campSitesInfo);
+    }
+    if (!isCampSitesLoading) {
+      setIsLoading(false);
     }
   }, [campSitesInfo]);
 
@@ -339,8 +343,10 @@ const SiteInfo = () => {
         overScrollMode='auto'
         showsVerticalScrollIndicator={false}
       >
-        {filteredData.length > 0 &&
-          filteredData?.map((item) => (
+        {isLoading && <MySitesSkeletons />}
+        {!isLoading &&
+          filteredData.length > 0 &&
+          filteredData.map((item) => (
             <SiteInfoCard
               key={item.id}
               id={item.id}
