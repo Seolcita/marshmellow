@@ -12,12 +12,14 @@ import { useAuth } from '../../../providers/AuthProvider';
 import { useClearCheckList } from '../../../api/check-list';
 import Categories from '../../composite/category/Categories';
 import CreateCategoryModal from '../../composite/category/CreateCategoryModal';
+import CheckListSkeleton from '../../composite/skeleton/check-list/CheckListSkeleton';
 
 const CheckListScreen = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isEditMode, setIsEditMode] = useState(true);
   const [isClearCheckList, setIsClearCheckList] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { session } = useAuth();
   const userId = session?.user.id;
@@ -28,7 +30,11 @@ const CheckListScreen = () => {
     return;
   }
 
-  const { error, data: existCategories } = useCategories(userId);
+  const {
+    error,
+    data: existCategories,
+    isLoading: isCategoriesLoading,
+  } = useCategories(userId);
   const { mutate: clearCheckList } = useClearCheckList();
 
   useEffect(() => {
@@ -38,6 +44,9 @@ const CheckListScreen = () => {
         id: category.id,
       }));
       setCategories(formattedCategories);
+    }
+    if (!isCategoriesLoading) {
+      setIsLoading(false);
     }
   }, [existCategories]);
 
@@ -82,13 +91,17 @@ const CheckListScreen = () => {
                   )}
                 </View>
               </S.ButtonsContainer>
-              <Categories
-                categories={categories}
-                userId={userId}
-                isEditMode={isEditMode}
-                isClearCheckList={isClearCheckList}
-                setIsClearCheckList={setIsClearCheckList}
-              />
+              {isLoading ? (
+                <CheckListSkeleton />
+              ) : (
+                <Categories
+                  categories={categories}
+                  userId={userId}
+                  isEditMode={isEditMode}
+                  isClearCheckList={isClearCheckList}
+                  setIsClearCheckList={setIsClearCheckList}
+                />
+              )}
             </S.ContentsContainer>
           </S.ScrollViewContainer>
           <S.CreateCategoryStickyButton>

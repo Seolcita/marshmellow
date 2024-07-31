@@ -22,7 +22,9 @@ import { useAuth } from '../../../providers/AuthProvider';
 import { useSharedCampSitesInfo } from '../../../api/site-info';
 import { ButtonWrapper } from '../../common-styles/CommonStyles';
 import RatingFilterButtons from '../site-info/RatingFilterButtons';
+import SharedSiteSkeletons from '../skeleton/shared-site/SharedSiteSkeletons';
 import SharedSiteInfoCard from '../../composite/shared-site-info/SharedSiteInfoCard';
+import { set } from 'date-fns';
 
 export interface FilteredSharedSiteInfo extends FilteredSiteInfo {
   wish?: boolean;
@@ -55,11 +57,13 @@ const SharedSiteInfo = () => {
   const [showAny, setShowAny] = useState(false);
   const [showWish, setShowWish] = useState(false);
   const [rate, setRate] = useState(0);
+  const [isCampSitesLoading, setIsLoading] = useState(true);
+  const [isWishesLoading, setIsWishesLoading] = useState(true);
 
   const {
     data: sharedCampSitesInfo,
     error: sharedCampSitesInfoError,
-    isLoading: IsSharedCampSitesLoading,
+    isLoading: isSharedCampSitesLoading,
   } = useSharedCampSitesInfo();
 
   const {
@@ -72,11 +76,17 @@ const SharedSiteInfo = () => {
     if (sharedCampSitesInfo) {
       setSharedCampSites(sharedCampSitesInfo);
     }
+    if (!isSharedCampSitesLoading) {
+      setIsLoading(false);
+    }
   }, [sharedCampSitesInfo]);
 
   useEffect(() => {
     if (wishData) {
       setWish(wishData);
+    }
+    if (!isWishLoading) {
+      setIsWishesLoading(false);
     }
   }, [wishData]);
 
@@ -325,27 +335,38 @@ const SharedSiteInfo = () => {
           </S.RatingContainer>
         </S.FilterContainer>
       )}
-      <ScrollView
-        style={{ padding: 0, margin: 0, width: '100%', marginTop: 10 }}
-        overScrollMode='auto'
-        showsVerticalScrollIndicator={false}
-      >
-        {filteredData.length > 0 &&
-          filteredData?.map((item) => (
-            <SharedSiteInfoCard
-              key={item.id}
-              id={item.id}
-              userId={userId}
-              campgroundName={item.campgroundName}
-              campgroundSiteNumber={item.campgroundSiteNumber}
-              rate={item.rate}
-              reservationType={item.reservationType}
-              share={item.share}
-              imageUrl={item.imageUrl}
-              isWish={wish.length === 0 ? false : wish.includes(item.id)}
-            />
-          ))}
-      </ScrollView>
+      {isCampSitesLoading || isWishesLoading ? (
+        <SharedSiteSkeletons />
+      ) : (
+        <ScrollView
+          style={{ padding: 0, margin: 0, width: '100%', marginTop: 10 }}
+          overScrollMode='auto'
+          showsVerticalScrollIndicator={false}
+        >
+          {filteredData.length > 0 ? (
+            filteredData?.map((item) => (
+              <SharedSiteInfoCard
+                key={item.id}
+                id={item.id}
+                userId={userId}
+                campgroundName={item.campgroundName}
+                campgroundSiteNumber={item.campgroundSiteNumber}
+                rate={item.rate}
+                reservationType={item.reservationType}
+                share={item.share}
+                imageUrl={item.imageUrl}
+                isWish={wish.length === 0 ? false : wish.includes(item.id)}
+              />
+            ))
+          ) : (
+            <S.NoDataFoundContainer>
+              <S.NoDataFoundText>
+                Sorry, no data matches your search.
+              </S.NoDataFoundText>
+            </S.NoDataFoundContainer>
+          )}
+        </ScrollView>
+      )}
     </S.Container>
   );
 };

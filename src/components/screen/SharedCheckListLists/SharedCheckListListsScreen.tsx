@@ -9,8 +9,9 @@ import {
   useMySharedCheckList,
 } from '../../../api/my-shared-check-list';
 import Button from '../../atomic/button/Button';
-import { useAuth } from '../../../providers/AuthProvider';
 import * as S from './SharedCheckListListsScreen.styles';
+import { useAuth } from '../../../providers/AuthProvider';
+import TileSkeletons from '../../composite/skeleton/tiles/TileSkeletons';
 import SharedCheckListFormModal from '../../composite/create-shared-check-list/SharedCheckListFormModal';
 
 const SharedCheckListListsScreen = () => {
@@ -25,16 +26,23 @@ const SharedCheckListListsScreen = () => {
   const [mySharedCheckList, setMySharedCheckList] = useState<
     MySharedCheckList[]
   >([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { data, error } = useMySharedCheckList(userId);
+  const {
+    data,
+    error,
+    isLoading: isCheckListLoading,
+  } = useMySharedCheckList(userId);
   const { mutate: deleteMySharedCheckList } =
     useDeleteMySharedCheckList(userId);
 
   useEffect(() => {
     data && setMySharedCheckList(data);
-  }, [mySharedCheckList, data]);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
+    if (!isCheckListLoading) {
+      setIsLoading(false);
+    }
+  }, [data, isCheckListLoading]);
 
   return (
     <>
@@ -67,28 +75,34 @@ const SharedCheckListListsScreen = () => {
             marginBottom: 40,
           }}
         >
-          {mySharedCheckList?.map((list) => (
-            <S.MySharedCheckListTile>
-              <Pressable
-                onPress={() =>
-                  router.push(
-                    `/(user)/check-list/shared/${list.sharedCheckListId}`
-                  )
-                }
-              >
-                <S.Text>{list.name}</S.Text>
-              </Pressable>
-              <Pressable
-                onPress={() => deleteMySharedCheckList(list.sharedCheckListId)}
-              >
-                <MaterialCommunityIcons
-                  name='delete-forever-outline'
-                  size={24}
-                  color='black'
-                />
-              </Pressable>
-            </S.MySharedCheckListTile>
-          ))}
+          {!isLoading && mySharedCheckList ? (
+            mySharedCheckList.map((list) => (
+              <S.MySharedCheckListTile>
+                <Pressable
+                  onPress={() =>
+                    router.push(
+                      `/(user)/check-list/shared/${list.sharedCheckListId}`
+                    )
+                  }
+                >
+                  <S.Text>{list.name}</S.Text>
+                </Pressable>
+                <Pressable
+                  onPress={() =>
+                    deleteMySharedCheckList(list.sharedCheckListId)
+                  }
+                >
+                  <MaterialCommunityIcons
+                    name='delete-forever-outline'
+                    size={24}
+                    color='black'
+                  />
+                </Pressable>
+              </S.MySharedCheckListTile>
+            ))
+          ) : (
+            <TileSkeletons />
+          )}
         </ScrollView>
 
         <SharedCheckListFormModal

@@ -8,12 +8,12 @@ import {
 
 export const ScrollViewContainer = styled.ScrollView`
   width: 100%;
-  margin-bottom: 80px;
 `;
 
 export const ContentsContainer = styled.View`
   padding-horizontal: 10px;
   margin-top: 20px;
+  padding-bottom: 80px;
 `;
 
 export const ImageBackground = styled(TopScreenImageBackground)`
@@ -48,6 +48,4 @@ export const Button = styled.Pressable`
   border-radius: 5px;
 `;
 
-export const CreateCategoryStickyButton = styled(StickyButton)`
-  margin-bottom: 20px;
-`;
+export const CreateCategoryStickyButton = styled(StickyButton)``;

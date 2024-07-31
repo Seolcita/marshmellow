@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { router } from 'expo-router';
 
-import { View } from '../../Themed';
+import { CheckList } from '../../../types';
 import * as S from './AddCheckList.styles';
 import Input from '../../atomic/input/Input';
 import ColorMap from '../../../styles/Color';
@@ -11,6 +11,7 @@ import Button from '../../atomic/button/Button';
 import * as s from '../../common-styles/CommonStyles';
 import { useAuth } from '../../../providers/AuthProvider';
 import { useCheckList, useInsertCheckList } from '../../../api/check-list';
+import CheckListItemSkeleton from '../../atomic/skeleton/check-list/CheckListItemSkeleton';
 
 interface AddCheckListProps {
   categoryId: string;
@@ -31,6 +32,8 @@ const AddCheckList = ({
     name: '',
     error: '',
   });
+  const [checkList, setCheckList] = useState<CheckList[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { session } = useAuth();
   const userId = session?.user.id;
@@ -47,7 +50,20 @@ const AddCheckList = ({
     categoryId,
   });
 
-  const { error, data: checkList } = useCheckList(categoryId);
+  const {
+    error,
+    data: checkListInfo,
+    isLoading: isCheckListItemLoading,
+  } = useCheckList(categoryId);
+
+  useEffect(() => {
+    if (checkListInfo) {
+      setCheckList(checkListInfo);
+    }
+    if (!isCheckListItemLoading) {
+      setIsLoading(false);
+    }
+  }, [checkListInfo, checkList]);
 
   const handleChange = (text: string) => {
     setItem({ name: text, error: '' });
@@ -96,7 +112,7 @@ const AddCheckList = ({
         </S.InputContainer>
       )}
 
-      {checkList && (
+      {checkList && !isLoading ? (
         <CheckListItems
           items={checkList}
           categoryId={categoryId}
@@ -104,6 +120,12 @@ const AddCheckList = ({
           isClearCheckList={isClearCheckList}
           setIsClearCheckList={setIsClearCheckList}
         />
+      ) : (
+        <>
+          <CheckListItemSkeleton />
+          <CheckListItemSkeleton />
+          <CheckListItemSkeleton />
+        </>
       )}
     </>
   );

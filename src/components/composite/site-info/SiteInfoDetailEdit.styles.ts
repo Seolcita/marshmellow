@@ -26,6 +26,13 @@ export const DefaultImage = styled.Image`
   margin-bottom: 20px;
 `;
 
+export const PreviewLoading = styled.View`
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+`;
+
 export const UploadedImage = styled.View`
   margin-bottom: 20px;
   border-radius: 10px;

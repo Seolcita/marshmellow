@@ -11,3 +11,10 @@ export const Image = styled.Image<ImageProps>`
   height: ${({ height }) => (height ? `${height}px` : '300px')};
   border-radius: ${({ borderRadius }) => borderRadius ?? 10}px;
 `;
+
+export const LoadingImageContainer = styled.View`
+  width: 150px;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+`;

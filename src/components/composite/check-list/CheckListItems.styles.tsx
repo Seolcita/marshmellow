@@ -1,11 +1,25 @@
 import styled from 'styled-components/native';
 
-import { Row } from '../../common-styles/CommonStyles';
 import ColorMap, { Colors } from '../../../styles/Color';
 
 interface AssignedUserProps {
   $bgColor?: Colors;
 }
+
+interface WrapperProps {
+  $isLastItem: boolean;
+}
+
+export const Wrapper = styled.View<WrapperProps>`
+  flex-direction: row;
+  align-items: center;
+  background-color: #f1f1f1;
+  margin-bottom: 4px;
+  margin-horizontal: 5px;
+  padding-vertical: 2.5px;
+  border-bottom-width: ${({ $isLastItem }) => ($isLastItem ? '0px' : '1px')};
+  border-bottom-color: ${ColorMap['grey'].light};
+`;
 
 export const CheckBoxContainer = styled.View`
   flex-direction: row;
@@ -22,12 +36,6 @@ export const Label = styled.Text`
 export const DeleteButton = styled.Pressable`
   margin-right: 20px;
   background-color: 'transparent';
-`;
-
-export const Wrapper = styled(Row)`
-  background-color: #f1f1f1;
-  margin-bottom: 4px;
-  padding-vertical: 2.5px;
 `;
 
 export const AssignedUser = styled.Text<AssignedUserProps>`

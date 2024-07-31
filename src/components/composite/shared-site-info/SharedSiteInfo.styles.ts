@@ -68,3 +68,14 @@ export const RatingContainer = styled.View`
   flex-direction: row;
   background-color: transparent;
 `;
+
+export const NoDataFoundContainer = styled.View`
+  align-items: center;
+  margin-top: 20px;
+`;
+
+export const NoDataFoundText = styled.Text`
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 20px;
+`;

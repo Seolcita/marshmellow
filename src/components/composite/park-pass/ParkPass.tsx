@@ -1,14 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, ScrollView } from 'react-native';
 
 import styles from './ParkPass.styles';
 import { Text, View } from '../../Themed';
 import ParkPassItem from './ParkPassItem';
 import ParkPassModal from './ParkPassModal';
+import ColorMap from '../../../styles/Color';
 import Button from '../../atomic/button/Button';
 import { useParkPasses } from '../../../api/park-pass';
 import { useAuth } from '../../../providers/AuthProvider';
 import { StickyButton } from '../../common-styles/CommonStyles';
+import ParkPassSkeletons from '../skeleton/park-pass/ParkPassSkeletons';
 
 export interface InitialValue {
   id: string;
@@ -20,14 +22,26 @@ export const ParkPass = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [initialValue, setInitialValue] = useState<InitialValue>();
+  const [parkPasses, setParkPasses] = useState<InitialValue[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { session } = useAuth();
   const userId = session?.user.id ?? '';
-  const { data, error, isLoading } = useParkPasses(userId);
+  const { data, error, isLoading: isParkPassLoading } = useParkPasses(userId);
 
   if (error) {
     Alert.alert('Fetching park passes failed');
   }
+
+  useEffect(() => {
+    if (data) {
+      setParkPasses(data);
+    }
+
+    if (!isParkPassLoading) {
+      setIsLoading(false);
+    }
+  }, [data, isParkPassLoading]);
 
   const handleEdit = (item: InitialValue) => {
     console.log('Edit');
@@ -37,17 +51,29 @@ export const ParkPass = () => {
   };
 
   return (
-    <View style={{ position: 'relative', flex: 1 }}>
+    <View
+      style={{
+        position: 'relative',
+        flex: 1,
+        backgroundColor: ColorMap['grey'].extraLight,
+      }}
+    >
       <View style={styles.container}>
-        <ScrollView overScrollMode='auto' showsVerticalScrollIndicator={false}>
-          <View style={{ paddingBottom: 80 }}>
-            {data && data.length <= 0 ? (
+        <ScrollView
+          overScrollMode='auto'
+          showsVerticalScrollIndicator={false}
+          style={{ backgroundColor: 'transparent' }}
+        >
+          <View style={{ paddingBottom: 80, backgroundColor: 'transparent' }}>
+            {isLoading && <ParkPassSkeletons />}
+            {!isLoading && parkPasses && parkPasses.length <= 0 && (
               <View style={styles.noParkPassContainer}>
-                <Text style={styles.noParkPass}>* Please add Park Passes!</Text>
+                <Text style={styles.noParkPass}>Please add Park Passes</Text>
               </View>
-            ) : (
+            )}
+            {!isLoading && parkPasses && parkPasses.length > 0 && (
               <View style={styles.listContainer}>
-                {data?.map((item) => (
+                {parkPasses?.map((item) => (
                   <ParkPassItem
                     key={item.id}
                     item={item}
