@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { router } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Alert, Pressable, ScrollView } from 'react-native';
 
@@ -9,6 +9,7 @@ import ColorMap from '../../../styles/Color';
 import Button from '../../atomic/button/Button';
 import ResevationDetail from './ReservationDetail';
 import { useAuth } from '../../../providers/AuthProvider';
+import TripsSkeletons from '../skeleton/trips/TripsSkeletons';
 import { useReservationsInfo } from '../../../api/reservation';
 import { ReservationModal } from '../../composite/reservation/ReservationModal';
 
@@ -18,6 +19,7 @@ export interface InitialValue {
   departureDate: string;
   campgroundName: string;
   campgroundSiteNumber: string;
+  userId: string;
 }
 
 export enum TripType {
@@ -27,6 +29,8 @@ export enum TripType {
 }
 
 const Reservation = () => {
+  const [reservations, setReservations] = useState<InitialValue[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [initialValue, setInitialValue] = useState<InitialValue>();
@@ -42,7 +46,20 @@ const Reservation = () => {
     router.push('/(auth)/sign-in');
     return;
   }
-  const { data, error, isLoading } = useReservationsInfo(userId);
+
+  const {
+    data,
+    error,
+    isLoading: isReservationsLoading,
+  } = useReservationsInfo(userId);
+  useEffect(() => {
+    if (data) {
+      setReservations(data);
+    }
+    if (!isReservationsLoading) {
+      setIsLoading(false);
+    }
+  }, [data, isReservationsLoading]);
 
   const handleEdit = (item: InitialValue) => {
     setIsEdit(true);
@@ -50,31 +67,34 @@ const Reservation = () => {
     setIsModalOpen(true);
   };
 
+  const initaializeState = () => {
+    setShowAllTrips(false);
+    setShowUpcomingTrips(false);
+    setShowPastTrips(false);
+  };
+
   const handleTrips = (tripType: TripType) => {
+    initaializeState();
+
     if (tripType === TripType.ALL_TRIPS) {
       setShowAllTrips(true);
-      setShowUpcomingTrips(false);
-      setShowPastTrips(false);
+      data && setReservations(data);
     } else if (tripType === TripType.UPCOMING_TRIPS) {
-      setShowAllTrips(false);
       setShowUpcomingTrips(true);
-      setShowPastTrips(false);
+      const upComingTrips = data?.filter(
+        (item) => new Date(item.arrivalDate) >= new Date()
+      );
+      upComingTrips && setReservations(upComingTrips);
     } else if (tripType === TripType.PAST_TRIPS) {
-      setShowAllTrips(false);
-      setShowUpcomingTrips(false);
       setShowPastTrips(true);
+      const pastTrips = data?.filter(
+        (item) => new Date(item.departureDate) < new Date()
+      );
+      pastTrips && setReservations(pastTrips);
     } else {
       return;
     }
   };
-
-  const upComingTrips = data?.filter(
-    (item) => new Date(item.arrivalDate) >= new Date()
-  );
-
-  const pastTrips = data?.filter(
-    (item) => new Date(item.departureDate) < new Date()
-  );
 
   return (
     <S.Container>
@@ -127,24 +147,15 @@ const Reservation = () => {
       </S.ButtonsContainer>
       <S.TripsContainer>
         <ScrollView>
-          {showAllTrips &&
-            data?.map((item) => (
-              <ResevationDetail
-                item={item}
-                handleEdit={handleEdit}
-                key={item.id}
-              />
-            ))}
-          {showUpcomingTrips &&
-            upComingTrips?.map((item) => (
-              <ResevationDetail
-                item={item}
-                handleEdit={handleEdit}
-                key={item.id}
-              />
-            ))}
-          {showPastTrips &&
-            pastTrips?.map((item) => (
+          {isLoading && <TripsSkeletons />}
+          {!isLoading && reservations.length === 0 && (
+            <S.NoTripsContainer>
+              <S.NoTripsText>Please add Trips</S.NoTripsText>
+            </S.NoTripsContainer>
+          )}
+          {!isLoading &&
+            reservations.length > 0 &&
+            reservations?.map((item) => (
               <ResevationDetail
                 item={item}
                 handleEdit={handleEdit}

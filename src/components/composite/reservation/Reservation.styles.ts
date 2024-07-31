@@ -73,3 +73,17 @@ export const ButtonsContainer = styled.View`
 export const TripsContainer = styled.View`
   margin-horizontal: 0px;
 `;
+
+export const NoTripsContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: ${ColorMap['white'].main};
+  padding: 20px;
+  border-radius: 5px;
+`;
+
+export const NoTripsText = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
+`;

@@ -9,15 +9,15 @@ export const Container = styled.View`
 export const TileContainer = styled(Tile)`
   padding: 20px;
   margin-horizontal: 20px;
-  margin-vertical: 0px;
-  margin-bottom: 8px;
+  margin-vertical: 8px;
+  gap: 8px;
 `;
 
-export const ParkPassNameContainer = styled.View`
+export const TripsNameContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 `;
 
 export const IconsContainer = styled.View`
