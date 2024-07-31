@@ -28,6 +28,7 @@ export const TopScreenImageBackgroundContainer = styled.View`
   border-bottom-right-radius: 40px;
   overflow: hidden;
 `;
+
 export const TopScreenImageBackground = styled.ImageBackground`
   height: 100%;
 `;

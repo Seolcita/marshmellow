@@ -5,7 +5,9 @@ import ColorMap from '../../../styles/Color';
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    flex: 1,
     padding: 20,
+    backgroundColor: 'transparent',
   },
   header: {
     flexDirection: 'row',
@@ -30,6 +32,7 @@ const styles = StyleSheet.create({
   listContainer: {
     padding: 2,
     width: '100%',
+    backgroundColor: 'transparent',
   },
   list: {
     borderRadius: 5,
@@ -60,12 +63,14 @@ const styles = StyleSheet.create({
   noParkPassContainer: {
     display: 'flex',
     justifyContent: 'center',
-    paddingLeft: 40,
-    marginBottom: 30,
+    alignItems: 'center',
+    flex: 1,
+    backgroundColor: ColorMap['white'].main,
+    padding: 20,
+    borderRadius: 5,
   },
   noParkPass: {
     fontSize: 18,
-    paddingTop: 10,
     fontWeight: 'bold',
   },
   name: {
