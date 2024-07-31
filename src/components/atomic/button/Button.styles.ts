@@ -12,6 +12,7 @@ interface PressableProps {
   $marginHorizontal?: number;
   $bgColor?: string;
   $hasBorder?: boolean;
+  $isTab?: boolean;
 }
 
 interface TextProps {
@@ -34,6 +35,15 @@ export const Pressable = styled.Pressable<PressableProps>`
     $marginHorizontal && $marginHorizontal}px;
   border: ${({ $hasBorder }) =>
     $hasBorder ? `4px solid ${ColorMap['white'].main}` : 'none'};
+
+  ${({ $isTab }) =>
+    $isTab &&
+    `
+    border-bottom-width: 3px; 
+    border-color: ${ColorMap['blue'].dark}; 
+    background-color: white;
+    border-radius: 0px;
+    `}
 `;
 
 export const Text = styled.Text<TextProps>`

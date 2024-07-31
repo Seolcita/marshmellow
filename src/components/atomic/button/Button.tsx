@@ -18,6 +18,7 @@ type ButtonProps = {
   marginVertical?: number;
   marginHorizontal?: number;
   hasBorder?: boolean;
+  isTab?: boolean;
 } & React.ComponentPropsWithoutRef<typeof Pressable>;
 
 const Button = forwardRef<View | null, ButtonProps>(
@@ -36,6 +37,7 @@ const Button = forwardRef<View | null, ButtonProps>(
       marginVertical,
       marginHorizontal,
       hasBorder,
+      isTab,
       ...pressableProps
     },
     ref
@@ -53,6 +55,7 @@ const Button = forwardRef<View | null, ButtonProps>(
         $paddingHorizontal={paddingHorizontal}
         $marginVertical={marginVertical}
         $marginHorizontal={marginHorizontal}
+        $isTab={isTab}
       >
         {href ? (
           <Link href={href} style={{ width: '100%', textAlign: 'center' }}>
