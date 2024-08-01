@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 import ColorMap, { Colors } from '../../../styles/Color';
-import { TwoButtonContainer } from '../../common-styles/CommonStyles';
+import { Tile, TwoButtonContainer } from '../../common-styles/CommonStyles';
 
 interface ConfirmMessageProps {
   color?: string;
@@ -11,11 +11,16 @@ interface ButtonProps {
   bgColor?: Colors;
 }
 
-export const Container = styled.View`
+export const TripTile = styled(Tile)`
+  padding: 0;
   flex-direction: row;
   justify-content: space-between;
 `;
-export const Contents = styled.View``;
+
+export const Contents = styled.View`
+  flex: 1;
+  padding: 20px;
+`;
 
 export const Header = styled.View`
   flex-direction: row;
@@ -47,22 +52,24 @@ export const IconsContainer = styled.View`
 export const ButtonContainer = styled.View`
   flex-direction: row;
   hight: 100%;
+  width: 200px;
 `;
 
 export const Button = styled.Pressable<ButtonProps>`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 70px;
+  width: 100px;
   height: 100%;
   background-color: ${({ bgColor }) =>
     bgColor ? ColorMap[bgColor].dark : ColorMap['grey'].dark};
 `;
 
 export const MenuContainer = styled.View`
-  postion: absolute;
-  right: 0;
-  top: 0;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding-horizontal: 10px;
 `;
 
 export const ModalTitle = styled.Text`

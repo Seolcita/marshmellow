@@ -4,11 +4,17 @@ import { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 
 import styles from './ParkPass.styles';
 import { Text, View } from '../../Themed';
 import ColorMap from '../../../styles/Color';
 import { ParkPassDeleteModal } from './ParkPassDeleteModal';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 interface ParkPassItemProps {
   item: any;
@@ -21,6 +27,7 @@ const ParkPassItem = ({ item, userId, handleEdit }: ParkPassItemProps) => {
   const [warningMessage, setWarningMessage] = useState<null | string>(null);
   const [isAboutToExpire, setIsAboutToExpire] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const warningDate = 10;
 
@@ -66,32 +73,25 @@ const ParkPassItem = ({ item, userId, handleEdit }: ParkPassItemProps) => {
     return () => clearInterval(intervalId);
   }, [expiryDate]);
 
+  const slideAnim = useSharedValue(240);
+
+  useEffect(() => {
+    slideAnim.value = withTiming(isMenuOpen ? 0 : 240, { duration: 300 });
+  }, [isMenuOpen]);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: slideAnim.value }],
+    };
+  });
+
   return (
     <View style={styles.list}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.name}>{item.name}</Text>
-        <View style={styles.iconContainer}>
-          <Pressable>
-            <AntDesign
-              name='edit'
-              size={20}
-              color='black'
-              onPress={() =>
-                handleEdit({
-                  id: item.id,
-                  name: item.name,
-                  expiryDate: item.expiry_date,
-                })
-              }
-            />
-          </Pressable>
-          <Pressable onPress={() => setIsModalOpen((prev) => !prev)}>
-            <MaterialIcons name='delete-outline' size={20} color='black' />
-          </Pressable>
+      <View style={styles.contents}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.name}>{item.name}</Text>
         </View>
-      </View>
-      <View>
-        <Text>{`Expiry Date: ${formattedExpiryDate}`}</Text>
+        <Text>{formattedExpiryDate}</Text>
         {isAboutToExpire && (
           <View style={styles.warningContainer}>
             <Ionicons
@@ -102,6 +102,39 @@ const ParkPassItem = ({ item, userId, handleEdit }: ParkPassItemProps) => {
             <Text style={styles.warning}>{warningMessage}</Text>
           </View>
         )}
+      </View>
+      <View style={styles.iconContainer}>
+        <Animated.View
+          style={[{ height: '100%', flexDirection: 'row' }, animatedStyle]}
+        >
+          <View style={styles.buttonContainer}>
+            <Pressable style={styles.buttonEdit}>
+              <AntDesign
+                name='edit'
+                size={20}
+                color='white'
+                onPress={() =>
+                  handleEdit({
+                    id: item.id,
+                    name: item.name,
+                    expiryDate: item.expiry_date,
+                  })
+                }
+              />
+            </Pressable>
+            <Pressable
+              onPress={() => setIsModalOpen((prev) => !prev)}
+              style={styles.buttonDelete}
+            >
+              <MaterialIcons name='delete-outline' size={20} color='white' />
+            </Pressable>
+          </View>
+        </Animated.View>
+        <View style={styles.menuContainer}>
+          <Pressable onPress={() => setIsMenuOpen((prev) => !prev)}>
+            <SimpleLineIcons name='options-vertical' size={20} color='black' />
+          </Pressable>
+        </View>
       </View>
       <ParkPassDeleteModal
         id={item.id}

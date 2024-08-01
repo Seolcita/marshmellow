@@ -66,10 +66,10 @@ const ResevationDetail = ({
     }   ~   ${dateOfDeparture}`;
   };
 
-  const slideAnim = useSharedValue(160);
+  const slideAnim = useSharedValue(240);
 
   useEffect(() => {
-    slideAnim.value = withTiming(isMenuOpen ? 0 : 160, { duration: 300 });
+    slideAnim.value = withTiming(isMenuOpen ? 0 : 240, { duration: 300 });
   }, [isMenuOpen]);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -80,62 +80,60 @@ const ResevationDetail = ({
 
   return (
     <>
-      <s.Tile>
-        <S.Container>
-          <S.Contents>
-            <S.Header>
-              <S.CampgroundName>{campgroundName}</S.CampgroundName>
-            </S.Header>
-            <View>
-              <S.Text>
-                Site: {campgroundSiteNumber ? campgroundSiteNumber : 'N/A'}
-              </S.Text>
-              <S.Text>{formatCampingDate()}</S.Text>
-            </View>
-          </S.Contents>
-          <S.IconsContainer>
-            <Animated.View
-              style={[{ height: '100%', flexDirection: 'row' }, animatedStyle]}
-            >
-              <S.ButtonContainer>
-                <S.Button>
-                  <AntDesign
-                    name='edit'
-                    size={20}
-                    color='white'
-                    onPress={() =>
-                      handleEdit({
-                        id,
-                        arrivalDate,
-                        departureDate,
-                        campgroundName,
-                        campgroundSiteNumber,
-                      })
-                    }
-                  />
-                </S.Button>
-                <S.Button bgColor='red'>
-                  <MaterialIcons
-                    name='delete-outline'
-                    size={20}
-                    color='white'
-                    onPress={() => setIsModalOpen((prev) => !prev)}
-                  />
-                </S.Button>
-              </S.ButtonContainer>
-            </Animated.View>
-            <S.MenuContainer>
-              <Pressable onPress={() => setIsMenuOpen((prev) => !prev)}>
-                <SimpleLineIcons
-                  name='options-vertical'
+      <S.TripTile>
+        <S.Contents>
+          <S.Header>
+            <S.CampgroundName>{campgroundName}</S.CampgroundName>
+          </S.Header>
+          <View>
+            <S.Text>
+              Site: {campgroundSiteNumber ? campgroundSiteNumber : 'N/A'}
+            </S.Text>
+            <S.Text>{formatCampingDate()}</S.Text>
+          </View>
+        </S.Contents>
+        <S.IconsContainer>
+          <Animated.View
+            style={[{ height: '100%', flexDirection: 'row' }, animatedStyle]}
+          >
+            <S.ButtonContainer>
+              <S.Button>
+                <AntDesign
+                  name='edit'
                   size={20}
-                  color='black'
+                  color='white'
+                  onPress={() =>
+                    handleEdit({
+                      id,
+                      arrivalDate,
+                      departureDate,
+                      campgroundName,
+                      campgroundSiteNumber,
+                    })
+                  }
                 />
-              </Pressable>
-            </S.MenuContainer>
-          </S.IconsContainer>
-        </S.Container>
-      </s.Tile>
+              </S.Button>
+              <S.Button bgColor='red'>
+                <MaterialIcons
+                  name='delete-outline'
+                  size={20}
+                  color='white'
+                  onPress={() => setIsModalOpen((prev) => !prev)}
+                />
+              </S.Button>
+            </S.ButtonContainer>
+          </Animated.View>
+          <S.MenuContainer>
+            <Pressable onPress={() => setIsMenuOpen((prev) => !prev)}>
+              <SimpleLineIcons
+                name='options-vertical'
+                size={20}
+                color='black'
+              />
+            </Pressable>
+          </S.MenuContainer>
+        </S.IconsContainer>
+      </S.TripTile>
       <Modal
         isOpen={isModalOpen}
         setIsOpen={() => {
