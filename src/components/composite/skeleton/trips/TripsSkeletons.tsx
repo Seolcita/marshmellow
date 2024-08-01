@@ -1,6 +1,5 @@
 import { Skeleton } from '@rneui/themed';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { SimpleLineIcons } from '@expo/vector-icons';
 
 import * as S from './TripsSkeletons.styles';
 
@@ -8,37 +7,34 @@ const TripsSkeletons = () => {
   return (
     <S.Container>
       <S.TileContainer>
-        <S.TripsNameContainer>
+        <S.Contents>
           <Skeleton width={100} height={20} animation='wave' />
-          <S.IconsContainer>
-            <AntDesign name='edit' size={20} color='grey' />
-            <MaterialIcons name='delete-outline' size={20} color='grey' />
-          </S.IconsContainer>
-        </S.TripsNameContainer>
-        <Skeleton width={150} height={16} animation='wave' />
-        <Skeleton width={200} height={16} animation='wave' />
+          <Skeleton width={150} height={16} animation='wave' />
+          <Skeleton width={200} height={16} animation='wave' />
+        </S.Contents>
+        <S.IconsContainer>
+          <SimpleLineIcons name='options-vertical' size={20} color='grey' />
+        </S.IconsContainer>
       </S.TileContainer>
       <S.TileContainer>
-        <S.TripsNameContainer>
+        <S.Contents>
           <Skeleton width={100} height={20} animation='wave' />
-          <S.IconsContainer>
-            <AntDesign name='edit' size={20} color='grey' />
-            <MaterialIcons name='delete-outline' size={20} color='grey' />
-          </S.IconsContainer>
-        </S.TripsNameContainer>
-        <Skeleton width={150} height={16} animation='wave' />
-        <Skeleton width={200} height={16} animation='wave' />
+          <Skeleton width={150} height={16} animation='wave' />
+          <Skeleton width={200} height={16} animation='wave' />
+        </S.Contents>
+        <S.IconsContainer>
+          <SimpleLineIcons name='options-vertical' size={20} color='grey' />
+        </S.IconsContainer>
       </S.TileContainer>
       <S.TileContainer>
-        <S.TripsNameContainer>
+        <S.Contents>
           <Skeleton width={100} height={20} animation='wave' />
-          <S.IconsContainer>
-            <AntDesign name='edit' size={20} color='grey' />
-            <MaterialIcons name='delete-outline' size={20} color='grey' />
-          </S.IconsContainer>
-        </S.TripsNameContainer>
-        <Skeleton width={150} height={16} animation='wave' />
-        <Skeleton width={200} height={16} animation='wave' />
+          <Skeleton width={150} height={16} animation='wave' />
+          <Skeleton width={200} height={16} animation='wave' />
+        </S.Contents>
+        <S.IconsContainer>
+          <SimpleLineIcons name='options-vertical' size={20} color='grey' />
+        </S.IconsContainer>
       </S.TileContainer>
     </S.Container>
   );

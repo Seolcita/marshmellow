@@ -1,11 +1,10 @@
 import { router } from 'expo-router';
+import { ScrollView } from 'react-native';
 import { useEffect, useState } from 'react';
-import { Pressable, ScrollView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import {
   MySharedCheckList,
-  useDeleteMySharedCheckList,
   useMySharedCheckList,
 } from '../../../api/my-shared-check-list';
 import Button from '../../atomic/button/Button';
@@ -13,6 +12,7 @@ import * as S from './SharedCheckListListsScreen.styles';
 import { useAuth } from '../../../providers/AuthProvider';
 import TileSkeletons from '../../composite/skeleton/tiles/TileSkeletons';
 import SharedCheckListFormModal from '../../composite/create-shared-check-list/SharedCheckListFormModal';
+import SharedCheckListTile from '../../composite/shared-check-list/SharedCheckListTile';
 
 const SharedCheckListListsScreen = () => {
   const { session } = useAuth();
@@ -34,8 +34,6 @@ const SharedCheckListListsScreen = () => {
     error,
     isLoading: isCheckListLoading,
   } = useMySharedCheckList(userId);
-  const { mutate: deleteMySharedCheckList } =
-    useDeleteMySharedCheckList(userId);
 
   useEffect(() => {
     data && setMySharedCheckList(data);
@@ -77,28 +75,12 @@ const SharedCheckListListsScreen = () => {
         >
           {!isLoading && mySharedCheckList ? (
             mySharedCheckList.map((list) => (
-              <S.MySharedCheckListTile>
-                <Pressable
-                  onPress={() =>
-                    router.push(
-                      `/(user)/check-list/shared/${list.sharedCheckListId}`
-                    )
-                  }
-                >
-                  <S.Text>{list.name}</S.Text>
-                </Pressable>
-                <Pressable
-                  onPress={() =>
-                    deleteMySharedCheckList(list.sharedCheckListId)
-                  }
-                >
-                  <MaterialCommunityIcons
-                    name='delete-forever-outline'
-                    size={24}
-                    color='black'
-                  />
-                </Pressable>
-              </S.MySharedCheckListTile>
+              <SharedCheckListTile
+                key={list.id}
+                sharedCheckListId={list.sharedCheckListId}
+                sharedChckListName={list.name}
+                userId={userId}
+              />
             ))
           ) : (
             <TileSkeletons />

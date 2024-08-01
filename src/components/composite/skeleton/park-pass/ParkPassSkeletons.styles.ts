@@ -7,21 +7,19 @@ export const Container = styled.View`
 `;
 
 export const TileContainer = styled(Tile)`
-  padding: 20px;
-  margin-horizontal: 20px;
-  margin-vertical: 0px;
+  flex-direction: row;
+  justify-content: space-between;
   margin-bottom: 8px;
+  margin-horizontal: 2px;
 `;
 
-export const ParkPassNameContainer = styled.View`
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
+export const ParkPassContents = styled.View`
+  flex-direction: column;
+  gap: 12px;
 `;
 
 export const IconsContainer = styled.View`
-  gap: 12px;
   flex-direction: row;
   align-items: center;
+  margin-right: -8px;
 `;

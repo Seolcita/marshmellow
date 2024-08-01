@@ -1,7 +1,6 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
-import { Alert, Pressable, ScrollView } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 
 import { View } from '../../Themed';
 import * as S from './Reservation.styles';
@@ -11,6 +10,7 @@ import ResevationDetail from './ReservationDetail';
 import { useAuth } from '../../../providers/AuthProvider';
 import TripsSkeletons from '../skeleton/trips/TripsSkeletons';
 import { useReservationsInfo } from '../../../api/reservation';
+import { StickyButton } from '../../common-styles/CommonStyles';
 import { ReservationModal } from '../../composite/reservation/ReservationModal';
 
 export interface InitialValue {
@@ -98,55 +98,61 @@ const Reservation = () => {
 
   return (
     <S.Container>
-      <S.TitleContainer>
-        <S.TitleImageContainer>
-          <S.Image source={require('../../../../assets/images/combi.png')} />
-          <S.Title>Camping Trips</S.Title>
-        </S.TitleImageContainer>
-        <Pressable onPress={() => setIsModalOpen((prev) => !prev)}>
-          <Ionicons name='add-circle-outline' size={30} color='black' />
-        </Pressable>
-      </S.TitleContainer>
+      <StickyButton>
+        <Button
+          text='+ Add Trip'
+          onPress={() => setIsModalOpen((prev) => !prev)}
+          paddingHorizontal={20}
+          paddingVertical={15}
+        />
+      </StickyButton>
+
       <S.ButtonsContainer>
-        <View style={{ width: '33%' }}>
+        <View style={{ width: '33.3%' }}>
           <Button
             text='All'
             onPress={() => handleTrips(TripType.ALL_TRIPS)}
             borderRadius={5}
             textSize={16}
-            bgColor={
+            paddingVertical={16}
+            isTab={showAllTrips}
+            textColor={
               showAllTrips ? ColorMap['blue'].dark : ColorMap['grey'].main
             }
-            paddingVertical={8}
+            bgColor='white'
           />
         </View>
-        <View style={{ width: '33%' }}>
+        <View style={{ width: '33.4%' }}>
           <Button
             text='Upcoming'
             onPress={() => handleTrips(TripType.UPCOMING_TRIPS)}
             borderRadius={5}
             textSize={16}
-            bgColor={
+            paddingVertical={16}
+            isTab={showUpcomingTrips}
+            textColor={
               showUpcomingTrips ? ColorMap['blue'].dark : ColorMap['grey'].main
             }
-            paddingVertical={8}
+            bgColor='white'
           />
         </View>
-        <View style={{ width: '33%' }}>
+        <View style={{ width: '33.3%' }}>
           <Button
             text='Past'
             onPress={() => handleTrips(TripType.PAST_TRIPS)}
             borderRadius={5}
             textSize={16}
-            bgColor={
+            paddingVertical={16}
+            isTab={showPastTrips}
+            textColor={
               showPastTrips ? ColorMap['blue'].dark : ColorMap['grey'].main
             }
-            paddingVertical={8}
+            bgColor='white'
           />
         </View>
       </S.ButtonsContainer>
       <S.TripsContainer>
-        <ScrollView>
+        <ScrollView style={{ flex: 1, paddingBottom: 100 }}>
           {isLoading && <TripsSkeletons />}
           {!isLoading && reservations.length === 0 && (
             <S.NoTripsContainer>
@@ -162,8 +168,10 @@ const Reservation = () => {
                 key={item.id}
               />
             ))}
+          <S.Space />
         </ScrollView>
       </S.TripsContainer>
+
       <ReservationModal
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
