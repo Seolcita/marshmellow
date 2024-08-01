@@ -231,7 +231,7 @@ const SiteInfo = () => {
             },
             placeholder: 'Search by Campground Name',
             keyboardType: 'default',
-            placeholderTextColor: ColorMap['grey'].light,
+            placeholderTextColor: ColorMap['grey'].dark,
           }}
         />
         <s.Filter onPress={() => setIsFilterOpen((prev) => !prev)}>
