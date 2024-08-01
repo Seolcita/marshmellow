@@ -119,7 +119,6 @@ export const InvitationsScreen = () => {
             No accepted invitations
           </S.NoMatchingResultText>
         )}
-
         {isLoading && isAcceptedOpen && (
           <S.SkeletonContainer>
             <TileSkeletons />

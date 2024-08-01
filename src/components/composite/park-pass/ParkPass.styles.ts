@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignContent: 'center',
-    marginBottom: 15,
+    marginBottom: 8,
   },
   iconContainer: {
     position: 'absolute',

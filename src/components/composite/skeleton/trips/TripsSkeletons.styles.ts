@@ -7,21 +7,23 @@ export const Container = styled.View`
 `;
 
 export const TileContainer = styled(Tile)`
+  flex-direction: row;
   padding: 20px;
   margin-horizontal: 20px;
   margin-vertical: 8px;
   gap: 8px;
+  flex: 1;
+  justify-content: space-between;
 `;
 
-export const TripsNameContainer = styled.View`
-  flex-direction: row;
-  align-items: center;
+export const Contents = styled.View`
   justify-content: space-between;
-  margin-bottom: 8px;
+  gap: 8px;
 `;
 
 export const IconsContainer = styled.View`
   gap: 12px;
   flex-direction: row;
   align-items: center;
+  margin-right: -8px;
 `;

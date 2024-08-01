@@ -6,7 +6,7 @@ export const PendingInvitationTile = styled(Tile)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
+  margin-horizontal: 12px;
 `;
 
 export const Title = styled.Text`
