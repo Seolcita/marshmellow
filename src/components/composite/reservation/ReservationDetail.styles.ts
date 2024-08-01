@@ -88,6 +88,7 @@ export const ConfirmMessage = styled.Text<ConfirmMessageProps>`
   font-size: 18px;
   font-weight: bold;
   text-align: center;
+  line-height: 30px;
 `;
 
 export const ModalButtonContainer = styled(TwoButtonContainer)``;
