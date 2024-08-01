@@ -1,42 +1,27 @@
 import styled from 'styled-components/native';
-
-import {
-  TopScreenImageBackground,
-  TopScreenImageBackgroundContainer,
-} from '../../common-styles/CommonStyles';
 import ColorMap from '../../../styles/Color';
-
-interface FilterHeaderProps {
-  $isFilterOpen: boolean;
-}
 
 export const Container = styled.View`
   flex: 1;
   align-items: center;
-  margin-top: 10px;
 `;
 
 export const FilterHeaderContainer = styled.View`
   width: 100%;
   flex-direction: row;
-  padding-horizontal: 20px;
+  padding-left: 15px;
+  padding-right: 20px;
   elevation: 5;
   align-items: center;
   justify-content: space-between;
   z-index: 100;
+  background-color: ${ColorMap['white'].main};
 `;
 
-export const Filter = styled.Pressable<FilterHeaderProps>`
+export const Filter = styled.Pressable`
   flex-direction: row;
   border-radius: 500px;
   align-items: center;
-`;
-
-export const FilterHeaderText = styled.Text<FilterHeaderProps>`
-  color: ${({ $isFilterOpen }) =>
-    $isFilterOpen ? ColorMap['blue'].dark : ColorMap['white'].main};
-  font-size: 16px;
-  font-weight: bold;
 `;
 
 export const FilterContainer = styled.View`

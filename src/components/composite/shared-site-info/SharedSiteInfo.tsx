@@ -14,17 +14,16 @@ import {
   selectedButtonBgColor,
 } from '../site-info/lib/filter';
 import { useWish } from '../../../api/wish';
-import Input from '../../atomic/input/Input';
 import ColorMap from '../../../styles/Color';
 import * as S from './SharedSiteInfo.styles';
 import Button from '../../atomic/button/Button';
 import { useAuth } from '../../../providers/AuthProvider';
+import SearchInput from '../../atomic/search-input/SearchInput';
 import { useSharedCampSitesInfo } from '../../../api/site-info';
 import { ButtonWrapper } from '../../common-styles/CommonStyles';
 import RatingFilterButtons from '../site-info/RatingFilterButtons';
 import SharedSiteSkeletons from '../skeleton/shared-site/SharedSiteSkeletons';
 import SharedSiteInfoCard from '../../composite/shared-site-info/SharedSiteInfoCard';
-import { set } from 'date-fns';
 
 export interface FilteredSharedSiteInfo extends FilteredSiteInfo {
   wish?: boolean;
@@ -237,9 +236,7 @@ const SharedSiteInfo = () => {
   return (
     <S.Container>
       <S.FilterHeaderContainer>
-        <Input
-          label=''
-          isValid={true}
+        <SearchInput
           textInputConfig={{
             value: search.trim(),
             onChangeText: (text) => {
@@ -247,20 +244,11 @@ const SharedSiteInfo = () => {
             },
             placeholder: 'Search by Campground Name',
             keyboardType: 'default',
-            placeholderTextColor: ColorMap['grey'].main,
+            placeholderTextColor: ColorMap['grey'].dark,
           }}
-          style={{
-            width: '85%',
-            marginTop: -5,
-            marginBottom: 15,
-          }}
-          borderColor={ColorMap['black'].main}
         />
-        <S.Filter
-          onPress={() => setIsFilterOpen((prev) => !prev)}
-          $isFilterOpen={isFilterOpen}
-        >
-          <Ionicons name='filter' size={28} color={ColorMap['blue'].dark} />
+        <S.Filter onPress={() => setIsFilterOpen((prev) => !prev)}>
+          <Ionicons name='filter' size={28} color={ColorMap['black'].main} />
         </S.Filter>
       </S.FilterHeaderContainer>
       {isFilterOpen && (

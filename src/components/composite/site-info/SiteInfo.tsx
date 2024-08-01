@@ -15,11 +15,11 @@ import {
 } from './lib/filter';
 import * as S from './SiteInfo.styles';
 import ColorMap from '../../../styles/Color';
-import Input from '../../atomic/input/Input';
 import Button from '../../atomic/button/Button';
 import RatingFilterButtons from './RatingFilterButtons';
 import { useAuth } from '../../../providers/AuthProvider';
 import * as s from '../shared-site-info/SharedSiteInfo.styles';
+import SearchInput from '../../atomic/search-input/SearchInput';
 import { useCampSitesPartialInfo } from '../../../api/site-info';
 import SiteInfoCard from '../../composite/site-info/SiteInfoCard';
 import { ButtonWrapper } from '../../common-styles/CommonStyles';
@@ -223,9 +223,7 @@ const SiteInfo = () => {
   return (
     <s.Container>
       <s.FilterHeaderContainer>
-        <Input
-          label=''
-          isValid={true}
+        <SearchInput
           textInputConfig={{
             value: search.trim(),
             onChangeText: (text) => {
@@ -235,18 +233,9 @@ const SiteInfo = () => {
             keyboardType: 'default',
             placeholderTextColor: ColorMap['grey'].light,
           }}
-          style={{
-            width: '85%',
-            marginTop: -10,
-            marginBottom: 15,
-          }}
-          borderColor={ColorMap['black'].main}
         />
-        <s.Filter
-          onPress={() => setIsFilterOpen((prev) => !prev)}
-          $isFilterOpen={isFilterOpen}
-        >
-          <Ionicons name='filter' size={28} color={ColorMap['blue'].dark} />
+        <s.Filter onPress={() => setIsFilterOpen((prev) => !prev)}>
+          <Ionicons name='filter' size={28} color={ColorMap['black'].main} />
         </s.Filter>
       </s.FilterHeaderContainer>
       {isFilterOpen && (
