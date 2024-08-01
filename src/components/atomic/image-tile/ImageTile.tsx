@@ -9,9 +9,22 @@ export interface ImageTileProps {
   pushTo: any;
   imageSource: any;
   bgColor?: Colors;
+  imgWidth?: number;
+  imgHeight?: number;
+  absRight?: number;
+  absBottom?: number;
 }
 
-const ImageTile = ({ title, pushTo, imageSource, bgColor }: ImageTileProps) => {
+const ImageTile = ({
+  title,
+  pushTo,
+  imageSource,
+  bgColor,
+  imgWidth,
+  imgHeight,
+  absRight,
+  absBottom,
+}: ImageTileProps) => {
   const handlePress = () => {
     router.push(pushTo);
   };
@@ -22,7 +35,13 @@ const ImageTile = ({ title, pushTo, imageSource, bgColor }: ImageTileProps) => {
         <AntDesign name='checksquareo' size={24} color='white' />
         <S.Text>{title}</S.Text>
       </S.Contents>
-      <S.Image source={imageSource} />
+      <S.ImageContainer $absRight={absRight} $absBottom={absBottom}>
+        <S.Image
+          source={imageSource}
+          $imgWidth={imgWidth}
+          $imgHeight={imgHeight}
+        />
+      </S.ImageContainer>
     </S.Container>
   );
 };
