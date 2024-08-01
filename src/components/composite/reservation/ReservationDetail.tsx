@@ -1,7 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { Pressable } from 'react-native';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 import { View } from '../../Themed';
 import Modal from '../../atomic/modal/Modal';
@@ -37,6 +43,7 @@ const ResevationDetail = ({
   handleEdit,
 }: ReservationDetailProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { mutate: deleteReservation } = useDeleteSiteInfo(userId);
 
@@ -59,44 +66,75 @@ const ResevationDetail = ({
     }   ~   ${dateOfDeparture}`;
   };
 
+  const slideAnim = useSharedValue(160);
+
+  useEffect(() => {
+    slideAnim.value = withTiming(isMenuOpen ? 0 : 160, { duration: 300 });
+  }, [isMenuOpen]);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: slideAnim.value }],
+    };
+  });
+
   return (
     <>
       <s.Tile>
-        <S.Header>
-          <S.CampgroundName>{campgroundName}</S.CampgroundName>
-          <S.ButtonContainer>
-            <Pressable>
-              <AntDesign
-                name='edit'
-                size={20}
-                color='black'
-                onPress={() =>
-                  handleEdit({
-                    id,
-                    arrivalDate,
-                    departureDate,
-                    campgroundName,
-                    campgroundSiteNumber,
-                  })
-                }
-              />
-            </Pressable>
-            <Pressable>
-              <MaterialIcons
-                name='delete-outline'
-                size={20}
-                color='black'
-                onPress={() => setIsModalOpen((prev) => !prev)}
-              />
-            </Pressable>
-          </S.ButtonContainer>
-        </S.Header>
-        <View>
-          <S.Text>
-            Site: {campgroundSiteNumber ? campgroundSiteNumber : 'N/A'}
-          </S.Text>
-          <S.Text>{formatCampingDate()}</S.Text>
-        </View>
+        <S.Container>
+          <S.Contents>
+            <S.Header>
+              <S.CampgroundName>{campgroundName}</S.CampgroundName>
+            </S.Header>
+            <View>
+              <S.Text>
+                Site: {campgroundSiteNumber ? campgroundSiteNumber : 'N/A'}
+              </S.Text>
+              <S.Text>{formatCampingDate()}</S.Text>
+            </View>
+          </S.Contents>
+          <S.IconsContainer>
+            <Animated.View
+              style={[{ height: '100%', flexDirection: 'row' }, animatedStyle]}
+            >
+              <S.ButtonContainer>
+                <S.Button>
+                  <AntDesign
+                    name='edit'
+                    size={20}
+                    color='white'
+                    onPress={() =>
+                      handleEdit({
+                        id,
+                        arrivalDate,
+                        departureDate,
+                        campgroundName,
+                        campgroundSiteNumber,
+                      })
+                    }
+                  />
+                </S.Button>
+                <S.Button bgColor='red'>
+                  <MaterialIcons
+                    name='delete-outline'
+                    size={20}
+                    color='white'
+                    onPress={() => setIsModalOpen((prev) => !prev)}
+                  />
+                </S.Button>
+              </S.ButtonContainer>
+            </Animated.View>
+            <S.MenuContainer>
+              <Pressable onPress={() => setIsMenuOpen((prev) => !prev)}>
+                <SimpleLineIcons
+                  name='options-vertical'
+                  size={20}
+                  color='black'
+                />
+              </Pressable>
+            </S.MenuContainer>
+          </S.IconsContainer>
+        </S.Container>
       </s.Tile>
       <Modal
         isOpen={isModalOpen}

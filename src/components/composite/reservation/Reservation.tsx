@@ -1,7 +1,6 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
-import { Alert, Pressable, ScrollView } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 
 import { View } from '../../Themed';
 import * as S from './Reservation.styles';
