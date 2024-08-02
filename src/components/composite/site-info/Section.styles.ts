@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+
 import ColorMap from '../../../styles/Color';
 
 export const Section = styled.View`
@@ -20,8 +21,9 @@ export const QuestionContainer = styled.View`
 `;
 
 export const Image = styled.Image`
-  width: 15px;
-  height: 13px;
+  width: 22px;
+  height: 22px;
+  margin-bottom: 6px;
 `;
 
 export const SectionTitle = styled.Text`
@@ -41,5 +43,5 @@ export const Question = styled.Text`
 `;
 
 export const InputComponentContainer = styled.View`
-  margin-left: 10px;
+  margin-left: 24px;
 `;

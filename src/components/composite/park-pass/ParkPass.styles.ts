@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignContent: 'center',
-    marginBottom: 8,
+    marginBottom: 12,
   },
   iconContainer: {
     position: 'absolute',
@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
     top: 0,
     justifyContent: 'center',
     paddingHorizontal: 10,
+    backgroundColor: 'transparent',
   },
   buttonEdit: {
     flexDirection: 'row',
@@ -128,6 +129,15 @@ const styles = StyleSheet.create({
   error: {
     color: 'red',
     marginTop: 5,
+  },
+  expiryDateContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  expiryDateText: {
+    color: ColorMap['grey'].main,
+    marginLeft: 8,
+    fontSize: 14,
   },
 });
 

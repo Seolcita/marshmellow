@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import { Pressable } from 'react-native';
 import { useEffect, useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
@@ -91,7 +91,16 @@ const ParkPassItem = ({ item, userId, handleEdit }: ParkPassItemProps) => {
         <View style={styles.titleContainer}>
           <Text style={styles.name}>{item.name}</Text>
         </View>
-        <Text>{formattedExpiryDate}</Text>
+        <View style={styles.expiryDateContainer}>
+          <FontAwesome5
+            name='calendar-alt'
+            size={14}
+            color={ColorMap['grey'].main}
+          />
+          <Text
+            style={styles.expiryDateText}
+          >{`Expires: ${formattedExpiryDate}`}</Text>
+        </View>
         {isAboutToExpire && (
           <View style={styles.warningContainer}>
             <Ionicons

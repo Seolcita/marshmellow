@@ -9,7 +9,7 @@ const SiteInfoDetailItem = ({ question, answer }: SiteInfoDetailItemProps) => {
   return (
     <S.Container>
       <S.QuestionContainer>
-        <S.Image source={require('../../../../assets/images/like.png')} />
+        <S.Image source={require('../../../../assets/images/icons/tent.png')} />
         <S.Question>{question}</S.Question>
       </S.QuestionContainer>
       <S.AnswerContainer>

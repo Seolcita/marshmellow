@@ -201,7 +201,7 @@ const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
                         value: rate.toString(),
                       });
                     }}
-                    style={{ paddingTop: 20 }}
+                    style={{ paddingTop: 20, alignSelf: 'flex-start' }}
                   />
                 }
               />

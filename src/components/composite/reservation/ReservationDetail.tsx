@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { Pressable } from 'react-native';
+import Fontisto from '@expo/vector-icons/Fontisto';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import Animated, {
@@ -14,7 +16,6 @@ import Modal from '../../atomic/modal/Modal';
 import ColorMap from '../../../styles/Color';
 import Button from '../../atomic/button/Button';
 import * as S from './ReservationDetail.styles';
-import * as s from '../../common-styles/CommonStyles';
 import { useDeleteSiteInfo } from '../../../api/site-info';
 
 interface ReservationDetail {
@@ -63,7 +64,7 @@ const ResevationDetail = ({
 
     return `${
       isSameYear ? dateOfArrival : dateOfArrivalWithYeaer
-    }   ~   ${dateOfDeparture}`;
+    }  -  ${dateOfDeparture}`;
   };
 
   const slideAnim = useSharedValue(240);
@@ -85,12 +86,22 @@ const ResevationDetail = ({
           <S.Header>
             <S.CampgroundName>{campgroundName}</S.CampgroundName>
           </S.Header>
-          <View>
+          <S.SiteWrapper>
+            <Fontisto name='tent' size={14} color={ColorMap['grey'].main} />
             <S.Text>
-              Site: {campgroundSiteNumber ? campgroundSiteNumber : 'N/A'}
+              Site {campgroundSiteNumber ? campgroundSiteNumber : 'N/A'}
             </S.Text>
+          </S.SiteWrapper>
+          <S.DateWrapper>
+            <S.DateIconContainer>
+              <FontAwesome5
+                name='calendar-alt'
+                size={16}
+                color={ColorMap['grey'].main}
+              />
+            </S.DateIconContainer>
             <S.Text>{formatCampingDate()}</S.Text>
-          </View>
+          </S.DateWrapper>
         </S.Contents>
         <S.IconsContainer>
           <Animated.View
