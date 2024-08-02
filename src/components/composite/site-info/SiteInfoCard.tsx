@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { Pressable } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Fontisto, Ionicons } from '@expo/vector-icons';
 
 import { View } from '../../Themed';
 import * as S from './SiteInfoCard.styles';
@@ -24,20 +24,31 @@ const SiteInfoCard = ({
   return (
     <Pressable onPress={() => router.push(`/(user)/site-info/${id}`)}>
       <S.SiteInfoCardContainer>
-        <S.Text>{campgroundName}</S.Text>
-        <View style={{ flexDirection: 'row', gap: 20 }}>
-          <S.Text>{campgroundSiteNumber}</S.Text>
+        <S.TextContainer>
+          <S.Text>{campgroundName}</S.Text>
+          <S.SiteNumberContainer>
+            <Fontisto name='tent' size={14} color={ColorMap['grey'].main} />
+            <S.SiteNumberText>
+              {campgroundSiteNumber ? campgroundSiteNumber : 'N/A'}
+            </S.SiteNumberText>
+          </S.SiteNumberContainer>
+        </S.TextContainer>
+        <View
+          style={{ flexDirection: 'row', gap: 16, alignItems: 'flex-start' }}
+        >
+          {share ? (
+            <FontAwesome name='group' size={18} color={ColorMap['blue'].dark} />
+          ) : (
+            <View style={{ width: 18, height: 18 }}></View>
+          )}
           {favourite ? (
-            <S.FavouriteIcon
-              source={require('../../../../assets/images/like.png')}
+            <Ionicons
+              name='heart-sharp'
+              size={20}
+              color={ColorMap['red'].main}
             />
           ) : (
-            <View style={{ width: 22, height: 20 }}></View>
-          )}
-          {share ? (
-            <FontAwesome name='group' size={20} color={ColorMap['blue'].dark} />
-          ) : (
-            <View style={{ width: 22, height: 20 }}></View>
+            <View style={{ width: 20, height: 20 }}></View>
           )}
         </View>
       </S.SiteInfoCardContainer>

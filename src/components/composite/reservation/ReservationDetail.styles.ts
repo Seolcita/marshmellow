@@ -34,10 +34,19 @@ export const CampgroundName = styled.Text`
   font-weight: bold;
 `;
 
-export const Wrapper = styled.View`
+export const SiteWrapper = styled.View`
   flex-direction: row;
   align-items: center;
   flex: 1;
+`;
+
+export const DateWrapper = styled(SiteWrapper)`
+  align-items: start;
+  flex: 1;
+`;
+
+export const DateIconContainer = styled.View`
+  margin-top: 5px;
 `;
 
 export const Text = styled.Text`
@@ -45,6 +54,7 @@ export const Text = styled.Text`
   margin-vertical: 2px;
   color: ${ColorMap['grey'].main};
   margin-left: 8px;
+  padding-right: 20px;
 `;
 
 export const IconsContainer = styled.View`

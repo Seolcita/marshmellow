@@ -15,9 +15,9 @@ export const QuestionContainer = styled.View`
 `;
 
 export const Image = styled.Image`
-  width: 15px;
-  height: 13px;
-  margin-bottom: 5px;
+  width: 22px;
+  height: 22px;
+  margin-bottom: 10px;
 `;
 
 export const Question = styled.Text`
@@ -28,12 +28,14 @@ export const Question = styled.Text`
 
 export const AnswerContainer = styled.View`
   font-size: 18px;
-  padding-left: 25px;
+  padding-left: 35px;
   margin-top: -5px;
+  padding-top: 5px;
 `;
 
 export const Answer = styled.Text`
   font-size: 18px;
+  color: ${ColorMap['grey'].main};
 `;
 
 export const Wrapper = styled.View`

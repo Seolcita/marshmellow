@@ -86,20 +86,22 @@ const ResevationDetail = ({
           <S.Header>
             <S.CampgroundName>{campgroundName}</S.CampgroundName>
           </S.Header>
-          <S.Wrapper>
+          <S.SiteWrapper>
             <Fontisto name='tent' size={14} color={ColorMap['grey'].main} />
             <S.Text>
               Site {campgroundSiteNumber ? campgroundSiteNumber : 'N/A'}
             </S.Text>
-          </S.Wrapper>
-          <S.Wrapper>
-            <FontAwesome5
-              name='calendar-alt'
-              size={16}
-              color={ColorMap['grey'].main}
-            />
+          </S.SiteWrapper>
+          <S.DateWrapper>
+            <S.DateIconContainer>
+              <FontAwesome5
+                name='calendar-alt'
+                size={16}
+                color={ColorMap['grey'].main}
+              />
+            </S.DateIconContainer>
             <S.Text>{formatCampingDate()}</S.Text>
-          </S.Wrapper>
+          </S.DateWrapper>
         </S.Contents>
         <S.IconsContainer>
           <Animated.View
