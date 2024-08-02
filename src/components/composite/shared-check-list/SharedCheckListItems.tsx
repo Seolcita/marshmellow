@@ -3,7 +3,6 @@ import { CheckBox } from '@rneui/themed';
 import { useEffect, useState } from 'react';
 import { Feather } from '@expo/vector-icons';
 import { Alert, Pressable } from 'react-native';
-import { View } from '../../Themed';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import {
@@ -179,11 +178,11 @@ const SharedCheckListItems = ({
             {!isEditMode &&
               item.isAssigned &&
               item.assignedTo === userEmail && (
-                <View>
+                <S.View>
                   <S.AssignedUser>
                     {findMyAssignedItems(item.assignedTo)}
                   </S.AssignedUser>
-                </View>
+                </S.View>
               )}
           </S.CheckBoxContainer>
           {isEditMode && (

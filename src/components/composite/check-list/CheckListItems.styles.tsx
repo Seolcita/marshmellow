@@ -46,3 +46,5 @@ export const AssignedUser = styled.Text<AssignedUserProps>`
   padding-vertical: 2px;
   border-radius: 150px;
 `;
+
+export const View = styled.View``;
