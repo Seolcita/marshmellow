@@ -10,8 +10,9 @@ import ResevationDetail from './ReservationDetail';
 import { useAuth } from '../../../providers/AuthProvider';
 import TripsSkeletons from '../skeleton/trips/TripsSkeletons';
 import { useReservationsInfo } from '../../../api/reservation';
-import { StickyButton } from '../../common-styles/CommonStyles';
 import { ReservationModal } from '../../composite/reservation/ReservationModal';
+import { FontAwesome5 } from '@expo/vector-icons';
+import IconButton from '../../atomic/icon-button/IconButton';
 
 export interface InitialValue {
   id: string;
@@ -98,14 +99,14 @@ const Reservation = () => {
 
   return (
     <S.Container>
-      <StickyButton>
-        <Button
-          text='+ Add Trip'
-          onPress={() => setIsModalOpen((prev) => !prev)}
-          paddingHorizontal={20}
-          paddingVertical={15}
-        />
-      </StickyButton>
+      <IconButton
+        icon={
+          <FontAwesome5 name='plus' size={16} color={ColorMap['grey'].dark} />
+        }
+        text='Add Trip'
+        hasShadow
+        onPress={() => setIsModalOpen((prev) => !prev)}
+      />
 
       <S.ButtonsContainer>
         <View style={{ width: '33.3%' }}>

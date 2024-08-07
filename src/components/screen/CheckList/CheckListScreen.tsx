@@ -1,8 +1,9 @@
 import { Alert } from 'react-native';
 import { router } from 'expo-router';
+import { Switch } from 'react-native';
 import { useEffect, useState } from 'react';
+import { FontAwesome5 } from '@expo/vector-icons';
 
-import { View } from '../../Themed';
 import { Category } from '../../../types';
 import ColorMap from '../../../styles/Color';
 import * as S from './CheckListScreen.styles';
@@ -10,6 +11,7 @@ import Button from '../../atomic/button/Button';
 import { useCategories } from '../../../api/category';
 import { useAuth } from '../../../providers/AuthProvider';
 import { useClearCheckList } from '../../../api/check-list';
+import IconButton from '../../atomic/icon-button/IconButton';
 import Categories from '../../composite/category/Categories';
 import CreateCategoryModal from '../../composite/category/CreateCategoryModal';
 import CheckListSkeleton from '../../composite/skeleton/check-list/CheckListSkeleton';
@@ -61,7 +63,7 @@ const CheckListScreen = () => {
           <S.ScrollViewContainer>
             <S.ContentsContainer>
               <S.ButtonsContainer>
-                <View style={{ width: '49%' }}>
+                <S.ClearButtonContainer>
                   <Button
                     text='Clear all Checkbox'
                     onPress={() => {
@@ -71,25 +73,27 @@ const CheckListScreen = () => {
                     borderRadius={5}
                     bgColor={ColorMap['blue'].dark}
                     textColor={ColorMap['white'].main}
+                    paddingVertical={13}
                   />
-                </View>
-                <View style={{ width: '49%' }}>
-                  {isEditMode ? (
-                    <Button
-                      text='Check Mode'
-                      onPress={() => setIsEditMode((prev) => !prev)}
-                      borderRadius={5}
-                      bgColor={ColorMap['blue'].dark}
-                    />
-                  ) : (
-                    <Button
-                      text='Manage Mode'
-                      onPress={() => setIsEditMode((prev) => !prev)}
-                      borderRadius={5}
-                      bgColor={ColorMap['blue'].main}
-                    />
-                  )}
-                </View>
+                </S.ClearButtonContainer>
+
+                <S.ToggleContainer>
+                  <S.ToggleText>Check Mode</S.ToggleText>
+                  <Switch
+                    trackColor={{
+                      false: ColorMap['grey'].light,
+                      true: ColorMap['yellow'].extraLight,
+                    }}
+                    thumbColor={
+                      !isEditMode
+                        ? ColorMap['yellow'].dark
+                        : ColorMap['grey'].extraLight
+                    }
+                    ios_backgroundColor='#3e3e3e'
+                    onValueChange={() => setIsEditMode((prev) => !prev)}
+                    value={!isEditMode}
+                  />
+                </S.ToggleContainer>
               </S.ButtonsContainer>
               {isLoading ? (
                 <CheckListSkeleton />
@@ -104,14 +108,18 @@ const CheckListScreen = () => {
               )}
             </S.ContentsContainer>
           </S.ScrollViewContainer>
-          <S.CreateCategoryStickyButton>
-            <Button
-              text='+  Add Category'
-              onPress={() => setIsModalOpen(true)}
-              paddingVertical={16}
-              paddingHorizontal={24}
-            />
-          </S.CreateCategoryStickyButton>
+          <IconButton
+            icon={
+              <FontAwesome5
+                name='plus'
+                size={16}
+                color={ColorMap['grey'].dark}
+              />
+            }
+            text='Add Category'
+            hasShadow
+            onPress={() => setIsModalOpen(true)}
+          />
           <CreateCategoryModal
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}

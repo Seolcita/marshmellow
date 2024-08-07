@@ -89,13 +89,14 @@ const AddSharedCheckList = ({
               }}
               style={{ flex: 1, marginRight: 10 }}
               error={item.error}
+              borderColor={ColorMap['grey'].dark}
             />
             <S.ButtonContainer $error={!!item.error}>
               <Button
                 onPress={handleAdd}
                 text='Add'
                 borderRadius={5}
-                bgColor={ColorMap['blue'].dark}
+                bgColor={ColorMap['grey'].dark}
               />
             </S.ButtonContainer>
           </s.Row>

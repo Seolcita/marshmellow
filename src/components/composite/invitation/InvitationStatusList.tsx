@@ -8,6 +8,7 @@ import InvitationStatusItem from './InvitationStatusItem';
 import { useAuth } from '../../../providers/AuthProvider';
 import { useInvitationWithSharedCheckListId } from '../../../api/invitation';
 import InvitationStatusSkeletons from '../skeleton/invitation-status/InvitationStatusSkeletons';
+import { Text } from '../../Themed';
 
 interface InvitationStatusProps {
   sharedCheckListId: number;
@@ -47,9 +48,15 @@ const InvitationStatusList = ({ sharedCheckListId }: InvitationStatusProps) => {
   return (
     <S.Container>
       {!isLoading && invitations ? (
-        invitations.map((invitation) => (
-          <InvitationStatusItem key={invitation.id} invitation={invitation} />
-        ))
+        invitations.length > 0 ? (
+          invitations.map((invitation) => (
+            <InvitationStatusItem key={invitation.id} invitation={invitation} />
+          ))
+        ) : (
+          <S.EmptyText>
+            No Invitation sent. Please create invitations.
+          </S.EmptyText>
+        )
       ) : (
         <InvitationStatusSkeletons />
       )}

@@ -68,7 +68,7 @@ const SharedCheckListFormModal = ({
 
   return (
     <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
-      <S.ModalTitle>Create Shared Check List</S.ModalTitle>
+      <S.ModalTitle>Create Check List</S.ModalTitle>
       <S.Container>
         <Input
           label='Shared Check List Name'

@@ -174,7 +174,7 @@ const ParkPassModal = ({
           >
             <View style={styles.contents}>
               <Text style={styles.title}>
-                {isEdit ? 'Edit Park Passes' : 'Add Park Passes'}
+                {isEdit ? 'Edit Park Passes' : 'Add Park Pass'}
               </Text>
               <Input
                 label='Park Pass Name'

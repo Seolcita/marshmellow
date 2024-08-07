@@ -1,7 +1,5 @@
 import styled from 'styled-components/native';
 
-import { StickyButton } from '../../common-styles/CommonStyles';
-
 export const Container = styled.View`
   flex: 1;
   padding-horizontal: 20px;
@@ -25,11 +23,4 @@ export const Title = styled.Text`
   font-weight: bold;
   flex: 1;
   text-align: center;
-`;
-
-export const CreateButton = styled(StickyButton)`
-  position: absolute;
-  bottom: 0px;
-  right: 20px;
-  z-index: 1;
 `;

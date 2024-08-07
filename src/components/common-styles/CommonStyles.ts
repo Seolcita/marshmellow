@@ -45,13 +45,6 @@ export const ButtonWrapper = styled.View<ButtonWrapperProps>`
   background-color: transparent;
 `;
 
-export const StickyButton = styled.View`
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1;
-`;
-
 export const ModalTitle = styled.Text`
   font-size: 24px;
   font-weight: bold;

@@ -41,8 +41,8 @@ const InvitationStatusItem = ({ invitation }: InvitationStatusItemProps) => {
       <Pressable onPress={() => handleDelete(invitation)}>
         <MaterialCommunityIcons
           name='delete-forever-outline'
-          size={28}
-          color={ColorMap['red'].dark}
+          size={24}
+          color={ColorMap['red'].main}
         />
       </Pressable>
       {invitation.id && (
