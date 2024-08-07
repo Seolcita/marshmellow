@@ -1,8 +1,9 @@
 import { router } from 'expo-router';
-import { AntDesign } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import * as S from './ImageTile.styles';
-import { Colors } from '../../../styles/Color';
+import ColorMap, { Colors } from '../../../styles/Color';
+import { AntDesign } from '@expo/vector-icons';
 
 export interface ImageTileProps {
   title: string;
@@ -13,6 +14,8 @@ export interface ImageTileProps {
   imgHeight?: number;
   absRight?: number;
   absBottom?: number;
+  hasNotification?: boolean;
+  numNotification?: number;
 }
 
 const ImageTile = ({
@@ -24,6 +27,8 @@ const ImageTile = ({
   imgHeight,
   absRight,
   absBottom,
+  hasNotification,
+  numNotification,
 }: ImageTileProps) => {
   const handlePress = () => {
     router.push(pushTo);
@@ -35,6 +40,20 @@ const ImageTile = ({
         <AntDesign name='checksquareo' size={24} color='white' />
         <S.Text>{title}</S.Text>
       </S.Contents>
+      {hasNotification && (
+        <S.NotificationContainer>
+          <S.NotificationIcon>
+            <MaterialIcons
+              name='notifications-active'
+              size={16}
+              color={ColorMap['red'].dark}
+            />
+          </S.NotificationIcon>
+          <S.NotificationText>{`You have ${numNotification} pending ${
+            numNotification === 1 ? 'invitation' : 'invitations'
+          }`}</S.NotificationText>
+        </S.NotificationContainer>
+      )}
       <S.ImageContainer $absRight={absRight} $absBottom={absBottom}>
         <S.Image
           source={imageSource}

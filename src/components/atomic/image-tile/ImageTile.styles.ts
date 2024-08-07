@@ -43,6 +43,27 @@ export const Text = styled.Text`
   color: white;
 `;
 
+export const NotificationContainer = styled.View`
+  background-color: ${ColorMap['white'].main};
+  flex-direction: row;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 5px;
+  margin-top: 14px;
+  margin-right: 90px;
+`;
+
+export const NotificationIcon = styled.View`
+  margin-top: 2px;
+`;
+
+export const NotificationText = styled.Text`
+  color: ${ColorMap['grey'].dark};
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 18px;
+`;
+
 export const ImageContainer = styled.View<ImageContainerProps>`
   position: absolute;
   right: ${({ $absRight }) => $absRight ?? -25}px;

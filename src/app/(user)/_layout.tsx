@@ -1,13 +1,10 @@
 import { Tabs } from 'expo-router';
-
-import ColorMap from '../../styles/Color';
-import { useAuth } from '../../providers/AuthProvider';
-import TabBarIcon from '../../components/atomic/TabBarIcon/TabBarIcon';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const UserLayout = () => {
-  const { session } = useAuth();
+import ColorMap from '../../styles/Color';
+import TabBarIcon from '../../components/atomic/TabBarIcon/TabBarIcon';
 
+const UserLayout = () => {
   return (
     <Tabs
       screenOptions={{
