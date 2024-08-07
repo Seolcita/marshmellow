@@ -1,7 +1,9 @@
-import { Alert } from 'react-native';
+import { Alert, Switch } from 'react-native';
 import { router, Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 import { View } from '../../Themed';
 import { Category } from '../../../types';
@@ -21,6 +23,7 @@ import ClearAllCheckBoxModal from '../../composite/shared-check-list/ClearAllChe
 import ClearAllAssigneeModal from '../../composite/shared-check-list/ClearAllAssigneeModal';
 import InvitationAcceptedMembers from '../../composite/invitation/InvitationAcceptedMembers';
 import CreateSharedCategoryModal from '../../composite/shared-category/CreateSharedCategoryModal';
+import IconButton from '../../atomic/icon-button/IconButton';
 
 interface SharedCheckListScreenProps {
   id: number;
@@ -46,6 +49,7 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
   const [isAdminLoading, setIsAdminLoading] = useState(true);
   const [isExistingCategoriesLoading, setIsExistingCategoriesLoading] =
     useState(true);
+  const [isSettingOpen, setIsSettingOpen] = useState(true);
 
   const { session } = useAuth();
   const userId = session?.user.id;
@@ -100,113 +104,140 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
       />
       {userId && (
         <S.ScrollViewContainer>
-          {isAdmin && !isAdminLoading && (
-            <>
-              <s.Accordion
-                onPress={() => setIsCreateInvitationOpen((prev) => !prev)}
+          {isAdmin && (
+            <s.AdminContainer>
+              <s.AdminAccordion
+                onPress={() => setIsSettingOpen((prev) => !prev)}
+                $isSettingOpen={isSettingOpen}
               >
-                <s.Text>Create Invitation</s.Text>
+                <s.AdminText>Invitations & Settings</s.AdminText>
                 <FontAwesome
-                  name={isCreateInvitationOpen ? 'caret-up' : 'caret-down'}
+                  name={isSettingOpen ? 'caret-up' : 'caret-down'}
                   size={24}
                   color='white'
                 />
-              </s.Accordion>
-              {isCreateInvitationOpen && (
-                <CreateInvitationForm
-                  inviterId={userId}
-                  sharedCheckListName={sharedCheckListName}
-                  sharedCheckListId={id}
-                />
-              )}
-              <s.Accordion
-                $marginTop={isCreateInvitationOpen ? 48 : 0}
-                onPress={() => setIsInvitationStatusListOpen((prev) => !prev)}
-              >
-                <s.Text>Invitation Status</s.Text>
+              </s.AdminAccordion>
+              {!isAdminLoading && isSettingOpen && (
+                <>
+                  <s.Accordion
+                    onPress={() => setIsCreateInvitationOpen((prev) => !prev)}
+                  >
+                    <s.Text>Create Invitation</s.Text>
+                    <FontAwesome
+                      name={isCreateInvitationOpen ? 'caret-up' : 'caret-down'}
+                      size={24}
+                      color='white'
+                    />
+                  </s.Accordion>
+                  {isCreateInvitationOpen && (
+                    <CreateInvitationForm
+                      inviterId={userId}
+                      sharedCheckListName={sharedCheckListName}
+                      sharedCheckListId={id}
+                    />
+                  )}
+                  <s.Accordion
+                    $marginTop={isCreateInvitationOpen ? 48 : 0}
+                    onPress={() =>
+                      setIsInvitationStatusListOpen((prev) => !prev)
+                    }
+                  >
+                    <s.Text>Invitation Status</s.Text>
 
-                <FontAwesome
-                  name={isInvitationStatusListOpen ? 'caret-up' : 'caret-down'}
-                  size={24}
-                  color='white'
-                />
-              </s.Accordion>
-              {isInvitationStatusListOpen && (
-                <InvitationStatus sharedCheckListId={id} />
+                    <FontAwesome
+                      name={
+                        isInvitationStatusListOpen ? 'caret-up' : 'caret-down'
+                      }
+                      size={24}
+                      color='white'
+                    />
+                  </s.Accordion>
+                  {isInvitationStatusListOpen && (
+                    <InvitationStatus sharedCheckListId={id} />
+                  )}
+
+                  <s.Accordion
+                    $marginTop={isInvitationStatusListOpen ? 48 : 0}
+                    onPress={() => setIsAdminSettingOpen((prev) => !prev)}
+                  >
+                    <s.Text>Admin Settings</s.Text>
+
+                    <FontAwesome
+                      name={
+                        isInvitationStatusListOpen ? 'caret-up' : 'caret-down'
+                      }
+                      size={24}
+                      color='white'
+                    />
+                  </s.Accordion>
+                  {isAdminSettingOpen && (
+                    <s.AdminSettings
+                      style={{ paddingHorizontal: 20, marginBottom: 20 }}
+                    >
+                      <Button
+                        text='Clear all Checkbox'
+                        onPress={() => {
+                          setIsClearCheckListModalOpen(true);
+                        }}
+                        borderRadius={5}
+                        bgColor={ColorMap['white'].main}
+                        textColor={ColorMap['grey'].dark}
+                        marginVertical={8}
+                      />
+                      <Button
+                        text='Clear all Assignee'
+                        onPress={() => setIsClearAssigneesModalOpen(true)}
+                        borderRadius={5}
+                        bgColor={ColorMap['white'].main}
+                        textColor={ColorMap['grey'].dark}
+                        marginVertical={8}
+                      />
+                    </s.AdminSettings>
+                  )}
+                </>
               )}
 
-              <s.Accordion
-                $marginTop={isInvitationStatusListOpen ? 48 : 0}
-                onPress={() => setIsAdminSettingOpen((prev) => !prev)}
-              >
-                <s.Text>Admin Settings</s.Text>
-
-                <FontAwesome
-                  name={isInvitationStatusListOpen ? 'caret-up' : 'caret-down'}
-                  size={24}
-                  color='white'
-                />
-              </s.Accordion>
-              {isAdminSettingOpen && (
-                <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
-                  <Button
-                    text='Clear all Checkbox'
-                    onPress={() => {
-                      setIsClearCheckListModalOpen(true);
-                    }}
-                    borderRadius={5}
-                    bgColor={ColorMap['blue'].dark}
-                    textColor={ColorMap['white'].main}
-                  />
-                  <Button
-                    text='Clear all Assignee'
-                    onPress={() => setIsClearAssigneesModalOpen(true)}
-                    borderRadius={5}
-                    bgColor={ColorMap['blue'].dark}
-                    textColor={ColorMap['white'].main}
-                    marginVertical={8}
-                  />
-                </View>
-              )}
-            </>
+              {isAdminLoading && <AccordionSkeletons />}
+            </s.AdminContainer>
           )}
-
-          {isAdmin && isAdminLoading && <AccordionSkeletons />}
-
           {!isAdmin && !isAdminLoading && (
-            <s.Accordion onPress={() => setIsMembersOpen((prev) => !prev)}>
-              <s.Text>Members</s.Text>
-              <FontAwesome
-                name={isMembersOpen ? 'caret-up' : 'caret-down'}
-                size={24}
-                color='white'
-              />
-            </s.Accordion>
-          )}
-
-          {!isAdmin && isMembersOpen && !isAdminLoading && (
-            <InvitationAcceptedMembers sharedCheckListId={id} />
+            <s.MembersContainer>
+              <s.MembersAccordion
+                onPress={() => setIsMembersOpen((prev) => !prev)}
+                $isSettingOpen={isMembersOpen}
+              >
+                <s.Text>Members</s.Text>
+                <FontAwesome
+                  name={isMembersOpen ? 'caret-up' : 'caret-down'}
+                  size={24}
+                  color='white'
+                />
+              </s.MembersAccordion>
+              {isMembersOpen && !isAdminLoading && (
+                <InvitationAcceptedMembers sharedCheckListId={id} />
+              )}
+            </s.MembersContainer>
           )}
 
           <S.ContentsContainer>
-            <S.ButtonsContainer>
-              <View style={{ width: '49%' }}>
-                <Button
-                  text='Check Mode'
-                  onPress={() => setIsEditMode((prev) => !prev)}
-                  borderRadius={5}
-                  bgColor={ColorMap[!isEditMode ? 'blue' : 'grey'].dark}
+            <s.ToggleWrapper>
+              <s.ToggleContainer>
+                <s.ToggleText>Check Mode</s.ToggleText>
+                <Switch
+                  trackColor={{
+                    false: ColorMap['grey'].light,
+                    true: ColorMap['blue'].extraLight,
+                  }}
+                  thumbColor={
+                    !isEditMode ? ColorMap['blue'].dark : ColorMap['grey'].main
+                  }
+                  ios_backgroundColor='#3e3e3e'
+                  onValueChange={() => setIsEditMode((prev) => !prev)}
+                  value={!isEditMode}
                 />
-              </View>
-              <View style={{ width: '49%' }}>
-                <Button
-                  text='Manage Mode'
-                  onPress={() => setIsEditMode((prev) => !prev)}
-                  borderRadius={5}
-                  bgColor={ColorMap[isEditMode ? 'blue' : 'grey'].dark}
-                />
-              </View>
-            </S.ButtonsContainer>
+              </s.ToggleContainer>
+            </s.ToggleWrapper>
+
             {categories && !isExistingCategoriesLoading ? (
               <SharedCategories
                 categories={categories}
@@ -221,14 +252,15 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
           </S.ContentsContainer>
         </S.ScrollViewContainer>
       )}
-      <S.CreateCategoryStickyButton>
-        <Button
-          text='+  Add Category'
-          onPress={() => setIsCreateCategoryModalOpen(true)}
-          paddingVertical={16}
-          paddingHorizontal={24}
-        />
-      </S.CreateCategoryStickyButton>
+
+      <IconButton
+        icon={
+          <FontAwesome5 name='plus' size={16} color={ColorMap['grey'].dark} />
+        }
+        text='Add Category'
+        hasShadow
+        onPress={() => setIsCreateCategoryModalOpen(true)}
+      />
 
       <CreateSharedCategoryModal
         isModalOpen={isCreateCategoryModalOpen}

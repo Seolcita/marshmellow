@@ -11,3 +11,7 @@ export const Container = styled.View`
   padding-horizontal: 20px;
   margin-top: -4px;
 `;
+
+export const EmptyText = styled.Text`
+  color: ${ColorMap['white'].main};
+`;

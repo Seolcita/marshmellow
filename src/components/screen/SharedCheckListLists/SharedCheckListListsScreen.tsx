@@ -1,18 +1,19 @@
 import { router } from 'expo-router';
 import { ScrollView } from 'react-native';
 import { useEffect, useState } from 'react';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import {
   MySharedCheckList,
   useMySharedCheckList,
 } from '../../../api/my-shared-check-list';
-import Button from '../../atomic/button/Button';
+import ColorMap from '../../../styles/Color';
 import * as S from './SharedCheckListListsScreen.styles';
 import { useAuth } from '../../../providers/AuthProvider';
+import IconButton from '../../atomic/icon-button/IconButton';
 import TileSkeletons from '../../composite/skeleton/tiles/TileSkeletons';
-import SharedCheckListFormModal from '../../composite/create-shared-check-list/SharedCheckListFormModal';
 import SharedCheckListTile from '../../composite/shared-check-list/SharedCheckListTile';
+import SharedCheckListFormModal from '../../composite/create-shared-check-list/SharedCheckListFormModal';
 
 const SharedCheckListListsScreen = () => {
   const { session } = useAuth();
@@ -51,17 +52,14 @@ const SharedCheckListListsScreen = () => {
         <S.Title>Shared Check List</S.Title>
       </S.Header>
       <S.Container>
-        <S.CreateButton>
-          <Button
-            text='+ Create'
-            marginVertical={20}
-            onPress={() => setIsModalOpen(true)}
-            borderRadius={50}
-            paddingVertical={15}
-            width={120}
-            textSize={18}
-          />
-        </S.CreateButton>
+        <IconButton
+          icon={
+            <FontAwesome5 name='plus' size={16} color={ColorMap['grey'].dark} />
+          }
+          text='Create Shared Check List'
+          hasShadow
+          onPress={() => setIsModalOpen(true)}
+        />
 
         <ScrollView
           style={{ padding: 0, margin: 0, width: '100%' }}

@@ -105,6 +105,7 @@ const CreateInvitationForm = ({
     <S.Container>
       <Input
         label='Email'
+        labelColor={ColorMap['white'].main}
         isValid={inputs.email.isValid}
         textInputConfig={{
           value: inputs.email.value.trim(),
@@ -114,9 +115,11 @@ const CreateInvitationForm = ({
           keyboardType: 'email-address',
         }}
         error={inputs.email.error}
+        borderColor={ColorMap['white'].main}
       />
       <Input
-        label='Name'
+        label='Invitee Name'
+        labelColor={ColorMap['white'].main}
         isValid={inputs.name.isValid}
         textInputConfig={{
           value: inputs.name.value.trim(),
@@ -126,12 +129,14 @@ const CreateInvitationForm = ({
           keyboardType: 'default',
         }}
         error={inputs.name.error}
+        borderColor={ColorMap['white'].main}
       />
       <Button
         onPress={handleSubmit}
         text='Invite'
         borderRadius={5}
-        bgColor={ColorMap['blue'].dark}
+        textColor={ColorMap['grey'].dark}
+        bgColor={ColorMap['white'].main}
         disabled={!!inputs.email.error || !!inputs.name.error}
       />
     </S.Container>

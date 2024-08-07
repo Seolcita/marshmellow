@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Alert, ScrollView } from 'react-native';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import styles from './ParkPass.styles';
 import { Text, View } from '../../Themed';
 import ParkPassItem from './ParkPassItem';
 import ParkPassModal from './ParkPassModal';
 import ColorMap from '../../../styles/Color';
-import Button from '../../atomic/button/Button';
 import { useParkPasses } from '../../../api/park-pass';
 import { useAuth } from '../../../providers/AuthProvider';
-import { StickyButton } from '../../common-styles/CommonStyles';
 import ParkPassSkeletons from '../skeleton/park-pass/ParkPassSkeletons';
+import IconButton from '../../atomic/icon-button/IconButton';
 
 export interface InitialValue {
   id: string;
@@ -86,16 +86,17 @@ export const ParkPass = () => {
           </View>
         </ScrollView>
       </View>
-      <StickyButton>
-        <Button
-          text='+ Add Park Pass'
-          onPress={() => {
-            setIsEdit(false), setIsOpen(true);
-          }}
-          paddingVertical={16}
-          paddingHorizontal={24}
-        />
-      </StickyButton>
+
+      <IconButton
+        icon={
+          <FontAwesome5 name='plus' size={16} color={ColorMap['grey'].dark} />
+        }
+        text='Add Park Pass'
+        hasShadow
+        onPress={() => {
+          setIsEdit(false), setIsOpen(true);
+        }}
+      />
       <ParkPassModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
