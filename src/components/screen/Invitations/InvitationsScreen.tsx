@@ -1,4 +1,4 @@
-import { Alert } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
@@ -72,7 +72,15 @@ export const InvitationsScreen = () => {
   );
 
   return (
-    <>
+    <ScrollView
+      style={{ padding: 0, margin: 0, width: '100%', flex: 1 }}
+      overScrollMode='auto'
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{
+        padding: 2,
+        paddingBottom: 80,
+      }}
+    >
       <s.Accordion onPress={() => setIsPendingOpen((prev) => !prev)}>
         <s.Text>Pending Invitations</s.Text>
         <FontAwesome
@@ -169,6 +177,6 @@ export const InvitationsScreen = () => {
           </S.SkeletonContainer>
         )}
       </S.TileContainer>
-    </>
+    </ScrollView>
   );
 };
