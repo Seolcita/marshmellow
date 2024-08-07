@@ -1,8 +1,11 @@
 import * as S from './MainCheckListScreen.styles';
 import ImageTile from '../../atomic/image-tile/ImageTile';
 import { ScrollView } from 'react-native';
+import { useInvitation } from '../../../providers/InvitationProvider';
 
 export const MainCheckListScreen = () => {
+  const { hasPendingInvitations, numPendingInvitations } = useInvitation();
+
   return (
     <ScrollView
       style={{ padding: 0, margin: 0, width: '100%', marginTop: 10 }}
@@ -38,6 +41,8 @@ export const MainCheckListScreen = () => {
           imgHeight={130}
           absBottom={-30}
           absRight={-20}
+          hasNotification={hasPendingInvitations}
+          numNotification={numPendingInvitations}
         />
         <ImageTile
           title='Park Passes'

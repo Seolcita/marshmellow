@@ -6,15 +6,14 @@ import {
 import { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
-import { LogBox, StatusBar } from 'react-native';
+import { LogBox } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useColorScheme } from '@/src/components/useColorScheme';
-import { AuthProvider } from '../providers/AuthProvider';
 import QueryProvider from '../providers/QueryProvider';
-import ColorMap from '../styles/Color';
+import { AuthProvider } from '../providers/AuthProvider';
+import { useColorScheme } from '@/src/components/useColorScheme';
+import { InvitationProvider } from '../providers/InvitationProvider';
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
@@ -59,24 +58,15 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <AuthProvider>
-        <QueryProvider>
-          {/* <SafeAreaView
-            edges={['left', 'right']}
-            style={{
-              flex: 1,
-            }}
-          > */}
-          {/* <StatusBar
-              backgroundColor={ColorMap['blue'].dark}
-              barStyle={'light-content'}
-            /> */}
-          <Stack>
-            <Stack.Screen name='(auth)' options={{ headerShown: false }} />
-            <Stack.Screen name='(user)' options={{ headerShown: false }} />
-            <Stack.Screen name='modal' options={{ presentation: 'modal' }} />
-          </Stack>
-          {/* </SafeAreaView> */}
-        </QueryProvider>
+        <InvitationProvider>
+          <QueryProvider>
+            <Stack>
+              <Stack.Screen name='(auth)' options={{ headerShown: false }} />
+              <Stack.Screen name='(user)' options={{ headerShown: false }} />
+              <Stack.Screen name='modal' options={{ presentation: 'modal' }} />
+            </Stack>
+          </QueryProvider>
+        </InvitationProvider>
       </AuthProvider>
     </ThemeProvider>
   );
