@@ -125,7 +125,7 @@ export const useDeleteCategory = (userId: string) => {
 export const useCategorySubscription = (userId: string) => {
   const queryClient = useQueryClient();
 
-  const categories = supabase
+  const myCategories = supabase
     .channel('custom-all-channel')
     .on(
       'postgres_changes',
@@ -144,7 +144,5 @@ export const useCategorySubscription = (userId: string) => {
     )
     .subscribe();
 
-  return () => {
-    categories.unsubscribe();
-  };
+  return myCategories;
 };

@@ -317,3 +317,23 @@ export const useInvitationAcceptedMembers = (sharedCheckListId: number) => {
     },
   });
 };
+
+export const useInvitationSubscription = (userEmail: string) => {
+  const queryClient = useQueryClient();
+
+  const invitations = supabase
+    .channel('custom-all-channel')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'invitation' },
+      (payload) => {
+        queryClient.invalidateQueries([
+          'invitation',
+          userEmail,
+        ] as InvalidateQueryFilters);
+      }
+    )
+    .subscribe();
+
+  return invitations;
+};

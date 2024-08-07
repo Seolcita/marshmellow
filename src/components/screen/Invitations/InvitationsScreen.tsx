@@ -7,7 +7,10 @@ import * as S from './InvitationsScreen.styles';
 import { useAuth } from '../../../providers/AuthProvider';
 import { Invitation, InvitationStatus } from '../../../types';
 import * as s from '../SharedCheckList/SharedCheckListScreen.styles';
-import { useInvitationWithUserEmail } from '../../../api/invitation';
+import {
+  useInvitationSubscription,
+  useInvitationWithUserEmail,
+} from '../../../api/invitation';
 import InvitationTile from '../../composite/invitation/InvitationTile';
 import TileSkeletons from '../../composite/skeleton/tiles/TileSkeletons';
 import PendingInvitationTile from '../../composite/invitation/PendingInvitationTile';
@@ -36,6 +39,8 @@ export const InvitationsScreen = () => {
     isError,
   } = useInvitationWithUserEmail(userEmail);
 
+  const invitationSubscription = useInvitationSubscription(userEmail);
+
   useEffect(() => {
     if (myInvitationList) {
       setMyInvitations(myInvitationList);
@@ -45,6 +50,12 @@ export const InvitationsScreen = () => {
       setIsLoading(false);
     }
   }, [myInvitationList, isMyInvitationListLoading]);
+
+  useEffect(() => {
+    return () => {
+      invitationSubscription.unsubscribe();
+    };
+  }, []);
 
   const pending = myInvitations.filter(
     (invitation) => invitation.status === InvitationStatus.PENDING
