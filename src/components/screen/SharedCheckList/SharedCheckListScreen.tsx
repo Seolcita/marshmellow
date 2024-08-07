@@ -2,17 +2,19 @@ import { Alert, Switch } from 'react-native';
 import { router, Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
-import { View } from '../../Themed';
+import {
+  useCategorySubscription,
+  useSharedCategories,
+} from '../../../api/shared-category';
 import { Category } from '../../../types';
 import ColorMap from '../../../styles/Color';
 import Button from '../../atomic/button/Button';
 import * as s from './SharedCheckListScreen.styles';
 import * as S from '../CheckList/CheckListScreen.styles';
 import { useAuth } from '../../../providers/AuthProvider';
-import { useSharedCategories } from '../../../api/shared-category';
+import IconButton from '../../atomic/icon-button/IconButton';
 import InvitationStatus from '../../composite/invitation/InvitationStatusList';
 import SharedCategories from '../../composite/shared-category/SharedCategories';
 import { useMySharedCheckListForAdmin } from '../../../api/my-shared-check-list';
@@ -23,7 +25,6 @@ import ClearAllCheckBoxModal from '../../composite/shared-check-list/ClearAllChe
 import ClearAllAssigneeModal from '../../composite/shared-check-list/ClearAllAssigneeModal';
 import InvitationAcceptedMembers from '../../composite/invitation/InvitationAcceptedMembers';
 import CreateSharedCategoryModal from '../../composite/shared-category/CreateSharedCategoryModal';
-import IconButton from '../../atomic/icon-button/IconButton';
 
 interface SharedCheckListScreenProps {
   id: number;
@@ -72,6 +73,8 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
     isLoading: isExistSharedCategoriesLoading,
   } = useSharedCategories(id);
 
+  const CategoriesSubscription = useCategorySubscription(id);
+
   useEffect(() => {
     if (adminInfo?.isAdmin) {
       setIsAdmin(adminInfo.isAdmin);
@@ -90,6 +93,12 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
       setIsExistingCategoriesLoading(false);
     }
   }, [existSharedCategories]);
+
+  useEffect(() => {
+    return () => {
+      CategoriesSubscription.unsubscribe();
+    };
+  }, []);
 
   return (
     <>

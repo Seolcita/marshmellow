@@ -134,7 +134,7 @@ export const useDeleteSharedCategory = (sharedCheckListId: number) => {
 export const useCategorySubscription = (sharedCheckListId: number) => {
   const queryClient = useQueryClient();
 
-  const sharedCategories = supabase
+  const sharedCategoriesSubscription = supabase
     .channel('custom-all-channel')
     .on(
       'postgres_changes',
@@ -152,7 +152,6 @@ export const useCategorySubscription = (sharedCheckListId: number) => {
       }
     )
     .subscribe();
-  return () => {
-    sharedCategories.unsubscribe();
-  };
+
+  return sharedCategoriesSubscription;
 };
