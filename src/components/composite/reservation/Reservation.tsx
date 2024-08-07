@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert, ScrollView } from 'react-native';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import { View } from '../../Themed';
 import * as S from './Reservation.styles';
@@ -11,7 +12,6 @@ import { useAuth } from '../../../providers/AuthProvider';
 import TripsSkeletons from '../skeleton/trips/TripsSkeletons';
 import { useReservationsInfo } from '../../../api/reservation';
 import { ReservationModal } from '../../composite/reservation/ReservationModal';
-import { FontAwesome5 } from '@expo/vector-icons';
 import IconButton from '../../atomic/icon-button/IconButton';
 
 export interface InitialValue {

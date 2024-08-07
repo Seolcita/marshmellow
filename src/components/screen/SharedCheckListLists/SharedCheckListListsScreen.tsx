@@ -7,14 +7,13 @@ import {
   MySharedCheckList,
   useMySharedCheckList,
 } from '../../../api/my-shared-check-list';
-import Button from '../../atomic/button/Button';
+import ColorMap from '../../../styles/Color';
 import * as S from './SharedCheckListListsScreen.styles';
 import { useAuth } from '../../../providers/AuthProvider';
-import TileSkeletons from '../../composite/skeleton/tiles/TileSkeletons';
-import SharedCheckListFormModal from '../../composite/create-shared-check-list/SharedCheckListFormModal';
-import SharedCheckListTile from '../../composite/shared-check-list/SharedCheckListTile';
 import IconButton from '../../atomic/icon-button/IconButton';
-import ColorMap from '../../../styles/Color';
+import TileSkeletons from '../../composite/skeleton/tiles/TileSkeletons';
+import SharedCheckListTile from '../../composite/shared-check-list/SharedCheckListTile';
+import SharedCheckListFormModal from '../../composite/create-shared-check-list/SharedCheckListFormModal';
 
 const SharedCheckListListsScreen = () => {
   const { session } = useAuth();

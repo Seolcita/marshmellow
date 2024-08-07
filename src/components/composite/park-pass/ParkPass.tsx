@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Alert, ScrollView } from 'react-native';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import styles from './ParkPass.styles';
 import { Text, View } from '../../Themed';
@@ -10,7 +11,6 @@ import { useParkPasses } from '../../../api/park-pass';
 import { useAuth } from '../../../providers/AuthProvider';
 import ParkPassSkeletons from '../skeleton/park-pass/ParkPassSkeletons';
 import IconButton from '../../atomic/icon-button/IconButton';
-import { FontAwesome5 } from '@expo/vector-icons';
 
 export interface InitialValue {
   id: string;

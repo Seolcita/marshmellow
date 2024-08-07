@@ -1,8 +1,7 @@
-import { ReactNode } from 'react';
-import { forwardRef } from 'react';
+import { Pressable, View } from 'react-native';
+import { ReactNode, forwardRef } from 'react';
+
 import * as S from './IconButton.styles';
-import { Pressable } from 'react-native';
-import { View } from 'react-native-reanimated/lib/typescript/Animated';
 
 type IconButtonProps = {
   icon: ReactNode;
