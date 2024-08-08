@@ -1,4 +1,4 @@
-import { Alert } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
@@ -7,7 +7,10 @@ import * as S from './InvitationsScreen.styles';
 import { useAuth } from '../../../providers/AuthProvider';
 import { Invitation, InvitationStatus } from '../../../types';
 import * as s from '../SharedCheckList/SharedCheckListScreen.styles';
-import { useInvitationWithUserEmail } from '../../../api/invitation';
+import {
+  useInvitationSubscription,
+  useInvitationWithUserEmail,
+} from '../../../api/invitation';
 import InvitationTile from '../../composite/invitation/InvitationTile';
 import TileSkeletons from '../../composite/skeleton/tiles/TileSkeletons';
 import PendingInvitationTile from '../../composite/invitation/PendingInvitationTile';
@@ -36,6 +39,8 @@ export const InvitationsScreen = () => {
     isError,
   } = useInvitationWithUserEmail(userEmail);
 
+  const invitationSubscription = useInvitationSubscription(userEmail);
+
   useEffect(() => {
     if (myInvitationList) {
       setMyInvitations(myInvitationList);
@@ -45,6 +50,12 @@ export const InvitationsScreen = () => {
       setIsLoading(false);
     }
   }, [myInvitationList, isMyInvitationListLoading]);
+
+  useEffect(() => {
+    return () => {
+      invitationSubscription.unsubscribe();
+    };
+  }, []);
 
   const pending = myInvitations.filter(
     (invitation) => invitation.status === InvitationStatus.PENDING
@@ -61,7 +72,15 @@ export const InvitationsScreen = () => {
   );
 
   return (
-    <>
+    <ScrollView
+      style={{ padding: 0, margin: 0, width: '100%', flex: 1 }}
+      overScrollMode='auto'
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{
+        padding: 2,
+        paddingBottom: 80,
+      }}
+    >
       <s.Accordion onPress={() => setIsPendingOpen((prev) => !prev)}>
         <s.Text>Pending Invitations</s.Text>
         <FontAwesome
@@ -158,6 +177,6 @@ export const InvitationsScreen = () => {
           </S.SkeletonContainer>
         )}
       </S.TileContainer>
-    </>
+    </ScrollView>
   );
 };

@@ -12,9 +12,9 @@ const MemberSkeletons = () => {
         backgroundColor: 'transparent',
       }}
     >
-      <Skeleton animation='wave' width={50} height={40} />
-      <Skeleton animation='wave' width={100} height={40} />
-      <Skeleton animation='wave' width={70} height={40} />
+      <Skeleton animation='wave' width={50} height={20} />
+      <Skeleton animation='wave' width={100} height={20} />
+      <Skeleton animation='wave' width={70} height={20} />
     </View>
   );
 };

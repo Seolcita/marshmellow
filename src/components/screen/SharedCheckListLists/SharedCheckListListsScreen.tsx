@@ -14,6 +14,7 @@ import IconButton from '../../atomic/icon-button/IconButton';
 import TileSkeletons from '../../composite/skeleton/tiles/TileSkeletons';
 import SharedCheckListTile from '../../composite/shared-check-list/SharedCheckListTile';
 import SharedCheckListFormModal from '../../composite/create-shared-check-list/SharedCheckListFormModal';
+import { View } from '../../Themed';
 
 const SharedCheckListListsScreen = () => {
   const { session } = useAuth();
@@ -52,23 +53,13 @@ const SharedCheckListListsScreen = () => {
         <S.Title>Shared Check List</S.Title>
       </S.Header>
       <S.Container>
-        <IconButton
-          icon={
-            <FontAwesome5 name='plus' size={16} color={ColorMap['grey'].dark} />
-          }
-          text='Create Shared Check List'
-          hasShadow
-          onPress={() => setIsModalOpen(true)}
-        />
-
         <ScrollView
-          style={{ padding: 0, margin: 0, width: '100%' }}
+          style={{ padding: 0, margin: 0, width: '100%', flex: 1 }}
           overScrollMode='auto'
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             padding: 2,
-            flex: 1,
-            marginBottom: 40,
+            paddingBottom: 80,
           }}
         >
           {!isLoading && mySharedCheckList ? (
@@ -83,11 +74,19 @@ const SharedCheckListListsScreen = () => {
           ) : (
             <TileSkeletons />
           )}
-        </ScrollView>
 
-        <SharedCheckListFormModal
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
+          <SharedCheckListFormModal
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+          />
+        </ScrollView>
+        <IconButton
+          icon={
+            <FontAwesome5 name='plus' size={16} color={ColorMap['grey'].dark} />
+          }
+          text='Create Shared Check List'
+          hasShadow
+          onPress={() => setIsModalOpen(true)}
         />
       </S.Container>
     </>

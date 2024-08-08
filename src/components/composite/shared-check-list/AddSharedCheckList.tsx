@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { router } from 'expo-router';
 
@@ -10,6 +10,7 @@ import { useAuth } from '../../../providers/AuthProvider';
 import {
   useInsertSharedCheckListItem,
   useSharedCheckList,
+  useSharedCheckListItemSubscription,
 } from '../../../api/shared-check-list-item';
 import * as S from '../check-list/AddCheckList.styles';
 import SharedCheckListItems from './SharedCheckListItems';

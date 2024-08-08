@@ -648,7 +648,7 @@ const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
             onPress={handleSubmit}
             paddingVertical={10}
             marginVertical={10}
-            bgColor={ColorMap['grey'].dark}
+            bgColor={ColorMap['green'].dark}
           />
         </PaperProvider>
       ) : (

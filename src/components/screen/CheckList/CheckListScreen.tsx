@@ -37,6 +37,7 @@ const CheckListScreen = () => {
     data: existCategories,
     isLoading: isCategoriesLoading,
   } = useCategories(userId);
+
   const { mutate: clearCheckList } = useClearCheckList();
 
   useEffect(() => {

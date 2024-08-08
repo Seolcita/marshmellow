@@ -2,16 +2,15 @@ import { Alert, Switch } from 'react-native';
 import { router, Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
-import { View } from '../../Themed';
 import { Category } from '../../../types';
 import ColorMap from '../../../styles/Color';
 import Button from '../../atomic/button/Button';
 import * as s from './SharedCheckListScreen.styles';
 import * as S from '../CheckList/CheckListScreen.styles';
 import { useAuth } from '../../../providers/AuthProvider';
+import IconButton from '../../atomic/icon-button/IconButton';
 import { useSharedCategories } from '../../../api/shared-category';
 import InvitationStatus from '../../composite/invitation/InvitationStatusList';
 import SharedCategories from '../../composite/shared-category/SharedCategories';
@@ -23,7 +22,6 @@ import ClearAllCheckBoxModal from '../../composite/shared-check-list/ClearAllChe
 import ClearAllAssigneeModal from '../../composite/shared-check-list/ClearAllAssigneeModal';
 import InvitationAcceptedMembers from '../../composite/invitation/InvitationAcceptedMembers';
 import CreateSharedCategoryModal from '../../composite/shared-category/CreateSharedCategoryModal';
-import IconButton from '../../atomic/icon-button/IconButton';
 
 interface SharedCheckListScreenProps {
   id: number;
@@ -70,6 +68,7 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
     data: existSharedCategories,
     error: fetchingExistSharedCategoriesError,
     isLoading: isExistSharedCategoriesLoading,
+    refetch,
   } = useSharedCategories(id);
 
   useEffect(() => {
@@ -89,7 +88,11 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
     if (!isExistSharedCategoriesLoading) {
       setIsExistingCategoriesLoading(false);
     }
-  }, [existSharedCategories]);
+  }, [existSharedCategories, categories]);
+
+  const handleRefresh = () => {
+    refetch();
+  };
 
   return (
     <>
@@ -220,23 +223,38 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
           )}
 
           <S.ContentsContainer>
-            <s.ToggleWrapper>
-              <s.ToggleContainer>
-                <s.ToggleText>Check Mode</s.ToggleText>
-                <Switch
-                  trackColor={{
-                    false: ColorMap['grey'].light,
-                    true: ColorMap['blue'].extraLight,
-                  }}
-                  thumbColor={
-                    !isEditMode ? ColorMap['blue'].dark : ColorMap['grey'].main
-                  }
-                  ios_backgroundColor='#3e3e3e'
-                  onValueChange={() => setIsEditMode((prev) => !prev)}
-                  value={!isEditMode}
+            <s.ButtonContainer>
+              <s.RefreshButtonContainer>
+                <Button
+                  text='Refresh'
+                  onPress={() => handleRefresh()}
+                  borderRadius={5}
+                  bgColor={ColorMap['green'].dark}
+                  textColor={ColorMap['white'].main}
+                  paddingVertical={13}
+                  fullWidth
                 />
-              </s.ToggleContainer>
-            </s.ToggleWrapper>
+              </s.RefreshButtonContainer>
+              <s.ToggleWrapper>
+                <s.ToggleContainer>
+                  <s.ToggleText>Check Mode</s.ToggleText>
+                  <Switch
+                    trackColor={{
+                      false: ColorMap['grey'].extraLight,
+                      true: ColorMap['yellow'].extraLight,
+                    }}
+                    thumbColor={
+                      !isEditMode
+                        ? ColorMap['yellow'].dark
+                        : ColorMap['grey'].light
+                    }
+                    ios_backgroundColor='#3e3e3e'
+                    onValueChange={() => setIsEditMode((prev) => !prev)}
+                    value={!isEditMode}
+                  />
+                </s.ToggleContainer>
+              </s.ToggleWrapper>
+            </s.ButtonContainer>
 
             {categories && !isExistingCategoriesLoading ? (
               <SharedCategories

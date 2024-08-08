@@ -7,14 +7,15 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import {
   useDeleteSharedCheckList,
+  useSharedCheckListItemSubscription,
   useUpdateSharedCheckListAssignedItemStatus,
   useUpdateSharedCheckListItemStatus,
 } from '../../../api/shared-check-list-item';
+import ColorMap from '../../../styles/Color';
 import * as S from '../check-list/CheckListItems.styles';
 import { useAuth } from '../../../providers/AuthProvider';
 import { Invitation, SharedCheckList } from '../../../types';
 import { useInvitationWithSharedCheckListId } from '../../../api/invitation';
-import ColorMap from '../../../styles/Color';
 
 interface SharedCheckListItemsProps {
   items: SharedCheckList[];
@@ -58,6 +59,8 @@ const SharedCheckListItems = ({
   const { data: invitationsInfo, error: inviationError } =
     useInvitationWithSharedCheckListId(sharedCheckListId);
 
+  const subscriiption = useSharedCheckListItemSubscription(categoryId);
+
   useEffect(() => {
     if (items) {
       setCheckList(items);
@@ -80,6 +83,12 @@ const SharedCheckListItems = ({
       setInvitations(invitationsInfo);
     }
   }, [invitations]);
+
+  useEffect(() => {
+    return () => {
+      subscriiption.unsubscribe();
+    };
+  }, []);
 
   const toggleCheckListItemStatus = ({
     itemId,

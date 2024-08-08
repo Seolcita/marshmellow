@@ -279,3 +279,22 @@ export const useUpdateCampSiteInfo = ({ id, userId }: UseUpdateSiteInfo) => {
     },
   });
 };
+
+export const useSharedSiteSubscription = () => {
+  const queryClient = useQueryClient();
+
+  const sharedSiteSubscription = supabase
+    .channel('custom-all-channel')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'site_info' },
+      (payload) => {
+        queryClient.invalidateQueries([
+          'all-sites-info',
+        ] as InvalidateQueryFilters);
+      }
+    )
+    .subscribe();
+
+  return sharedSiteSubscription;
+};

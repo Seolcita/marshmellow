@@ -1,10 +1,53 @@
+import { router } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Alert, ScrollView } from 'react-native';
+
+import {
+  useInvitationSubscription,
+  useInvitationWithUserEmail,
+} from '../../../api/invitation';
 import * as S from './MainCheckListScreen.styles';
+import { InvitationStatus } from '../../../types';
+import { useAuth } from '../../../providers/AuthProvider';
 import ImageTile from '../../atomic/image-tile/ImageTile';
-import { ScrollView } from 'react-native';
-import { useInvitation } from '../../../providers/InvitationProvider';
 
 export const MainCheckListScreen = () => {
-  const { hasPendingInvitations, numPendingInvitations } = useInvitation();
+  const [hasPendingInvitations, setHasPendingInvitations] = useState(false);
+  const [numPendingInvitations, setNumPendingInvitations] = useState(0);
+
+  const { session } = useAuth();
+  const userEmail = session?.user.email;
+
+  if (!userEmail) {
+    Alert.alert('Session is not valid, please login again');
+    console.log('User not found');
+    router.push('/(auth)/sign-in');
+    return;
+  }
+
+  const { data: myInvitations, isError } =
+    useInvitationWithUserEmail(userEmail);
+
+  useEffect(() => {
+    if (myInvitations) {
+      const pendingInvitations = myInvitations?.filter(
+        (invitation) => invitation.status === InvitationStatus.PENDING
+      );
+
+      if (pendingInvitations.length > 0) {
+        setHasPendingInvitations(true);
+        setNumPendingInvitations(pendingInvitations.length);
+      }
+    }
+  }, [myInvitations]);
+
+  const invitationSubscription = useInvitationSubscription(userEmail);
+
+  useEffect(() => {
+    return () => {
+      invitationSubscription.unsubscribe();
+    };
+  }, [numPendingInvitations]);
 
   return (
     <ScrollView

@@ -13,7 +13,6 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import QueryProvider from '../providers/QueryProvider';
 import { AuthProvider } from '../providers/AuthProvider';
 import { useColorScheme } from '@/src/components/useColorScheme';
-import { InvitationProvider } from '../providers/InvitationProvider';
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
@@ -58,15 +57,13 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <AuthProvider>
-        <InvitationProvider>
-          <QueryProvider>
-            <Stack>
-              <Stack.Screen name='(auth)' options={{ headerShown: false }} />
-              <Stack.Screen name='(user)' options={{ headerShown: false }} />
-              <Stack.Screen name='modal' options={{ presentation: 'modal' }} />
-            </Stack>
-          </QueryProvider>
-        </InvitationProvider>
+        <QueryProvider>
+          <Stack>
+            <Stack.Screen name='(auth)' options={{ headerShown: false }} />
+            <Stack.Screen name='(user)' options={{ headerShown: false }} />
+            <Stack.Screen name='modal' options={{ presentation: 'modal' }} />
+          </Stack>
+        </QueryProvider>
       </AuthProvider>
     </ThemeProvider>
   );

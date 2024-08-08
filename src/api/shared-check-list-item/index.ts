@@ -292,13 +292,27 @@ export const useClearSharedCheckListAssignees = () => {
   });
 };
 
-const sharedCheckListItems = supabase
-  .channel('custom-all-channel')
-  .on(
-    'postgres_changes',
-    { event: '*', schema: 'public', table: 'shared_check_list_items' },
-    (payload) => {
-      console.log('Change received!', payload);
-    }
-  )
-  .subscribe();
+export const useSharedCheckListItemSubscription = (categoryId: string) => {
+  const queryClient = useQueryClient();
+
+  const sharedCheckListItemSubscription = supabase
+    .channel('custom-all-channel')
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'shared_check_list_items',
+        filter: 'shared_category_id=eq.' + categoryId,
+      },
+      (payload) => {
+        queryClient.invalidateQueries([
+          'shared_check_list_items',
+          categoryId,
+        ] as InvalidateQueryFilters);
+      }
+    )
+    .subscribe();
+
+  return sharedCheckListItemSubscription;
+};

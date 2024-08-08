@@ -19,7 +19,10 @@ import * as S from './SharedSiteInfo.styles';
 import Button from '../../atomic/button/Button';
 import { useAuth } from '../../../providers/AuthProvider';
 import SearchInput from '../../atomic/search-input/SearchInput';
-import { useSharedCampSitesInfo } from '../../../api/site-info';
+import {
+  useSharedCampSitesInfo,
+  useSharedSiteSubscription,
+} from '../../../api/site-info';
 import { ButtonWrapper } from '../../common-styles/CommonStyles';
 import RatingFilterButtons from '../site-info/RatingFilterButtons';
 import SharedSiteSkeletons from '../skeleton/shared-site/SharedSiteSkeletons';
@@ -65,6 +68,8 @@ const SharedSiteInfo = () => {
     isLoading: isSharedCampSitesLoading,
   } = useSharedCampSitesInfo();
 
+  const sharedCampSitesSubscription = useSharedSiteSubscription();
+
   const {
     data: wishData,
     error: wishError,
@@ -88,6 +93,12 @@ const SharedSiteInfo = () => {
       setIsWishesLoading(false);
     }
   }, [wishData]);
+
+  useEffect(() => {
+    return () => {
+      sharedCampSitesSubscription.unsubscribe();
+    };
+  }, []);
 
   const updateSearchByKeyword = (searchValue: string) => {
     setSearch(searchValue);

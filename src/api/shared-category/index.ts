@@ -131,10 +131,10 @@ export const useDeleteSharedCategory = (sharedCheckListId: number) => {
   });
 };
 
-export const useCategorySubscription = (sharedCheckListId: number) => {
+export const useSharedCategorySubscription = (sharedCheckListId: number) => {
   const queryClient = useQueryClient();
 
-  const sharedCategories = supabase
+  const sharedCategoriesSubscription = supabase
     .channel('custom-all-channel')
     .on(
       'postgres_changes',
@@ -142,7 +142,7 @@ export const useCategorySubscription = (sharedCheckListId: number) => {
         event: '*',
         schema: 'public',
         table: 'shared_categories',
-        filter: `shared_check_list_id=eq.${sharedCheckListId}`,
+        filter: 'shared_check_list_id=eq.' + sharedCheckListId,
       },
       (payload) => {
         queryClient.invalidateQueries([
@@ -152,7 +152,6 @@ export const useCategorySubscription = (sharedCheckListId: number) => {
       }
     )
     .subscribe();
-  return () => {
-    sharedCategories.unsubscribe();
-  };
+
+  return sharedCategoriesSubscription;
 };
