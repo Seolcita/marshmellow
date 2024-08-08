@@ -48,6 +48,20 @@ export const Accordion = styled.Pressable<AccordionProps>`
   border-radius: 5px;
 `;
 
+export const ButtonContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 8px;
+`;
+
+export const RefreshButtonContainer = styled.View`
+  width: 49%;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const Text = styled.Text`
   font-size: 16px;
   color: ${ColorMap['white'].main};
@@ -55,10 +69,7 @@ export const Text = styled.Text`
 `;
 
 export const ToggleWrapper = styled.View`
-  width: 100%;
-  align-items: flex-end;
-  margin-right: 8px;
-  margin-bottom: 4px;
+  width: 49%;
 `;
 
 export const ToggleContainer = styled.View`
@@ -67,16 +78,16 @@ export const ToggleContainer = styled.View`
   align-items: center;
   justify-content: center;
   padding-left: 24px;
-  padding-right: 12px;
+  padding-right: 8px;
   gap: 4px;
   border-radius: 5px;
-  background-color: ${ColorMap['grey'].extraLight};
+  background-color: ${ColorMap['green'].dark};
 `;
 
 export const ToggleText = styled.Text`
   font-size: 16px;
   font-weight: bold;
-  color: ${ColorMap['grey'].dark};
+  color: ${ColorMap['white'].main};
 `;
 
 export const AdminSettings = styled.View`

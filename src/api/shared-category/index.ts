@@ -131,7 +131,7 @@ export const useDeleteSharedCategory = (sharedCheckListId: number) => {
   });
 };
 
-export const useCategorySubscription = (sharedCheckListId: number) => {
+export const useSharedCategorySubscription = (sharedCheckListId: number) => {
   const queryClient = useQueryClient();
 
   const sharedCategoriesSubscription = supabase
@@ -142,7 +142,7 @@ export const useCategorySubscription = (sharedCheckListId: number) => {
         event: '*',
         schema: 'public',
         table: 'shared_categories',
-        filter: `shared_check_list_id=eq.${sharedCheckListId}`,
+        filter: 'shared_check_list_id=eq.' + sharedCheckListId,
       },
       (payload) => {
         queryClient.invalidateQueries([
@@ -152,6 +152,11 @@ export const useCategorySubscription = (sharedCheckListId: number) => {
       }
     )
     .subscribe();
+
+  console.log(
+    'sharedCategoriesSubscription🚙',
+    sharedCategoriesSubscription.bindings.payload
+  );
 
   return sharedCategoriesSubscription;
 };

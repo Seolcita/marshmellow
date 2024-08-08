@@ -4,10 +4,6 @@ import { useEffect, useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
-import {
-  useCategorySubscription,
-  useSharedCategories,
-} from '../../../api/shared-category';
 import { Category } from '../../../types';
 import ColorMap from '../../../styles/Color';
 import Button from '../../atomic/button/Button';
@@ -15,6 +11,7 @@ import * as s from './SharedCheckListScreen.styles';
 import * as S from '../CheckList/CheckListScreen.styles';
 import { useAuth } from '../../../providers/AuthProvider';
 import IconButton from '../../atomic/icon-button/IconButton';
+import { useSharedCategories } from '../../../api/shared-category';
 import InvitationStatus from '../../composite/invitation/InvitationStatusList';
 import SharedCategories from '../../composite/shared-category/SharedCategories';
 import { useMySharedCheckListForAdmin } from '../../../api/my-shared-check-list';
@@ -71,9 +68,8 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
     data: existSharedCategories,
     error: fetchingExistSharedCategoriesError,
     isLoading: isExistSharedCategoriesLoading,
+    refetch,
   } = useSharedCategories(id);
-
-  const CategoriesSubscription = useCategorySubscription(id);
 
   useEffect(() => {
     if (adminInfo?.isAdmin) {
@@ -92,13 +88,11 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
     if (!isExistSharedCategoriesLoading) {
       setIsExistingCategoriesLoading(false);
     }
-  }, [existSharedCategories]);
+  }, [existSharedCategories, categories]);
 
-  useEffect(() => {
-    return () => {
-      CategoriesSubscription.unsubscribe();
-    };
-  }, []);
+  const handleRefresh = () => {
+    refetch();
+  };
 
   return (
     <>
@@ -229,23 +223,38 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
           )}
 
           <S.ContentsContainer>
-            <s.ToggleWrapper>
-              <s.ToggleContainer>
-                <s.ToggleText>Check Mode</s.ToggleText>
-                <Switch
-                  trackColor={{
-                    false: ColorMap['grey'].light,
-                    true: ColorMap['blue'].extraLight,
-                  }}
-                  thumbColor={
-                    !isEditMode ? ColorMap['blue'].dark : ColorMap['grey'].main
-                  }
-                  ios_backgroundColor='#3e3e3e'
-                  onValueChange={() => setIsEditMode((prev) => !prev)}
-                  value={!isEditMode}
+            <s.ButtonContainer>
+              <s.RefreshButtonContainer>
+                <Button
+                  text='Refresh'
+                  onPress={() => handleRefresh()}
+                  borderRadius={5}
+                  bgColor={ColorMap['green'].dark}
+                  textColor={ColorMap['white'].main}
+                  paddingVertical={13}
+                  fullWidth
                 />
-              </s.ToggleContainer>
-            </s.ToggleWrapper>
+              </s.RefreshButtonContainer>
+              <s.ToggleWrapper>
+                <s.ToggleContainer>
+                  <s.ToggleText>Check Mode</s.ToggleText>
+                  <Switch
+                    trackColor={{
+                      false: ColorMap['grey'].extraLight,
+                      true: ColorMap['yellow'].extraLight,
+                    }}
+                    thumbColor={
+                      !isEditMode
+                        ? ColorMap['yellow'].dark
+                        : ColorMap['grey'].light
+                    }
+                    ios_backgroundColor='#3e3e3e'
+                    onValueChange={() => setIsEditMode((prev) => !prev)}
+                    value={!isEditMode}
+                  />
+                </s.ToggleContainer>
+              </s.ToggleWrapper>
+            </s.ButtonContainer>
 
             {categories && !isExistingCategoriesLoading ? (
               <SharedCategories

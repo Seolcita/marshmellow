@@ -299,7 +299,12 @@ export const useSharedCheckListItemSubscription = (categoryId: string) => {
     .channel('custom-all-channel')
     .on(
       'postgres_changes',
-      { event: '*', schema: 'public', table: 'shared_check_list_items' },
+      {
+        event: '*',
+        schema: 'public',
+        table: 'shared_check_list_items',
+        filter: 'shared_category_id=eq.' + categoryId,
+      },
       (payload) => {
         queryClient.invalidateQueries([
           'shared_check_list_items',

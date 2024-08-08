@@ -13,7 +13,6 @@ const CreateSharedCategoryModal = ({
   setIsModalOpen,
   sharedCheckListId,
 }: CreateCategoryModalProps) => {
-  //TODO: Update this to useInsertSharedCategory
   const { mutate: insertSharedCategory } =
     useInsertSharedCategory(sharedCheckListId);
 

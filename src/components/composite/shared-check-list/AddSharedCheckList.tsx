@@ -51,14 +51,6 @@ const AddSharedCheckList = ({
     useInsertSharedCheckListItem(categoryId);
 
   const { error, data: sharedCheckList } = useSharedCheckList(categoryId);
-  const sharedCheckListItemSubscription =
-    useSharedCheckListItemSubscription(categoryId);
-
-  useEffect(() => {
-    return () => {
-      sharedCheckListItemSubscription.unsubscribe();
-    };
-  }, []);
 
   const handleChange = (text: string) => {
     setItem({ name: text, error: '' });
