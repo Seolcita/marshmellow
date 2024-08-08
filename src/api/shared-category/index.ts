@@ -153,10 +153,5 @@ export const useSharedCategorySubscription = (sharedCheckListId: number) => {
     )
     .subscribe();
 
-  console.log(
-    'sharedCategoriesSubscription🚙',
-    sharedCategoriesSubscription.bindings.payload
-  );
-
   return sharedCategoriesSubscription;
 };

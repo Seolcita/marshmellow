@@ -42,7 +42,6 @@ export const MainCheckListScreen = () => {
   }, [myInvitations]);
 
   const invitationSubscription = useInvitationSubscription(userEmail);
-  console.log('invitationSubscription🥎', invitationSubscription);
 
   useEffect(() => {
     return () => {
