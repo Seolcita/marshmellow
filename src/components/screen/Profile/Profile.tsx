@@ -4,14 +4,13 @@ import { useEffect, useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 
 import * as S from './Profile.styles';
+import { Profile } from '../../../types';
 import { signOut } from '../../../api/auth';
 import ColorMap from '../../../styles/Color';
 import Button from '../../atomic/button/Button';
 import { useProfile } from '../../../api/profile';
 import { useAuth } from '../../../providers/AuthProvider';
 import EditNameModal from '../../composite/profile/EditNameModal';
-
-import { Profile } from '../../../types';
 
 const ProfileScreen = () => {
   const { session } = useAuth();
@@ -60,9 +59,10 @@ const ProfileScreen = () => {
             <Button
               text='Sign Out'
               onPress={() => handleLogout()}
-              bgColor={ColorMap['black'].main}
+              bgColor={ColorMap['grey'].dark}
               marginVertical={10}
               borderRadius={5}
+              paddingVertical={12}
             />
           </S.AuthContainer>
           <EditNameModal

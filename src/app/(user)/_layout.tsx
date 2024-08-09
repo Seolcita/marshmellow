@@ -1,15 +1,18 @@
 import { Tabs } from 'expo-router';
-import { MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome6 } from '@expo/vector-icons';
+import Fontisto from '@expo/vector-icons/Fontisto';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import ColorMap from '../../styles/Color';
-import TabBarIcon from '../../components/atomic/TabBarIcon/TabBarIcon';
 
 const UserLayout = () => {
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: ColorMap['blue'].dark,
-        tabBarStyle: { paddingBottom: 4 },
+        tabBarStyle: {
+          paddingBottom: 4,
+        },
       }}
     >
       <Tabs.Screen
@@ -17,7 +20,16 @@ const UserLayout = () => {
         options={{
           title: 'Home',
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name='home' color={color} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome6
+              name='tents'
+              size={20}
+              color={color}
+              style={{
+                marginBottom: -5,
+              }}
+            />
+          ),
         }}
       />
       <Tabs.Screen
@@ -25,7 +37,14 @@ const UserLayout = () => {
         options={{
           title: 'Check List',
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name='list' color={color} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons
+              name='checklist'
+              size={20}
+              color={color}
+              style={{ marginBottom: -5 }}
+            />
+          ),
         }}
       />
       <Tabs.Screen
@@ -34,7 +53,12 @@ const UserLayout = () => {
           title: 'Trips',
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name='calendar-check-o' color={color} />
+            <MaterialIcons
+              name='hiking'
+              size={20}
+              color={color}
+              style={{ marginBottom: -5 }}
+            />
           ),
         }}
       />
@@ -44,20 +68,10 @@ const UserLayout = () => {
           title: 'My Sites',
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name='info-circle' color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name='profile'
-        options={{
-          title: 'Profile',
-          headerShown: false,
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons
-              name='account-circle'
-              size={24}
-              color='grey'
+            <Fontisto
+              name='tent'
+              size={20}
+              color={color}
               style={{ marginBottom: -5 }}
             />
           ),
