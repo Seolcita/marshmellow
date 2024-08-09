@@ -53,9 +53,11 @@ const RemoteImage = ({
       borderRadius={borderRadius}
     />
   ) : (
-    <S.LoadingImageContainer>
-      <FontAwesome name='spinner' size={40} color='black' />
-    </S.LoadingImageContainer>
+    <S.View>
+      <S.LoadingImageContainer>
+        <FontAwesome name='spinner' size={40} color='black' />
+      </S.LoadingImageContainer>
+    </S.View>
   );
 };
 

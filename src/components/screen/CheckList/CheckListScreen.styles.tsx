@@ -7,6 +7,7 @@ export const ScrollViewContainer = styled.ScrollView`
 `;
 
 export const ContentsContainer = styled.View`
+  width: 100%;
   padding-horizontal: 10px;
   margin-top: 20px;
   padding-bottom: 80px;
@@ -23,9 +24,9 @@ export const Title = styled.Text`
 export const ButtonsContainer = styled.View`
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
   margin-bottom: 10px;
+  gap: 8px;
 `;
 
 export const Button = styled.Pressable`

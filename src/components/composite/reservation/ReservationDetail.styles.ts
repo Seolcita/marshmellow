@@ -91,22 +91,30 @@ export const MenuContainer = styled.View`
 `;
 
 export const ModalTitle = styled.Text`
-  font-size: 23px;
+  font-size: 24px;
   font-weight: bold;
   text-align: center;
 `;
 
 export const MessageContainer = styled.View`
-  margin-top: 30px;
-  margin-bottom: 40px;
+  margin-top: 20px;
+  margin-bottom: 30px;
 `;
 
 export const ConfirmMessage = styled.Text<ConfirmMessageProps>`
   color: ${({ color }) => color ?? ColorMap['red'].main};
   font-size: 18px;
   font-weight: bold;
-  text-align: center;
-  line-height: 30px;
+  text-align: start;
+  line-height: 26px;
+`;
+
+export const WarningMessage = styled(ConfirmMessage)`
+  color: ${ColorMap['red'].main};
+  font-weight: bold;
+  text-align: start;
+  line-height: 26px;
+  margin-top: 12px;
 `;
 
 export const ModalButtonContainer = styled(TwoButtonContainer)``;

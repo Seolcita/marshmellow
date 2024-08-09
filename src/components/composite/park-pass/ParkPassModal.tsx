@@ -225,7 +225,7 @@ const ParkPassModal = ({
               </View>
             </View>
             <View style={styles.buttons}>
-              <View style={{ width: '48%' }}>
+              <View style={{ width: '49%' }}>
                 <Button
                   text='Cancel'
                   onPress={handleCancel}
@@ -235,7 +235,7 @@ const ParkPassModal = ({
                   borderRadius={5}
                 />
               </View>
-              <View style={{ width: '48%' }}>
+              <View style={{ width: '49%' }}>
                 <Button
                   text='Save'
                   onPress={
@@ -243,7 +243,7 @@ const ParkPassModal = ({
                       ? () => handleEdit(initialValue.id)
                       : handleSave
                   }
-                  bgColor={ColorMap['blue'].main}
+                  bgColor={ColorMap['blue'].dark}
                   paddingHorizontal={10}
                   paddingVertical={10}
                   borderRadius={5}

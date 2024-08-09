@@ -10,6 +10,7 @@ import {
 import Modal from '../../atomic/modal/Modal';
 import Input from '../../atomic/input/Input';
 import { InitialValue } from './Reservation';
+import ColorMap from '../../../styles/Color';
 import * as S from './ReservationModal.styles';
 
 type Day = {
@@ -239,7 +240,7 @@ export const ReservationModal = ({
             title='Cancel'
             onPress={() => handleCancel()}
             buttonStyle={{
-              backgroundColor: 'grey',
+              backgroundColor: ColorMap['grey'].main,
               borderRadius: 5,
               padding: 10,
             }}
@@ -253,7 +254,7 @@ export const ReservationModal = ({
                 : handleSave
             }
             buttonStyle={{
-              backgroundColor: 'black',
+              backgroundColor: ColorMap['blue'].dark,
               borderRadius: 5,
               marginBottom: 10,
               padding: 10,

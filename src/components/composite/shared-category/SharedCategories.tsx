@@ -152,7 +152,9 @@ const SharedCategories = ({
 
   return categories?.length <= 0 ? (
     <S.NoCategoryContainer>
-      <S.NoCategoryText>Add Categories and check list items!!</S.NoCategoryText>
+      <S.NoCategoryText>
+        Check List is empty. Please add Categories and check list items.
+      </S.NoCategoryText>
     </S.NoCategoryContainer>
   ) : (
     <View>

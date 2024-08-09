@@ -143,64 +143,70 @@ const SharedCheckListItems = ({
 
   return (
     <>
-      {checkList.map((item, idx) => (
-        <S.Wrapper key={item.id} $isLastItem={checkList.length === idx + 1}>
-          <S.CheckBoxContainer>
-            <CheckBox
-              checked={checkedItems[item.id] ?? item.checked}
-              onPress={() =>
-                toggleCheckListItemStatus({
-                  itemId: item.id,
-                  isChecked: item.checked,
-                })
-              }
-              containerStyle={{ padding: 2, backgroundColor: 'transparent' }}
-            />
-            <S.Label>{item.name}</S.Label>
-            {isEditMode &&
-              (userEmail === item.assignedTo || !item.isAssigned) && (
-                <Pressable
-                  onPress={() =>
-                    toggleCheckListAssignedItemStatus({
-                      itemId: item.id,
-                      isAssigned: item.isAssigned,
-                    })
-                  }
-                >
-                  <MaterialCommunityIcons
-                    name={
-                      item.isAssigned
-                        ? 'hand-front-right'
-                        : 'hand-front-right-outline'
+      {checkList.length > 0 ? (
+        checkList.map((item, idx) => (
+          <S.Wrapper key={item.id} $isLastItem={checkList.length === idx + 1}>
+            <S.CheckBoxContainer>
+              <CheckBox
+                checked={checkedItems[item.id] ?? item.checked}
+                onPress={() =>
+                  toggleCheckListItemStatus({
+                    itemId: item.id,
+                    isChecked: item.checked,
+                  })
+                }
+                containerStyle={{ padding: 2, backgroundColor: 'transparent' }}
+              />
+              <S.Label>{item.name}</S.Label>
+              {isEditMode &&
+                (userEmail === item.assignedTo || !item.isAssigned) && (
+                  <Pressable
+                    onPress={() =>
+                      toggleCheckListAssignedItemStatus({
+                        itemId: item.id,
+                        isAssigned: item.isAssigned,
+                      })
                     }
-                    size={18}
-                    color={ColorMap['blue'].dark}
-                    style={{ marginRight: 10 }}
-                  />
-                </Pressable>
+                  >
+                    <MaterialCommunityIcons
+                      name={
+                        item.isAssigned
+                          ? 'hand-front-right'
+                          : 'hand-front-right-outline'
+                      }
+                      size={18}
+                      color={ColorMap['blue'].dark}
+                      style={{ marginRight: 10 }}
+                    />
+                  </Pressable>
+                )}
+              {isEditMode && item.isAssigned && (
+                <S.AssignedUser>
+                  {findInviteeName(item.assignedTo)}
+                </S.AssignedUser>
               )}
-            {isEditMode && item.isAssigned && (
-              <S.AssignedUser>
-                {findInviteeName(item.assignedTo)}
-              </S.AssignedUser>
+              {!isEditMode &&
+                item.isAssigned &&
+                item.assignedTo === userEmail && (
+                  <S.View>
+                    <S.AssignedUser>
+                      {findMyAssignedItems(item.assignedTo)}
+                    </S.AssignedUser>
+                  </S.View>
+                )}
+            </S.CheckBoxContainer>
+            {isEditMode && (
+              <S.DeleteButton onPress={() => handleDelete(item.id)}>
+                <Feather name='x' size={24} color='black' />
+              </S.DeleteButton>
             )}
-            {!isEditMode &&
-              item.isAssigned &&
-              item.assignedTo === userEmail && (
-                <S.View>
-                  <S.AssignedUser>
-                    {findMyAssignedItems(item.assignedTo)}
-                  </S.AssignedUser>
-                </S.View>
-              )}
-          </S.CheckBoxContainer>
-          {isEditMode && (
-            <S.DeleteButton onPress={() => handleDelete(item.id)}>
-              <Feather name='x' size={24} color='black' />
-            </S.DeleteButton>
-          )}
-        </S.Wrapper>
-      ))}
+          </S.Wrapper>
+        ))
+      ) : (
+        <S.NoItemsContainer>
+          <S.NoItemsText>Please add Items.</S.NoItemsText>
+        </S.NoItemsContainer>
+      )}
     </>
   );
 };

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { Invitation } from '../../../types';
+import ColorMap from '../../../styles/Color';
 import Button from '../../atomic/button/Button';
 import * as S from './PendingInvitationTile.styles';
 import ResponseInvitationModal from './ResponseInvitationModal';
@@ -29,8 +30,9 @@ const PendingInvitationTile = ({
           onPress={handleModal}
           paddingHorizontal={16}
           paddingVertical={8}
-          textSize={16}
+          textSize={14}
           borderRadius={5}
+          bgColor={ColorMap['green'].dark}
         />
       </S.PendingInvitationTile>
       {isModalOpen && invitation.id && (
