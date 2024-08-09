@@ -7,16 +7,20 @@ interface ButtonContainerProps {
 }
 
 export const NoCategoryContainer = styled.View`
+  width: 100%;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  background-color: ${ColorMap['white'].main};
+  border-radius: 5px;
   padding: 20px;
+  margin-top: 8px;
 `;
 
 export const NoCategoryText = styled.Text`
   font-size: 18px;
   color: ${ColorMap['black'].main};
   font-weight: bold;
+  line-height: 24px;
 `;
 
 export const Wrapper = styled.View`
@@ -93,6 +97,8 @@ export const ConfirmMessage = styled.Text`
   text-align: center;
   margin-bottom: 30px;
   margin-top: 20px;
+  line-height: 28px;
+  padding: 4px;
 `;
 
 export const Span = styled.Text`

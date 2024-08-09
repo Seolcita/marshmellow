@@ -7,9 +7,10 @@ export const PendingInvitationTile = styled(Tile)`
   justify-content: space-between;
   align-items: center;
   margin-horizontal: 12px;
+  padding: 16px;
 `;
 
 export const Title = styled.Text`
   font-weight: bold;
-  font-size: 20px;
+  font-size: 18px;
 `;

@@ -333,8 +333,7 @@ const SiteInfo = () => {
         showsVerticalScrollIndicator={false}
       >
         {isLoading && <MySitesSkeletons />}
-        {!isLoading &&
-          filteredData.length > 0 &&
+        {!isLoading && filteredData.length > 0 ? (
           filteredData.map((item) => (
             <SiteInfoCard
               key={item.id}
@@ -344,7 +343,14 @@ const SiteInfo = () => {
               favourite={item.favourite}
               share={item.share}
             />
-          ))}
+          ))
+        ) : (
+          <s.NoDataFoundContainer>
+            <s.NoDataFoundText>
+              Sorry, no data matches your search.
+            </s.NoDataFoundText>
+          </s.NoDataFoundContainer>
+        )}
       </ScrollView>
     </s.Container>
   );

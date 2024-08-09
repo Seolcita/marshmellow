@@ -68,28 +68,34 @@ const CheckListItems = ({
 
   return (
     <>
-      {checkList.map((item, idx) => (
-        <S.Wrapper key={item.id} $isLastItem={checkList.length === idx + 1}>
-          <S.CheckBoxContainer>
-            <CheckBox
-              checked={checkedItems[item.id] ?? item.checked}
-              onPress={() =>
-                toggleCheckListItemStatus({
-                  itemId: item.id,
-                  isChecked: item.checked,
-                })
-              }
-              containerStyle={{ padding: 2, backgroundColor: 'transparent' }}
-            />
-            <S.Label>{item.name}</S.Label>
-          </S.CheckBoxContainer>
-          {isEditMode && (
-            <S.DeleteButton onPress={() => handleDelete(item.id)}>
-              <Feather name='x' size={24} color='black' />
-            </S.DeleteButton>
-          )}
-        </S.Wrapper>
-      ))}
+      {checkList.length > 0 ? (
+        checkList.map((item, idx) => (
+          <S.Wrapper key={item.id} $isLastItem={checkList.length === idx + 1}>
+            <S.CheckBoxContainer>
+              <CheckBox
+                checked={checkedItems[item.id] ?? item.checked}
+                onPress={() =>
+                  toggleCheckListItemStatus({
+                    itemId: item.id,
+                    isChecked: item.checked,
+                  })
+                }
+                containerStyle={{ padding: 2, backgroundColor: 'transparent' }}
+              />
+              <S.Label>{item.name}</S.Label>
+            </S.CheckBoxContainer>
+            {isEditMode && (
+              <S.DeleteButton onPress={() => handleDelete(item.id)}>
+                <Feather name='x' size={24} color='black' />
+              </S.DeleteButton>
+            )}
+          </S.Wrapper>
+        ))
+      ) : (
+        <S.NoItemsContainer>
+          <S.NoItemsText>Please add Items.</S.NoItemsText>
+        </S.NoItemsContainer>
+      )}
     </>
   );
 };

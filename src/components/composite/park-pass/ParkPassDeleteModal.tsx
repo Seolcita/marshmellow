@@ -30,10 +30,12 @@ export const ParkPassDeleteModal = ({
     <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
       <S.ModalTitle>Delete Park Pass</S.ModalTitle>
       <S.MessageContainer>
-        <S.ConfirmMessage>{`Are you sure that you want to delete ${name} Park Pass?`}</S.ConfirmMessage>
+        <S.ConfirmMessage
+          color={ColorMap['black'].main}
+        >{`Are you sure that you want to delete ${name} Park Pass?`}</S.ConfirmMessage>
       </S.MessageContainer>
       <S.ModalButtonContainer>
-        <View style={{ width: '48%' }}>
+        <View style={{ width: '49%' }}>
           <Button
             onPress={() => setIsModalOpen(false)}
             text='Cancel'
@@ -41,7 +43,7 @@ export const ParkPassDeleteModal = ({
             bgColor={ColorMap['grey'].main}
           />
         </View>
-        <View style={{ width: '48%' }}>
+        <View style={{ width: '49%' }}>
           <Button
             onPress={() => handleDelete(id)}
             text='Delete'

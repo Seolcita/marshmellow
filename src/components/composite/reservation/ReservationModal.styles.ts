@@ -2,11 +2,10 @@ import styled from 'styled-components/native';
 import ColorMap from '../../../styles/Color';
 
 export const ModalTitle = styled.Text`
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
-  margin-vertical: 10px;
+  margin-bottom: 20px;
   text-align: center;
-  background-color: #f0f0f0;
   padding-vertical: 10px;
   border-radius: 50px;
 `;

@@ -51,6 +51,8 @@ export const NotificationContainer = styled.View`
   border-radius: 5px;
   margin-top: 14px;
   margin-right: 90px;
+  flex: 1;
+  align-items: center;
 `;
 
 export const NotificationIcon = styled.View`

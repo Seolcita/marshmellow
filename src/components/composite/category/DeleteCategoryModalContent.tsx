@@ -24,9 +24,9 @@ const DeleteCategoryModalContent = ({
   return (
     <>
       <S.ModalTitle>Delete Category</S.ModalTitle>
-      <S.ConfirmMessage>{`Are you sure you want to delete '${deleteCategory.name}' category?`}</S.ConfirmMessage>
+      <S.ConfirmMessage>{`Are you sure that you want to delete '${deleteCategory.name}' category?`}</S.ConfirmMessage>
       <TwoButtonContainer>
-        <View style={{ width: '48%' }}>
+        <View style={{ width: '49%' }}>
           <Button
             onPress={() => setIsDeleteModalOpen(false)}
             text='Cancel'
@@ -34,12 +34,12 @@ const DeleteCategoryModalContent = ({
             bgColor={ColorMap['grey'].main}
           />
         </View>
-        <View style={{ width: '48%' }}>
+        <View style={{ width: '49%' }}>
           <Button
             onPress={handleDelete}
             text='Delete'
             borderRadius={5}
-            bgColor={ColorMap['blue'].dark}
+            bgColor={ColorMap['red'].dark}
           />
         </View>
       </TwoButtonContainer>

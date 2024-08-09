@@ -144,7 +144,7 @@ export const SignUpScreen = () => {
           textInputConfig={{
             value: inputs.name.value.trim(),
             onChangeText: handleInputChange.bind(this, 'name'),
-            placeholder: 'john',
+            placeholder: 'John',
             placeholderTextColor: ColorMap['grey'].light,
             keyboardType: 'default',
           }}

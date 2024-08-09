@@ -151,14 +151,15 @@ const ResevationDetail = ({
           setIsModalOpen((prev) => !prev);
         }}
       >
-        <S.ModalTitle>
-          Are you sure that you want to delete this Trip?
-        </S.ModalTitle>
+        <S.ModalTitle>Delete Trip</S.ModalTitle>
         <S.MessageContainer>
-          <S.ConfirmMessage>{`This campsite information will be deleted as well.`}</S.ConfirmMessage>
+          <S.ConfirmMessage
+            color={ColorMap['black'].main}
+          >{`Are you sure that you want to delete this trip?`}</S.ConfirmMessage>
+          <S.WarningMessage>{`This campsite information will be deleted as well.`}</S.WarningMessage>
         </S.MessageContainer>
         <S.ModalButtonContainer>
-          <View style={{ width: '48%' }}>
+          <View style={{ width: '49%' }}>
             <Button
               onPress={() => setIsModalOpen((prev) => !prev)}
               text='Cancel'
@@ -166,7 +167,7 @@ const ResevationDetail = ({
               bgColor={ColorMap['grey'].main}
             />
           </View>
-          <View style={{ width: '48%' }}>
+          <View style={{ width: '49%' }}>
             <Button
               onPress={() => handleDelete(id)}
               text='Delete'

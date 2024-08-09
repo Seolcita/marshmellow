@@ -49,20 +49,20 @@ export const ResponseInvitationModal = ({
         >{`Please response shared check list invitation for '${name}'`}</S.ConfirmMessage>
       </S.MessageContainer>
       <S.ModalButtonContainer>
-        <View style={{ width: '48%' }}>
+        <View style={{ width: '49%' }}>
           <Button
             onPress={() => handleResponse(InvitationStatus.REJECTED)}
             text='Reject'
             borderRadius={5}
-            bgColor={ColorMap['grey'].main}
+            bgColor={ColorMap['red'].dark}
           />
         </View>
-        <View style={{ width: '48%' }}>
+        <View style={{ width: '49%' }}>
           <Button
             onPress={() => handleResponse(InvitationStatus.ACCEPTED)}
             text='Accept'
             borderRadius={5}
-            bgColor={ColorMap['red'].dark}
+            bgColor={ColorMap['grey'].dark}
           />
         </View>
       </S.ModalButtonContainer>

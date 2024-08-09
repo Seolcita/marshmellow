@@ -54,7 +54,7 @@ const CreateCategoryModalContent = ({
         error={category.error}
       />
       <TwoButtonContainer>
-        <View style={{ width: '48%' }}>
+        <View style={{ width: '49%' }}>
           <Button
             onPress={() => setIsModalOpen(false)}
             text='Cancel'
@@ -62,7 +62,7 @@ const CreateCategoryModalContent = ({
             bgColor={ColorMap['grey'].main}
           />
         </View>
-        <View style={{ width: '48%' }}>
+        <View style={{ width: '49%' }}>
           <Button
             onPress={handleAdd}
             text='Add'

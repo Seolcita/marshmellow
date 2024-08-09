@@ -75,6 +75,7 @@ const CheckListScreen = () => {
                     bgColor={ColorMap['blue'].dark}
                     textColor={ColorMap['white'].main}
                     paddingVertical={13}
+                    fullWidth
                   />
                 </S.ClearButtonContainer>
 

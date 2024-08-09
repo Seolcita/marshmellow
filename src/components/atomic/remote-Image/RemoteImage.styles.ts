@@ -12,6 +12,13 @@ export const Image = styled.Image<ImageProps>`
   border-radius: ${({ borderRadius }) => borderRadius ?? 10}px;
 `;
 
+export const View = styled.View`
+  width: 100%;
+  height: auto;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const LoadingImageContainer = styled.View`
   width: 150px;
   height: 100px;

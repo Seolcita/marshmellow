@@ -63,7 +63,7 @@ const EditCategoryModalContent = ({
         />
 
         <TwoButtonContainer>
-          <View style={{ width: '48%' }}>
+          <View style={{ width: '49%' }}>
             <Button
               onPress={() => setIsEditModalOpen(false)}
               text='Cancel'
@@ -71,7 +71,7 @@ const EditCategoryModalContent = ({
               bgColor={ColorMap['grey'].main}
             />
           </View>
-          <View style={{ width: '48%' }}>
+          <View style={{ width: '49%' }}>
             <Button
               onPress={handleEdit}
               text='Save'

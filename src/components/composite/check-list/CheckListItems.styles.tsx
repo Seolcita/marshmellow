@@ -48,3 +48,21 @@ export const AssignedUser = styled.Text<AssignedUserProps>`
 `;
 
 export const View = styled.View``;
+
+export const NoItemsContainer = styled.View`
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: ${ColorMap['white'].main};
+  border-radius: 5px;
+  padding: 20px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+`;
+
+export const NoItemsText = styled.Text`
+  font-size: 18px;
+  color: ${ColorMap['black'].main};
+  font-weight: bold;
+  line-height: 24px;
+`;
