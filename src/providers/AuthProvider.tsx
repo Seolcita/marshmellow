@@ -47,8 +47,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
           .eq('id', session.user.id)
           .single();
 
-        console.log('data😄', data);
-
         if (error) {
           //TODO: Handle error
           console.log('fetching data error', error);
