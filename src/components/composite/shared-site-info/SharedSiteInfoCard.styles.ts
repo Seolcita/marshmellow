@@ -6,27 +6,43 @@ interface ReservationTypeTextProps {
   bgColor: string;
 }
 
+export const Pressable = styled.Pressable`
+  overflow: hidden;
+`;
+
 export const SiteInfoCardContainer = styled(Tile)`
   flex-direction: row;
-  margin-vertical: 5px;
-  padding: 10px;
-  gap: 15px;
+  margin-vertical: 8px;
   margin-horizontal: 10px;
+  padding: 0px;
+  gap: 15px;
 `;
 
 export const ImageContainer = styled.View`
   align-items: center;
   justify-content: center;
+  border-radius: 5px 0 0 5px;
+  overflow: hidden;
 `;
 
-export const DefaultImage = styled.Image`
-  width: 150px;
-  height: 100px;
+export const DefaultImageContainer = styled.View`
+  width: 160px;
+  height: 120px;
+  background-color: #f7f7f7;
+  align-items: center;
+  justify-content: center;
 `;
+export const DefaultImage = styled.Image`
+  width: 230px;
+  height: 120px;
+`;
+
+export const NoImageText = styled.Text``;
 
 export const DetailContainer = styled.View`
   justify-content: space-between;
   flex: 1;
+  padding-vertical: 12px;
 `;
 
 export const SiteNameText = styled.Text`
@@ -51,7 +67,9 @@ export const ReservationTypeText = styled.Text<ReservationTypeTextProps>`
   font-size: 12px;
 `;
 
-export const WishIconButton = styled.Pressable``;
+export const WishIconButton = styled.Pressable`
+  margin: 12px;
+`;
 
 export const EmptyView = styled.View`
   width: 22px;

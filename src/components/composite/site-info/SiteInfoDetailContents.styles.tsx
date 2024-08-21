@@ -7,6 +7,21 @@ export const ImageContainer = styled.View`
   margin-vertical: 20px;
 `;
 
+export const DefaultImageContainer = styled(ImageContainer)`
+  margin-top: 24;
+`;
+
+export const DefaultImage = styled.Image`
+  width: 250px;
+  height: 200px;
+`;
+
+export const DefaultImageText = styled.Text`
+  color: ${ColorMap['grey'].main};
+  font-size: 18px;
+  font-weight: bold;
+`;
+
 export const ReviewContainer = styled.View`
   align-self: flex-start;
   padding-left: 10px;

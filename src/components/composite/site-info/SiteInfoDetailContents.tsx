@@ -23,10 +23,17 @@ interface SiteInfoDetailContentsProps {
 const SiteInfoDetailContents = ({ siteInfo }: SiteInfoDetailContentsProps) => {
   return (
     <ScrollView>
-      {siteInfo?.imageUrl && (
+      {siteInfo?.imageUrl ? (
         <S.ImageContainer>
           <RemoteImage path={siteInfo.imageUrl} />
         </S.ImageContainer>
+      ) : (
+        <S.DefaultImageContainer>
+          <S.DefaultImage
+            source={require('../../../../assets/images/default-image.png')}
+          />
+          <S.DefaultImageText>Image is not provided</S.DefaultImageText>
+        </S.DefaultImageContainer>
       )}
       <S.SectionTitle>Review</S.SectionTitle>
       <S.ReviewContainer style={{ alignSelf: 'flex-start', paddingLeft: 10 }}>

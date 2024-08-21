@@ -20,9 +20,13 @@ export const PreviewImage = styled.Image`
   border-radius: 10px;
 `;
 
+export const DefaultImageContainer = styled.View`
+  margin-top: 24px;
+`;
+
 export const DefaultImage = styled.Image`
-  width: 170px;
-  height: 160px;
+  width: 150px;
+  height: 150px;
   margin-bottom: 20px;
 `;
 
@@ -49,13 +53,14 @@ export const UploadImageButton = styled.Pressable`
   flex-direction: row;
   justify-content: center;
   gap: 10px;
-  background-color: ${ColorMap['grey'].extraLight};
-  padding: 10px;
-  width: 200px;
+  background-color: ${ColorMap['black'].main};
+  padding: 12px;
+  width: 250px;
   border-radius: 5px;
 `;
 
 export const Text = styled.Text`
   font-size: 16px;
   font-weight: bold;
+  color: ${ColorMap['white'].main};
 `;

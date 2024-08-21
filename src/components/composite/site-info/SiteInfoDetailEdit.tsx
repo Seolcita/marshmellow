@@ -124,16 +124,16 @@ const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
 
     const storedImagePath = await useSaveSiteImage(path);
 
-    storedImagePath && setPreviewLoading(false);
-
     return storedImagePath;
   };
 
   const handleSaveImage = async (path: string) => {
     const storedImagePath = await uploadImage(path);
 
-    storedImagePath &&
+    if (storedImagePath) {
       handleChange({ name: 'imageUrl', value: storedImagePath });
+      setPreviewLoading(false);
+    }
   };
 
   const setSiteImage = () => {
@@ -157,9 +157,11 @@ const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
       );
     } else {
       return (
-        <S.DefaultImage
-          source={require('../../../../assets/images/upload-default.png')}
-        />
+        <S.DefaultImageContainer>
+          <S.DefaultImage
+            source={require('../../../../assets/images/upload-default.png')}
+          />
+        </S.DefaultImageContainer>
       );
     }
   };
@@ -172,8 +174,11 @@ const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
             <S.SectionContainer>
               <S.UploadImageContainer>
                 {setSiteImage()}
-                <S.UploadImageButton onPress={pickImage}>
-                  <FontAwesome6 name='upload' size={20} color='black' />
+                <S.UploadImageButton
+                  onPress={pickImage}
+                  android_ripple={{ color: 'rgba(255, 255, 255, 0.1)' }}
+                >
+                  <FontAwesome6 name='upload' size={20} color='white' />
                   <S.Text>Upload Image</S.Text>
                 </S.UploadImageButton>
               </S.UploadImageContainer>
