@@ -29,7 +29,7 @@ const SiteInfoCard = ({
           <S.SiteNumberContainer>
             <Fontisto name='tent' size={14} color={ColorMap['grey'].main} />
             <S.SiteNumberText>
-              {campgroundSiteNumber ? campgroundSiteNumber : 'N/A'}
+              Site {campgroundSiteNumber ? campgroundSiteNumber : 'N/A'}
             </S.SiteNumberText>
           </S.SiteNumberContainer>
         </S.TextContainer>

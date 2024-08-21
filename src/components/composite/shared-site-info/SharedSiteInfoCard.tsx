@@ -51,20 +51,22 @@ const SharedSiteInfoCard = ({
   };
 
   return (
-    <Pressable onPress={() => router.push(`/(user)/shared-site-info/${id}`)}>
+    <S.Pressable onPress={() => router.push(`/(user)/shared-site-info/${id}`)}>
       <S.SiteInfoCardContainer>
         <S.ImageContainer>
           {imageUrl ? (
             <RemoteImage
               path={imageUrl}
-              width={150}
-              height={100}
-              borderRadius={5}
+              width={160}
+              height={120}
+              borderRadius={0}
             />
           ) : (
-            <S.DefaultImage
-              source={require('../../../../assets/images/default-image.png')}
-            />
+            <S.DefaultImageContainer>
+              <S.DefaultImage
+                source={require('../../../../assets/images/default-image.png')}
+              />
+            </S.DefaultImageContainer>
           )}
         </S.ImageContainer>
         <S.DetailContainer>
@@ -105,7 +107,7 @@ const SharedSiteInfoCard = ({
           />
         </S.WishIconButton>
       </S.SiteInfoCardContainer>
-    </Pressable>
+    </S.Pressable>
   );
 };
 

@@ -39,10 +39,14 @@ const SiteInfo = () => {
     return;
   }
 
-  const [campSites, setCampSites] = useState<FilteredMySiteInfo[]>([]);
+  const [campSites, setCampSites] = useState<FilteredMySiteInfo[] | undefined>(
+    undefined
+  );
   const [search, setSearch] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [filteredData, setFilteredData] = useState<FilteredMySiteInfo[]>([]);
+  const [filteredData, setFilteredData] = useState<
+    FilteredMySiteInfo[] | undefined
+  >(undefined);
   const [showAll, setShowAll] = useState(true);
   const [showFavourite, setShowFavourite] = useState(false);
   const [showShared, setShowShared] = useState(false);
@@ -333,7 +337,9 @@ const SiteInfo = () => {
         showsVerticalScrollIndicator={false}
       >
         {isLoading && <MySitesSkeletons />}
-        {!isLoading && filteredData.length > 0 ? (
+        {!isLoading &&
+          filteredData !== undefined &&
+          filteredData.length > 0 &&
           filteredData.map((item) => (
             <SiteInfoCard
               key={item.id}
@@ -343,8 +349,8 @@ const SiteInfo = () => {
               favourite={item.favourite}
               share={item.share}
             />
-          ))
-        ) : (
+          ))}
+        {filteredData !== undefined && filteredData.length === 0 && (
           <s.NoDataFoundContainer>
             <s.NoDataFoundText>
               Sorry, no data matches your search.

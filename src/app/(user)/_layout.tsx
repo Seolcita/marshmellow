@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { FontAwesome6 } from '@expo/vector-icons';
+import { FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
@@ -18,7 +18,7 @@ const UserLayout = () => {
       <Tabs.Screen
         name='shared-site-info'
         options={{
-          title: 'Home',
+          title: 'Shared Sites',
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <FontAwesome6
@@ -53,8 +53,8 @@ const UserLayout = () => {
           title: 'Trips',
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <MaterialIcons
-              name='hiking'
+            <FontAwesome5
+              name='calendar-alt'
               size={20}
               color={color}
               style={{ marginBottom: -5 }}

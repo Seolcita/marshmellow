@@ -30,7 +30,7 @@ const SiteInfoDetailScreen = ({ id }: SiteInfoDetailProps) => {
         options={{
           headerShown: true,
           title: `${siteInfo?.campgroundName},  #${siteInfo?.siteNumber}`,
-          headerTitleAlign: 'center',
+          headerTitleAlign: 'left',
           headerRight: () => (
             <S.ButtonContainer>
               <Button
@@ -49,27 +49,6 @@ const SiteInfoDetailScreen = ({ id }: SiteInfoDetailProps) => {
       />
 
       <S.Container>
-        {/* TODO: Decide if we want to display below tile or not */}
-        {/* <S.SiteInfoCardContainer>
-          <S.Text>{siteInfo?.campgroundName}</S.Text>
-          <View style={{ flexDirection: 'row', gap: 15, alignItems: 'center' }}>
-            <S.Text>{siteInfo?.siteNumber}</S.Text>
-            {siteInfo?.favourite && (
-              <S.FavouriteIcon
-                source={require('../../../../assets/images/like.png')}
-              />
-            )}
-            {siteInfo?.share ? (
-              <FontAwesome
-                name='group'
-                size={20}
-                color={ColorMap['blue'].dark}
-              />
-            ) : (
-              <View style={{ width: 22, height: 20 }}></View>
-            )}
-          </View>
-        </S.SiteInfoCardContainer> */}
         {isEditMode ? (
           <SiteInfoDetailEdit id={id} setIsEditMode={setIsEditMode} />
         ) : (

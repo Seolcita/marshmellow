@@ -25,13 +25,6 @@ const SharedSiteInfoDetail = ({ id }: SharedSiteInfoDetailProps) => {
         }}
       />
       <S.Container>
-        {/* TODO: Deside if we are going to use below tile */}
-        {/* <S.SiteInfoCardContainer>
-          <S.Text>{siteInfo?.campgroundName}</S.Text>
-          <View style={{ flexDirection: 'row', gap: 15, alignItems: 'center' }}>
-            <S.Text>{siteInfo?.siteNumber}</S.Text>
-          </View>
-        </S.SiteInfoCardContainer> */}
         {siteInfo && <SiteInfoDetailContents siteInfo={siteInfo} />}
       </S.Container>
     </>

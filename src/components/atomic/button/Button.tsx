@@ -56,6 +56,7 @@ const Button = forwardRef<View | null, ButtonProps>(
         $marginVertical={marginVertical}
         $marginHorizontal={marginHorizontal}
         $isTab={isTab}
+        android_ripple={{ color: 'rgba(0, 0, 0, 0.1)' }}
       >
         {href ? (
           <Link href={href} style={{ width: '100%', textAlign: 'center' }}>

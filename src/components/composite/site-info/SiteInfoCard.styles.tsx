@@ -26,7 +26,7 @@ export const SiteNumberContainer = styled.View`
 export const SiteNumberText = styled.Text`
   color: ${ColorMap['grey'].main};
   font-size: 14px;
-  margin-left: 8px;
+  margin-left: 6px;
 `;
 
 export const FavouriteIcon = styled.Image`
