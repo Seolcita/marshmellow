@@ -13,7 +13,7 @@ export default function AuthIndex() {
       />
 
       <View style={styles.textContainer}>
-        <Text style={styles.title}>Marsh Mellow</Text>
+        <Text style={styles.title}>Marshmallow</Text>
 
         <Text style={styles.subTitle}>
           Easily organize park passes, gears, favorite campsites, and share
