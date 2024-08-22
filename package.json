@@ -50,7 +50,8 @@
     "react-native-vector-icons": "^10.1.0",
     "react-native-web": "~0.19.6",
     "styled-components": "^6.1.11",
-    "react-native-reanimated": "~3.10.1"
+    "react-native-reanimated": "~3.10.1",
+    "expo-updates": "~0.25.23"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
