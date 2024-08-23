@@ -78,7 +78,6 @@ const SharedSiteInfo = () => {
   useEffect(() => {
     if (sharedCampSitesInfo) {
       setSharedCampSites(sharedCampSitesInfo);
-      setFilteredData(sharedCampSitesInfo);
       setIsLoading(false);
     }
     if (!isSharedCampSitesLoading) {
