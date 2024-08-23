@@ -1,18 +1,20 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
+import Entypo from '@expo/vector-icons/Entypo';
 import { Alert, ScrollView } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import { View } from '../../Themed';
 import * as S from './Reservation.styles';
+import * as s from '../site-info/SiteInfo.styles';
 import ColorMap from '../../../styles/Color';
 import Button from '../../atomic/button/Button';
 import ResevationDetail from './ReservationDetail';
 import { useAuth } from '../../../providers/AuthProvider';
+import IconButton from '../../atomic/icon-button/IconButton';
 import TripsSkeletons from '../skeleton/trips/TripsSkeletons';
 import { useReservationsInfo } from '../../../api/reservation';
 import { ReservationModal } from '../../composite/reservation/ReservationModal';
-import IconButton from '../../atomic/icon-button/IconButton';
 
 export interface InitialValue {
   id: string;
@@ -152,14 +154,27 @@ const Reservation = () => {
           />
         </View>
       </S.ButtonsContainer>
+      {!isLoading && reservations.length === 0 && (
+        <S.AddSiteMessageContainer>
+          <s.AddSiteMessageTextTitle>
+            Please add your trips
+          </s.AddSiteMessageTextTitle>
+          <s.AddSiteMessageTextSubTitle>
+            You can add your trips by clicking Add Trip button at the bottom
+            right conner.
+          </s.AddSiteMessageTextSubTitle>
+          <S.AddSiteMessageTextDescription>
+            Once you add trips, the trip information will be displayed here. If
+            you want to add or edit site detailed information, please go to My
+            Sites.
+          </S.AddSiteMessageTextDescription>
+          <S.AddSiteMessageTextDescription></S.AddSiteMessageTextDescription>
+        </S.AddSiteMessageContainer>
+      )}
       <S.TripsContainer>
         <ScrollView style={{ flex: 1, paddingBottom: 100 }}>
           {isLoading && <TripsSkeletons />}
-          {!isLoading && reservations.length === 0 && (
-            <S.NoTripsContainer>
-              <S.NoTripsText>Please add Trips</S.NoTripsText>
-            </S.NoTripsContainer>
-          )}
+
           {!isLoading &&
             reservations.length > 0 &&
             reservations?.map((item) => (

@@ -70,7 +70,6 @@ const AddCheckList = ({
   };
 
   const handleAdd = () => {
-    console.log('ADD CLICKED');
     if (item.name === '') {
       setItem({ ...item, error: 'Check List Item is required' });
       return;

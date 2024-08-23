@@ -3,6 +3,7 @@ import { CheckBox } from '@rneui/themed';
 import { useEffect, useState } from 'react';
 import { Feather } from '@expo/vector-icons';
 import { Alert, Pressable } from 'react-native';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import {
@@ -204,7 +205,12 @@ const SharedCheckListItems = ({
         ))
       ) : (
         <S.NoItemsContainer>
-          <S.NoItemsText>Please add Items.</S.NoItemsText>
+          <S.NoItemsText>Please add Items</S.NoItemsText>
+          <S.NoItemsDescription>
+            You can add itmes by clicking{' '}
+            <AntDesign name='plussquareo' size={14} color='black' /> button
+            above.
+          </S.NoItemsDescription>
         </S.NoItemsContainer>
       )}
     </>

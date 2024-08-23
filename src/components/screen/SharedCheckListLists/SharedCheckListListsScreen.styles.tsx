@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import ColorMap from '../../../styles/Color';
 
 export const Container = styled.View`
   flex: 1;
@@ -23,4 +24,26 @@ export const Title = styled.Text`
   font-weight: bold;
   flex: 1;
   text-align: center;
+`;
+
+export const NoSharedCheckListContainer = styled.View`
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: ${ColorMap['white'].main};
+  border-radius: 5px;
+  padding: 20px;
+  margin-top: 8px;
+`;
+
+export const NoSharedCheckListTitle = styled.Text`
+  font-size: 18px;
+  color: ${ColorMap['black'].main};
+  font-weight: bold;
+  line-height: 24px;
+`;
+
+export const NoSharedCheckListTitleDescription = styled.Text`
+  font-size: 16px;
+  margin-top: 10px;
 `;

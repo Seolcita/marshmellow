@@ -14,7 +14,6 @@ import IconButton from '../../atomic/icon-button/IconButton';
 import TileSkeletons from '../../composite/skeleton/tiles/TileSkeletons';
 import SharedCheckListTile from '../../composite/shared-check-list/SharedCheckListTile';
 import SharedCheckListFormModal from '../../composite/create-shared-check-list/SharedCheckListFormModal';
-import { View } from '../../Themed';
 
 const SharedCheckListListsScreen = () => {
   const { session } = useAuth();
@@ -62,6 +61,17 @@ const SharedCheckListListsScreen = () => {
             paddingBottom: 80,
           }}
         >
+          {!isLoading && mySharedCheckList.length === 0 && (
+            <S.NoSharedCheckListContainer>
+              <S.NoSharedCheckListTitle>
+                Please add shared check lists
+              </S.NoSharedCheckListTitle>
+              <S.NoSharedCheckListTitleDescription>
+                You can add shared check lists by clicking Create Shared Check
+                List button at the bottom right conner.
+              </S.NoSharedCheckListTitleDescription>
+            </S.NoSharedCheckListContainer>
+          )}
           {!isLoading && mySharedCheckList ? (
             mySharedCheckList.map((list) => (
               <SharedCheckListTile

@@ -61,8 +61,13 @@ export const NoItemsContainer = styled.View`
 `;
 
 export const NoItemsText = styled.Text`
-  font-size: 18px;
+  font-size: 16px;
   color: ${ColorMap['black'].main};
   font-weight: bold;
   line-height: 24px;
+`;
+
+export const NoItemsDescription = styled.Text`
+  font-size: 16px;
+  margin-top: 4px;
 `;

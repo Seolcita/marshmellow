@@ -23,6 +23,11 @@ export const NoCategoryText = styled.Text`
   line-height: 24px;
 `;
 
+export const NoCategoryTextDescription = styled.Text`
+  font-size: 16px;
+  margin-top: 10px;
+`;
+
 export const Wrapper = styled.View`
   background-color: #f1f1f1;
 `;
