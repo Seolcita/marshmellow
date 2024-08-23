@@ -1,8 +1,8 @@
-import { Image } from 'react-native';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Image, ActivityIndicator } from 'react-native';
 import React, { ComponentProps, useEffect, useState } from 'react';
 
 import * as S from './RemoteImage.styles';
+import ColorMap from '../../../styles/Color';
 import { supabase } from '../../../lib/supabase';
 
 type RemoteImageProps = {
@@ -55,7 +55,7 @@ const RemoteImage = ({
   ) : (
     <S.View>
       <S.LoadingImageContainer>
-        <FontAwesome name='spinner' size={40} color='black' />
+        <ActivityIndicator size='large' color={ColorMap['grey'].light} />
       </S.LoadingImageContainer>
     </S.View>
   );

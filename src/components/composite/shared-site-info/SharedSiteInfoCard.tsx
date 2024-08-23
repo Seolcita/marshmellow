@@ -46,7 +46,6 @@ const SharedSiteInfoCard = ({
   const { mutate: updateWish } = useUpdateWish(userId);
 
   const handleWish = (id: string) => {
-    console.log('wish id:', id);
     updateWish(id);
   };
 

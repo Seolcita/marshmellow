@@ -24,7 +24,8 @@
         "foregroundImage": "./assets/images/mm.png",
         "backgroundColor": "#1849A9"
       },
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "package": "com.seolcita.marshmallow"
     },
     "web": {
       "bundler": "metro",
