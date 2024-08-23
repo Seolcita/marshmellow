@@ -332,7 +332,7 @@ const SiteInfo = () => {
             Please add your trips
           </S.AddSiteMessageTextTitle>
           <S.AddSiteMessageTextSubTitle>
-            Once you add trips, it will be displayed here.
+            Once you add trips, the trip information will be displayed here.
           </S.AddSiteMessageTextSubTitle>
           <S.AddSiteMessageTextDescription>
             You can add your trips by clicking Add Trip button in Trips.
