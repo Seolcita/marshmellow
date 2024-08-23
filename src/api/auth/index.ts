@@ -57,5 +57,5 @@ export const signOut = async () => {
     Alert.alert('Error logging out:', error.message);
   }
   Alert.alert('Logged out');
-  router.push('/(auth)');
+  router.push('/(auth)/sign-in');
 };

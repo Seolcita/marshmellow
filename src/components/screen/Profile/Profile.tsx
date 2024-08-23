@@ -1,4 +1,3 @@
-import { Alert } from 'react-native';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
@@ -17,7 +16,6 @@ const ProfileScreen = () => {
   const userId = session?.user?.id;
 
   if (!userId) {
-    Alert.alert('Session is not valid, please login again');
     console.log('User not found');
     router.push('/(auth)/sign-in');
     return;
