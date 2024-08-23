@@ -326,6 +326,26 @@ const SiteInfo = () => {
           </s.RatingContainer>
         </s.FilterContainer>
       )}
+      {!isLoading && campSites !== undefined && campSites.length === 0 && (
+        <S.AddSiteMessageContainer>
+          <S.AddSiteMessageTextTitle>
+            Please add your trips
+          </S.AddSiteMessageTextTitle>
+          <S.AddSiteMessageTextSubTitle>
+            Once you add trips, it will be displayed here.
+          </S.AddSiteMessageTextSubTitle>
+          <S.AddSiteMessageTextDescription>
+            You can add your trips by clicking Add Trip button in Trips.
+          </S.AddSiteMessageTextDescription>
+          <Button
+            text='Go to Trips'
+            onPress={() => router.push('/(user)/reservation')}
+            borderRadius={5}
+            bgColor={ColorMap['grey'].dark}
+            fullWidth
+          />
+        </S.AddSiteMessageContainer>
+      )}
       <ScrollView
         style={{
           width: '104%',
@@ -337,6 +357,7 @@ const SiteInfo = () => {
         showsVerticalScrollIndicator={false}
       >
         {isLoading && <MySitesSkeletons />}
+
         {!isLoading &&
           filteredData !== undefined &&
           filteredData.length > 0 &&

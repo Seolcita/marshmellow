@@ -69,6 +69,10 @@ export const ParkPass = () => {
             {!isLoading && parkPasses && parkPasses.length <= 0 && (
               <View style={styles.noParkPassContainer}>
                 <Text style={styles.noParkPass}>Please add Park Passes</Text>
+                <Text style={styles.noParkPassDescription}>
+                  You can add park passes by clicking Add Park Pass button at
+                  the bottom right conner.
+                </Text>
               </View>
             )}
             {!isLoading && parkPasses && parkPasses.length > 0 && (

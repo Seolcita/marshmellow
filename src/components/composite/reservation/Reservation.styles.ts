@@ -41,3 +41,20 @@ export const NoTripsText = styled.Text`
   font-size: 18px;
   font-weight: bold;
 `;
+
+export const AddSiteMessageContainer = styled.View`
+  margin-horizontal: 10px;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+  padding-top: 24px;
+  padding-bottom: 10px;
+  padding-horizontal: 20px;
+  border-radius: 5px;
+`;
+
+export const AddSiteMessageTextDescription = styled.Text`
+  font-size: 16px;
+  margin-bottom: 0px;
+`;

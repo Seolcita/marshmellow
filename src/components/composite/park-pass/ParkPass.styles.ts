@@ -112,6 +112,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  noParkPassDescription: {
+    fontSize: 16,
+    marginTop: 12,
+  },
   name: {
     fontSize: 18,
     fontWeight: 'bold',

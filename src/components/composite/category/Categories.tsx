@@ -152,9 +152,11 @@ const Categories = ({
 
   return categories?.length <= 0 ? (
     <S.NoCategoryContainer>
-      <S.NoCategoryText>
-        Check List is empty. Please add Categories and check list items.
-      </S.NoCategoryText>
+      <S.NoCategoryText>Please add Categories</S.NoCategoryText>
+      <S.NoCategoryTextDescription>
+        You can add your categories by clicking Add Category button at the
+        bottom right conner.
+      </S.NoCategoryTextDescription>
     </S.NoCategoryContainer>
   ) : (
     <View>

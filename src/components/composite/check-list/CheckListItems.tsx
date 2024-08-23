@@ -1,6 +1,7 @@
 import { CheckBox } from '@rneui/themed';
 import { useEffect, useState } from 'react';
 import { Feather } from '@expo/vector-icons';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 import {
   useDeleteCheckList,
@@ -8,7 +9,6 @@ import {
 } from '../../../api/check-list';
 import { CheckList } from '../../../types';
 import * as S from './CheckListItems.styles';
-import * as s from '../../common-styles/CommonStyles';
 
 interface CheckListItemsProps {
   items: CheckList[];
@@ -93,7 +93,12 @@ const CheckListItems = ({
         ))
       ) : (
         <S.NoItemsContainer>
-          <S.NoItemsText>Please add Items.</S.NoItemsText>
+          <S.NoItemsText>Please add Items</S.NoItemsText>
+          <S.NoItemsDescription>
+            You can add itmes by clicking{' '}
+            <AntDesign name='plussquareo' size={14} color='black' /> button
+            above.
+          </S.NoItemsDescription>
         </S.NoItemsContainer>
       )}
     </>
