@@ -105,8 +105,12 @@ const SharedSiteInfo = () => {
   const filterDataByKeyword = (searchTerm: string) => {
     if (!sharedCampSites || sharedCampSites.length === 0) return;
 
-    const filtered = sharedCampSites.filter((item) =>
-      item.campgroundName?.toLowerCase().includes(searchTerm.toLowerCase())
+    const filtered = sharedCampSites.filter(
+      (item) =>
+        item.campgroundName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.province?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.city?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredData(filtered);
   };
@@ -250,7 +254,7 @@ const SharedSiteInfo = () => {
             onChangeText: (text) => {
               updateSearchByKeyword(text);
             },
-            placeholder: 'Search by Campground Name',
+            placeholder: 'Campground name or location',
             keyboardType: 'default',
             placeholderTextColor: ColorMap['grey'].dark,
           }}
@@ -351,6 +355,9 @@ const SharedSiteInfo = () => {
                 share={item.share}
                 imageUrl={item.imageUrl}
                 isWish={wish.length === 0 ? false : wish.includes(item.id)}
+                country={item.country}
+                province={item.province}
+                city={item.city}
               />
             ))}
           {filteredData.length === 0 && (

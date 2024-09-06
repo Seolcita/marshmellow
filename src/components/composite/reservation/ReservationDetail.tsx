@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
+import { useEffect, useState } from 'react';
 import { Pressable } from 'react-native';
+import Entypo from '@expo/vector-icons/Entypo';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
@@ -24,7 +25,10 @@ interface ReservationDetail {
   arrivalDate: string;
   departureDate: string;
   campgroundName: string;
-  campgroundSiteNumber: string;
+  campgroundSiteNumber?: string;
+  country: string;
+  province?: string;
+  city?: string;
 }
 
 interface ReservationDetailProps {
@@ -40,6 +44,9 @@ const ResevationDetail = ({
     departureDate,
     campgroundName,
     campgroundSiteNumber,
+    country,
+    province,
+    city,
   },
   handleEdit,
 }: ReservationDetailProps) => {
@@ -47,6 +54,9 @@ const ResevationDetail = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { mutate: deleteReservation } = useDeleteSiteInfo(userId);
+
+  const cityName = city && province ? city + ', ' : city ?? '';
+  const location = cityName + province;
 
   const handleDelete = (id: string) => {
     deleteReservation(id);
@@ -102,6 +112,14 @@ const ResevationDetail = ({
             </S.DateIconContainer>
             <S.Text>{formatCampingDate()}</S.Text>
           </S.DateWrapper>
+          <S.SiteWrapper>
+            <Entypo
+              name='location-pin'
+              size={16}
+              color={ColorMap['grey'].main}
+            />
+            <S.Text>{city || province ? location : country}</S.Text>
+          </S.SiteWrapper>
         </S.Contents>
         <S.IconsContainer>
           <Animated.View
@@ -120,6 +138,9 @@ const ResevationDetail = ({
                       departureDate,
                       campgroundName,
                       campgroundSiteNumber,
+                      country,
+                      province,
+                      city,
                     })
                   }
                 />

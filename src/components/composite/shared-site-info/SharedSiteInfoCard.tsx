@@ -1,8 +1,8 @@
 import { router } from 'expo-router';
-import { Pressable } from 'react-native';
 import { Rating } from 'react-native-ratings';
-import { Ionicons } from '@expo/vector-icons';
+import { Entypo, Ionicons } from '@expo/vector-icons';
 
+import ColorMap from '../../../styles/Color';
 import * as S from './SharedSiteInfoCard.styles';
 import { ReservationType } from '../../../types';
 import { useUpdateWish } from '../../../api/wish';
@@ -42,8 +42,15 @@ const SharedSiteInfoCard = ({
   imageUrl,
   userId,
   isWish,
+  country,
+  province,
+  city,
 }: SharedSiteInfoCardProps) => {
   const { mutate: updateWish } = useUpdateWish(userId);
+
+  const cityAndProvince =
+    city && province ? `${city}, ${province}` : city ?? '';
+  const location = cityAndProvince ? `${cityAndProvince}, ` + country : country;
 
   const handleWish = (id: string) => {
     updateWish(id);
@@ -57,7 +64,7 @@ const SharedSiteInfoCard = ({
             <RemoteImage
               path={imageUrl}
               width={160}
-              height={120}
+              height={140}
               borderRadius={0}
             />
           ) : (
@@ -97,11 +104,20 @@ const SharedSiteInfoCard = ({
           ) : (
             <S.EmptyView />
           )}
+          <S.Location>
+            <Entypo
+              name='location-pin'
+              size={12}
+              color={ColorMap['grey'].main}
+              style={{ paddingTop: 2.5 }}
+            />
+            <S.LocationText>{location}</S.LocationText>
+          </S.Location>
         </S.DetailContainer>
         <S.WishIconButton onPress={() => handleWish(id)}>
           <Ionicons
             name={isWish ? 'heart-sharp' : 'heart-outline'}
-            size={24}
+            size={20}
             color={isWish ? 'red' : 'black'}
           />
         </S.WishIconButton>

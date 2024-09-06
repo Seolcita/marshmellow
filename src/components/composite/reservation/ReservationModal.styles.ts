@@ -32,8 +32,10 @@ export const Title = styled.Text`
 `;
 
 export const Span = styled.Text`
-  font-size: 16px;
+  font-size: 14px;
   color: grey;
+  margin-top: -10px;
+  margin-bottom: 10px;
 `;
 
 export const ButtonContainer = styled.View`

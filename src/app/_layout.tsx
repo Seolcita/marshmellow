@@ -26,6 +26,7 @@ export default function RootLayout() {
   const IGNORED_LOGS = [
     'Provided value to SecureStore is larger than 2048 bytes. An attempt to store such a value will throw an error in SDK 35.',
     'Value being stored in SecureStore is larger than 2048 bytes and it may not be stored successfully. In a future SDK version, this call may throw an error.',
+    'Expected style "marginTop: 24" to contain units',
   ];
   LogBox.ignoreLogs(IGNORED_LOGS);
 
