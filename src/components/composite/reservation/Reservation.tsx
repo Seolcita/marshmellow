@@ -21,8 +21,11 @@ export interface InitialValue {
   arrivalDate: string;
   departureDate: string;
   campgroundName: string;
-  campgroundSiteNumber: string;
+  campgroundSiteNumber?: string;
   userId: string;
+  country: string;
+  province?: string;
+  city?: string;
 }
 
 export enum TripType {

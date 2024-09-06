@@ -13,6 +13,9 @@ interface UseInsertReservation {
   departureDate: string;
   campgroundName: string;
   campgroundSiteNumber?: string;
+  country: string;
+  province?: string;
+  city?: string;
 }
 
 interface UseUpdateReservation {
@@ -21,6 +24,9 @@ interface UseUpdateReservation {
   departureDate?: string;
   campgroundName?: string;
   campgroundSiteNumber?: string;
+  country?: string;
+  province?: string;
+  city?: string;
 }
 
 export const useReservationsInfo = (userId: string) => {
@@ -29,7 +35,9 @@ export const useReservationsInfo = (userId: string) => {
     queryFn: async () => {
       const { error, data: siteInfo } = await supabase
         .from('site_info')
-        .select('id, user_id, arrival, departure, campground_name, site_number')
+        .select(
+          'id, user_id, arrival, departure, campground_name, site_number, country, province, city'
+        )
         .eq('user_id', userId);
 
       if (error) {
@@ -44,6 +52,9 @@ export const useReservationsInfo = (userId: string) => {
           departureDate: info.departure,
           campgroundName: info.campground_name,
           campgroundSiteNumber: info.site_number,
+          country: info.country,
+          province: info.province,
+          city: info.city,
         };
       });
 
@@ -80,6 +91,9 @@ export const useInsertReservation = (userId: string) => {
       campgroundName,
       campgroundSiteNumber,
       userId,
+      country,
+      province,
+      city,
     }: UseInsertReservation) {
       const { error, data: addedSiteInfo } = await supabase
         .from('site_info')
@@ -89,6 +103,9 @@ export const useInsertReservation = (userId: string) => {
           campground_name: campgroundName,
           site_number: campgroundSiteNumber,
           user_id: userId,
+          country,
+          province,
+          city,
         })
         .single();
 
@@ -122,6 +139,9 @@ export const useUpdateReservation = (userId: string) => {
       departureDate,
       campgroundName,
       campgroundSiteNumber,
+      country,
+      province,
+      city,
     }: UseUpdateReservation) {
       const { error, data: updatedSiteInfo } = await supabase
         .from('site_info')
@@ -130,6 +150,9 @@ export const useUpdateReservation = (userId: string) => {
           departure: departureDate,
           campground_name: campgroundName,
           site_number: campgroundSiteNumber,
+          country,
+          province,
+          city,
         })
         .eq('id', id)
         .single();

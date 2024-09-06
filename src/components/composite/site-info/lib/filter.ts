@@ -9,6 +9,9 @@ export interface FilteredSiteInfo {
   reservationType?: string;
   share?: boolean;
   imageUrl?: string;
+  country: string;
+  province?: string;
+  city?: string;
 }
 
 export enum FilterType {

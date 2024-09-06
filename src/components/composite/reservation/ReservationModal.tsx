@@ -51,6 +51,18 @@ export const ReservationModal = ({
     siteNumber: '',
     error: '',
   });
+  const [country, setCountry] = useState({
+    name: '',
+    error: '',
+  });
+  const [province, setProvince] = useState({
+    name: '',
+    error: '',
+  });
+  const [city, setCity] = useState({
+    name: '',
+    error: '',
+  });
 
   const { mutate: insertReservation } = useInsertReservation(userId);
   const { mutate: updateReservation } = useUpdateReservation(userId);
@@ -61,9 +73,16 @@ export const ReservationModal = ({
       setDepartureDate(initialValue.departureDate);
       setCampgroundName({ name: initialValue.campgroundName, error: '' });
       setCampgroundSiteNumber({
-        siteNumber: initialValue.campgroundSiteNumber,
+        siteNumber:
+          initialValue.campgroundSiteNumber || campgroundSiteNumber.siteNumber,
         error: '',
       });
+      setCountry({ name: initialValue.country, error: '' });
+      setProvince({
+        name: initialValue.province || province.name,
+        error: '',
+      });
+      setCity({ name: initialValue.city || city.name, error: '' });
     }
   }, [isEdit, initialValue]);
 
@@ -128,6 +147,9 @@ export const ReservationModal = ({
     setDateError(undefined);
     setCampgroundName({ name: '', error: '' });
     setCampgroundSiteNumber({ siteNumber: '', error: '' });
+    setCountry({ name: '', error: '' });
+    setProvince({ name: '', error: '' });
+    setCity({ name: '', error: '' });
     setIsEdit(false);
     setIsOpen(!isOpen);
   };
@@ -146,6 +168,14 @@ export const ReservationModal = ({
       return false;
     }
 
+    if (country.name === '') {
+      setCountry({
+        ...country,
+        error: 'Please enter a country name',
+      });
+      return false;
+    }
+
     return true;
   };
 
@@ -157,6 +187,7 @@ export const ReservationModal = ({
       arrivalDate &&
       departureDate &&
       campgroundName.name !== '' &&
+      country.name !== '' &&
       dateError === undefined
     ) {
       insertReservation({
@@ -164,6 +195,9 @@ export const ReservationModal = ({
         departureDate,
         campgroundName: campgroundName.name,
         campgroundSiteNumber: campgroundSiteNumber?.siteNumber,
+        country: country.name,
+        province: province.name,
+        city: city.name,
         userId,
       });
       initiate();
@@ -180,6 +214,9 @@ export const ReservationModal = ({
         departureDate,
         campgroundName: campgroundName.name,
         campgroundSiteNumber: campgroundSiteNumber?.siteNumber,
+        country: country.name,
+        province: province.name,
+        city: city.name,
       });
       initiate();
     }
@@ -203,7 +240,7 @@ export const ReservationModal = ({
         />
         {dateError && <S.DateErrorText>{dateError}</S.DateErrorText>}
         <S.InputContainer>
-          <S.Title> Where do you camp?</S.Title>
+          <S.Title>Campground Info</S.Title>
           <Input
             label='Campground Name'
             isValid={true}
@@ -216,14 +253,8 @@ export const ReservationModal = ({
             }}
             error={campgroundName.error}
           />
-        </S.InputContainer>
-        <S.InputContainer>
-          <S.TextWrapper>
-            <S.Title> What is site number?</S.Title>
-            <S.Span> (If applicable)</S.Span>
-          </S.TextWrapper>
           <Input
-            label='Campground Site Number'
+            label='Camp Site Number'
             isValid={true}
             textInputConfig={{
               value: campgroundSiteNumber.siteNumber,
@@ -233,6 +264,55 @@ export const ReservationModal = ({
               keyboardType: 'default',
             }}
             error={campgroundSiteNumber.error}
+          />
+        </S.InputContainer>
+        <S.InputContainer>
+          <S.Title>Campground Location Info</S.Title>
+          <S.Span>Please provide location in full name</S.Span>
+          <Input
+            label='Country'
+            isValid={true}
+            textInputConfig={{
+              value: country.name,
+              onChangeText: (text: string) =>
+                setCountry({
+                  name: text.trim(),
+                  error: '',
+                }),
+              placeholder: 'Canada',
+              keyboardType: 'default',
+            }}
+            error={country.error}
+          />
+          <Input
+            label='Province / State'
+            isValid={true}
+            textInputConfig={{
+              value: province.name,
+              onChangeText: (text: string) =>
+                setProvince({
+                  name: text.trim(),
+                  error: '',
+                }),
+              placeholder: 'Alberta',
+              keyboardType: 'default',
+            }}
+            error={province.error}
+          />
+          <Input
+            label='City / Town'
+            isValid={true}
+            textInputConfig={{
+              value: city.name,
+              onChangeText: (text: string) =>
+                setCity({
+                  name: text.trim(),
+                  error: '',
+                }),
+              placeholder: 'Banff',
+              keyboardType: 'default',
+            }}
+            error={province.error}
           />
         </S.InputContainer>
         <S.ButtonContainer>

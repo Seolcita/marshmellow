@@ -15,7 +15,6 @@ export const SiteInfoCardContainer = styled(Tile)`
   margin-vertical: 8px;
   margin-horizontal: 10px;
   padding: 0px;
-  gap: 15px;
 `;
 
 export const ImageContainer = styled.View`
@@ -27,22 +26,23 @@ export const ImageContainer = styled.View`
 
 export const DefaultImageContainer = styled.View`
   width: 160px;
-  height: 120px;
+  height: 140px;
   background-color: #f7f7f7;
   align-items: center;
   justify-content: center;
 `;
 export const DefaultImage = styled.Image`
-  width: 230px;
-  height: 120px;
+  width: 250px;
+  height: 140px;
 `;
 
 export const NoImageText = styled.Text``;
 
 export const DetailContainer = styled.View`
   justify-content: space-between;
+  padding-vertical: 8px;
+  margin-left: 10px;
   flex: 1;
-  padding-vertical: 12px;
 `;
 
 export const SiteNameText = styled.Text`
@@ -64,14 +64,24 @@ export const ReservationTypeText = styled.Text<ReservationTypeTextProps>`
   padding-horizontal: 5px;
   padding-vertical: 2px;
   align-self: flex-start;
-  font-size: 12px;
+  font-size: 10px;
 `;
 
 export const WishIconButton = styled.Pressable`
-  margin: 12px;
+  margin-top: 8px;
+  margin-right: 8px;
 `;
 
 export const EmptyView = styled.View`
   width: 22px;
   height: 15px;
+`;
+
+export const Location = styled.View`
+  flex-direction: row;
+  align-items: start;
+`;
+
+export const LocationText = styled.Text`
+  font-size: 12px;
 `;

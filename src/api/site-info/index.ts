@@ -39,6 +39,9 @@ export const useSharedCampSitesInfo = () => {
           reservationType: info.reservation,
           share: info.share,
           imageUrl: info.image_url,
+          country: info.country,
+          province: info.province,
+          city: info.city,
         };
       });
 
