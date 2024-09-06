@@ -2,14 +2,30 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "APP_ENV": "development",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "${EXPO_PUBLIC_SUPABASE_ANON_KEY}",
+        "EXPO_PUBLIC_SUPABASE_URL": "${EXPO_PUBLIC_SUPABASE_URL}"
+      }
     },
     "preview": {
       "distribution": "internal",
-      "channel": "preview"
+      "channel": "preview",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "APP_ENV": "preview",
+        "PREVIEW_SUPABASE_ANON_KEY": "${PREVIEW_SUPABASE_ANON_KEY}",
+        "PREVIEW_SUPABASE_URL": "${PREVIEW_SUPABASE_URL}"
+      }
     },
     "production": {
-      "channel": "production"
+      "channel": "production",
+      "env": {
+        "APP_ENV": "production"
+      }
     }
   }
 }
