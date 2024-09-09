@@ -14,6 +14,11 @@ interface SignInWithEmailAndPW {
   password: string;
 }
 
+interface ResetPasswordForEmail {
+  email: string;
+  redirectTo: string;
+}
+
 export const signUpWithEmailAndPW = async ({
   email,
   password,
@@ -58,4 +63,29 @@ export const signOut = async () => {
   }
   Alert.alert('Logged out');
   router.push('/(auth)/sign-in');
+};
+
+export const resetPasswordForEmail = async ({
+  email,
+  redirectTo,
+}: ResetPasswordForEmail) => {
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo,
+  });
+
+  return { data, error };
+};
+
+export const updatePassword = async (password: string) => {
+  const { error } = await supabase.auth.updateUser({ password });
+
+  if (error) {
+    Alert.alert(
+      'Error',
+      'Password reset failed. Please request a reset password link again.'
+    );
+  } else {
+    Alert.alert('Success', 'Password has been reset');
+    router.push('/(user)/shared-site-info');
+  }
 };

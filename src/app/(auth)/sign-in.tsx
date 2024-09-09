@@ -84,7 +84,7 @@ export const SignInScreen = () => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../../../assets/images/login-screen.png')}
+        source={require('../../../assets/images/mm-login.png')}
         style={styles.image}
       />
 
@@ -120,6 +120,12 @@ export const SignInScreen = () => {
         labelColor={ColorMap['white'].main}
         errorColor={ColorMap['red'].light}
       />
+      <View style={styles.forgotPasswordContainer}>
+        <Text style={styles.forgotPassword}>Forgot Password?</Text>
+        <Link href='/request-reset-password'>
+          <Text style={styles.boldText}>Reset</Text>
+        </Link>
+      </View>
       <Button
         text='Log In'
         onPress={handleSubmit}
@@ -132,7 +138,7 @@ export const SignInScreen = () => {
       <View style={styles.textBox}>
         <Text style={styles.text}>Don't have an account?</Text>
         <Link href='/sign-up'>
-          <Text style={styles.signupText}>Sign up</Text>
+          <Text style={styles.boldText}>Sign up</Text>
         </Link>
       </View>
     </View>
@@ -146,11 +152,12 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: ColorMap['blue'].dark,
   },
   image: {
-    width: 200,
-    height: 200,
+    width: 180,
+    height: 204,
     marginTop: 40,
   },
   title: {
@@ -161,6 +168,17 @@ export const styles = StyleSheet.create({
     marginBottom: 30,
   },
   inputRow: { flex: 1 },
+  forgotPasswordContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignSelf: 'flex-start',
+    marginTop: -10,
+    marginBottom: 20,
+    gap: 10,
+  },
+  forgotPassword: {
+    color: ColorMap['blue'].light,
+  },
   textBox: {
     marginTop: 20,
     width: '100%',
@@ -171,9 +189,11 @@ export const styles = StyleSheet.create({
   },
   text: {
     color: ColorMap['blue'].light,
+    fontSize: 16,
   },
-  signupText: {
+  boldText: {
     color: ColorMap['blue'].light,
     fontWeight: 'bold',
+    fontSize: 16,
   },
 });

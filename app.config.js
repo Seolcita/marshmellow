@@ -9,7 +9,7 @@ export default ({ config }) => {
       version: '1.0.0',
       orientation: 'portrait',
       icon: './assets/images/icon.png',
-      scheme: 'myapp',
+      scheme: 'seolcita.marshmallow',
       userInterfaceStyle: 'automatic',
       backgroundColor: '#1849A9',
       splash: {
