@@ -69,12 +69,10 @@ export const sendMagicLink = async (email: string) => {
   });
 
   if (error) {
-    Alert.alert('Error:', 'Failed to send magic link. Please try again.');
-  }
-
-  if (data) {
+    Alert.alert('Error', 'User not found. Please sign up.');
+  } else {
     Alert.alert(
-      'Success:',
+      'Success',
       'The link sent to your email. Please check your email to login.'
     );
   }

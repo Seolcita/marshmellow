@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 
 export const TileContainer = styled.View`
   flex-direction: column;
-  margin-top: -10px;
+  margin-top: -16px;
 `;
 
 export const SkeletonContainer = styled.View`

@@ -1,10 +1,4 @@
-import {
-  View,
-  StyleSheet,
-  Alert,
-  ImageBackground,
-  ScrollView,
-} from 'react-native';
+import { View, StyleSheet, ImageBackground, ScrollView } from 'react-native';
 import { useState } from 'react';
 import { Link } from 'expo-router';
 
@@ -143,6 +137,7 @@ export const SignUpScreen = () => {
           flexGrow: 1,
           alignItems: 'center',
           justifyContent: 'center',
+          paddingBottom: 40,
         }}
       >
         <ImageBackground
@@ -234,7 +229,7 @@ export default SignUpScreen;
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: ColorMap['blue'].dark,
   },
   image: {

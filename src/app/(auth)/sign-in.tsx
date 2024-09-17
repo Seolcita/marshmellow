@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'expo-router';
-import { View, Text, StyleSheet, ImageBackground } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  ScrollView,
+} from 'react-native';
 
 import ColorMap from '../../styles/Color';
 import { signInWithEmailAndPW } from '../../api/auth';
@@ -83,70 +89,84 @@ export const SignInScreen = () => {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={require('../../../assets/images/mm-login.png')}
-        style={styles.image}
-      />
-
-      <Text style={styles.title}>Welcome Back</Text>
-
-      <Input
-        label='Email'
-        isValid={inputs.email.isValid}
-        textInputConfig={{
-          value: inputs.email.value.trim(),
-          onChangeText: handleInputChange.bind(this, 'email'),
-          placeholder: 'john@gmail.com',
-          placeholderTextColor: ColorMap['grey'].light,
-          keyboardType: 'email-address',
+      <ScrollView
+        overScrollMode='auto'
+        showsVerticalScrollIndicator={false}
+        style={{
+          backgroundColor: 'transparent',
         }}
-        error={inputs.email.error}
-        borderColor={ColorMap['white'].main}
-        labelColor={ColorMap['white'].main}
-        errorColor={ColorMap['red'].light}
-      />
-      <Input
-        label='Password'
-        isValid={inputs.password.isValid}
-        textInputConfig={{
-          value: inputs.password.value,
-          onChangeText: handleInputChange.bind(this, 'password'),
-          secureTextEntry: true,
-          placeholder: '******',
-          placeholderTextColor: ColorMap['grey'].light,
+        contentContainerStyle={{
+          flexGrow: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingBottom: 40,
         }}
-        error={inputs.password.error}
-        borderColor={ColorMap['white'].main}
-        labelColor={ColorMap['white'].main}
-        errorColor={ColorMap['red'].light}
-      />
-      <Button
-        text='Log In'
-        onPress={handleSubmit}
-        disabled={loading}
-        bgColor={ColorMap['red'].main}
-        fullWidth
-        borderRadius={5}
-        marginVertical={8}
-      />
-      <View style={styles.horizontalLine} />
-      <Button
-        href='/magic-link-login'
-        text='Log In with Magic Link'
-        onPress={handleSubmit}
-        disabled={loading}
-        bgColor={ColorMap['white'].main}
-        textColor={ColorMap['blue'].dark}
-        fullWidth
-        borderRadius={5}
-        marginVertical={8}
-      />
-      <View style={styles.textBox}>
-        <Text style={styles.text}>Don't have an account?</Text>
-        <Link href='/sign-up'>
-          <Text style={styles.boldText}>Sign up</Text>
-        </Link>
-      </View>
+      >
+        <ImageBackground
+          source={require('../../../assets/images/mm-login.png')}
+          style={styles.image}
+        />
+
+        <Text style={styles.title}>Welcome Back</Text>
+
+        <Input
+          label='Email'
+          isValid={inputs.email.isValid}
+          textInputConfig={{
+            value: inputs.email.value.trim(),
+            onChangeText: handleInputChange.bind(this, 'email'),
+            placeholder: 'john@gmail.com',
+            placeholderTextColor: ColorMap['grey'].light,
+            keyboardType: 'email-address',
+          }}
+          error={inputs.email.error}
+          borderColor={ColorMap['white'].main}
+          labelColor={ColorMap['white'].main}
+          errorColor={ColorMap['red'].light}
+        />
+        <Input
+          label='Password'
+          isValid={inputs.password.isValid}
+          textInputConfig={{
+            value: inputs.password.value,
+            onChangeText: handleInputChange.bind(this, 'password'),
+            secureTextEntry: true,
+            placeholder: '******',
+            placeholderTextColor: ColorMap['grey'].light,
+          }}
+          error={inputs.password.error}
+          borderColor={ColorMap['white'].main}
+          labelColor={ColorMap['white'].main}
+          errorColor={ColorMap['red'].light}
+        />
+        <Button
+          text='Log In'
+          onPress={handleSubmit}
+          disabled={loading}
+          bgColor={ColorMap['red'].main}
+          fullWidth
+          borderRadius={5}
+          marginVertical={8}
+        />
+        <View style={styles.horizontalLine} />
+        <Button
+          href='/magic-link-login'
+          text='Log In with Magic Link'
+          onPress={handleSubmit}
+          disabled={loading}
+          bgColor={ColorMap['white'].main}
+          textColor={ColorMap['blue'].dark}
+          fullWidth
+          borderRadius={5}
+          marginVertical={8}
+        />
+        <View style={styles.textBox}>
+          <Text style={styles.text}>Don't have an account?</Text>
+          <Link href='/sign-up'>
+            <Text style={styles.boldText}>Sign up</Text>
+          </Link>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -156,7 +176,6 @@ export default SignInScreen;
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: ColorMap['blue'].dark,
@@ -195,6 +214,6 @@ export const styles = StyleSheet.create({
     height: 1,
     width: '100%',
     backgroundColor: 'white',
-    marginVertical: 32,
+    marginVertical: 20,
   },
 });

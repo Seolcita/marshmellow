@@ -1,6 +1,6 @@
 import { Pressable } from 'react-native';
 import { router, Stack } from 'expo-router';
-import { Entypo } from '@expo/vector-icons';
+// import { Entypo } from '@expo/vector-icons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const SharedSiteInfoLayout = () => {
@@ -12,7 +12,7 @@ const SharedSiteInfoLayout = () => {
           headerShown: true,
           title: 'Shared Sites Info',
           headerTitleAlign: 'center',
-          headerLeft: () => <Entypo name='menu' size={24} color='black' />,
+          // headerLeft: () => <Entypo name='menu' size={24} color='black' />,
           headerRight: () => (
             <Pressable
               onPress={() => router.push('/(user)/shared-site-info/profile')}

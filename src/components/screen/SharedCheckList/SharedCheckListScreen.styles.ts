@@ -82,6 +82,7 @@ export const ToggleContainer = styled.View`
   gap: 4px;
   border-radius: 5px;
   background-color: ${ColorMap['green'].dark};
+  padding-vertical: 10px;
 `;
 
 export const ToggleText = styled.Text`

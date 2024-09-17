@@ -8,7 +8,7 @@ export const ImageContainer = styled.View`
 `;
 
 export const DefaultImageContainer = styled(ImageContainer)`
-  margin-top: 24;
+  margin-top: 24px;
 `;
 
 export const DefaultImage = styled.Image`
