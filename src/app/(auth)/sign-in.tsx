@@ -120,17 +120,23 @@ export const SignInScreen = () => {
         labelColor={ColorMap['white'].main}
         errorColor={ColorMap['red'].light}
       />
-      <View style={styles.forgotPasswordContainer}>
-        <Text style={styles.forgotPassword}>Forgot Password?</Text>
-        <Link href='/request-reset-password'>
-          <Text style={styles.boldText}>Reset</Text>
-        </Link>
-      </View>
       <Button
         text='Log In'
         onPress={handleSubmit}
         disabled={loading}
         bgColor={ColorMap['red'].main}
+        fullWidth
+        borderRadius={5}
+        marginVertical={8}
+      />
+      <View style={styles.horizontalLine} />
+      <Button
+        href='/magic-link-login'
+        text='Log In with Magic Link'
+        onPress={handleSubmit}
+        disabled={loading}
+        bgColor={ColorMap['white'].main}
+        textColor={ColorMap['blue'].dark}
         fullWidth
         borderRadius={5}
         marginVertical={8}
@@ -168,17 +174,6 @@ export const styles = StyleSheet.create({
     marginBottom: 30,
   },
   inputRow: { flex: 1 },
-  forgotPasswordContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    alignSelf: 'flex-start',
-    marginTop: -10,
-    marginBottom: 20,
-    gap: 10,
-  },
-  forgotPassword: {
-    color: ColorMap['blue'].light,
-  },
   textBox: {
     marginTop: 20,
     width: '100%',
@@ -195,5 +190,11 @@ export const styles = StyleSheet.create({
     color: ColorMap['blue'].light,
     fontWeight: 'bold',
     fontSize: 16,
+  },
+  horizontalLine: {
+    height: 1,
+    width: '100%',
+    backgroundColor: 'white',
+    marginVertical: 32,
   },
 });

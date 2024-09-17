@@ -1,17 +1,13 @@
 import { useState } from 'react';
-import * as Linking from 'expo-linking';
-import { useNavigation } from 'expo-router';
-import { View, StyleSheet, ImageBackground, Alert } from 'react-native';
+import { View, StyleSheet, ImageBackground } from 'react-native';
 
 import ColorMap from '../../styles/Color';
 import { Text } from '../../components/Themed';
-import { resetPasswordForEmail } from '../../api/auth';
+import { sendMagicLink } from '../../api/auth';
 import Input from '../../components/atomic/input/Input';
 import Button from '../../components/atomic/button/Button';
 
-const RequestResetPassword = () => {
-  const navigation = useNavigation();
-
+const MagicLinkLogin = () => {
   const [email, setEmail] = useState({
     value: '',
     isValid: true,
@@ -53,23 +49,7 @@ const RequestResetPassword = () => {
       error: '',
     }));
 
-    resetPassword(email.value);
-
-    Alert.alert(
-      '',
-      'The link sent to your email. Please check your email to reset password.'
-    );
-  };
-
-  const resetPassword = async (email: string) => {
-    const resetPasswordURL = Linking.createURL('reset-password');
-
-    const { data, error } = await resetPasswordForEmail({
-      email,
-      redirectTo: resetPasswordURL,
-    });
-
-    console.log('Reset PW🐶', data, error);
+    sendMagicLink(email.value);
   };
 
   return (
@@ -79,10 +59,8 @@ const RequestResetPassword = () => {
         style={styles.image}
       />
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Request Reset Password</Text>
-        <Text style={styles.subTitle}>
-          We'll send you a link to reset your password.
-        </Text>
+        <Text style={styles.title}>Login with magic link</Text>
+        <Text style={styles.subTitle}>We'll send you a link to login.</Text>
       </View>
 
       <Input
@@ -112,7 +90,7 @@ const RequestResetPassword = () => {
   );
 };
 
-export default RequestResetPassword;
+export default MagicLinkLogin;
 
 export const styles = StyleSheet.create({
   container: {
