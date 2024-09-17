@@ -9,7 +9,7 @@ export default ({ config }) => {
       version: '1.0.0',
       orientation: 'portrait',
       icon: './assets/images/icon.png',
-      scheme: 'myapp',
+      scheme: 'seolcita.marshmallow',
       userInterfaceStyle: 'automatic',
       backgroundColor: '#1849A9',
       splash: {
@@ -43,7 +43,7 @@ export default ({ config }) => {
           origin: false,
         },
         eas: {
-          projectId: 'b756b1d7-7f07-41a0-b57b-1cbca3f2d569',
+          projectId: 'eeccf780-c0a1-49c0-998e-4566decc7276',
         },
         expoPublicSupabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL,
         expoPublicSupabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
@@ -51,12 +51,12 @@ export default ({ config }) => {
         previewSupabaseAnonKey: process.env.PREVIEW_SUPABASE_ANON_KEY,
         appEnv: process.env.APP_ENV ?? 'development',
       },
-      owner: 'seolcita',
+      owner: 'seolhikimdev',
       runtimeVersion: {
         policy: 'appVersion',
       },
       updates: {
-        url: 'https://u.expo.dev/b756b1d7-7f07-41a0-b57b-1cbca3f2d569',
+        url: 'https://u.expo.dev/eeccf780-c0a1-49c0-998e-4566decc7276',
       },
     },
   };

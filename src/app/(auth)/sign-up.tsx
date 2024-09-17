@@ -63,7 +63,7 @@ export const SignUpScreen = () => {
     const rexec = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     const isEmailValid =
       inputs.email.value.length > 0 && rexec.test(inputs.email.value);
-    const isPasswordValid = inputs.password.value.length > 6;
+    const isPasswordValid = inputs.password.value.length >= 6;
     const isConfirmPasswordValid =
       inputs.password.value === inputs.confirmPassword.value;
     const isNameValid = inputs.name.value.length > 0;
@@ -131,10 +131,22 @@ export const SignUpScreen = () => {
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: ColorMap['blue'].dark }}>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <ScrollView
+        overScrollMode='auto'
+        showsVerticalScrollIndicator={false}
+        style={{
+          backgroundColor: 'transparent',
+          padding: 20,
+        }}
+        contentContainerStyle={{
+          flexGrow: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         <ImageBackground
-          source={require('../../../assets/images/signup-screen.png')}
+          source={require('../../../assets/images/mm-signup.png')}
           style={styles.image}
         />
         <Text style={styles.title}>Create Account</Text>
@@ -213,8 +225,8 @@ export const SignUpScreen = () => {
             <Text style={styles.loginText}>Login</Text>
           </Link>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -223,14 +235,12 @@ export default SignUpScreen;
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    alignItems: 'center',
     backgroundColor: ColorMap['blue'].dark,
   },
   image: {
-    width: 225,
-    height: 225,
-    marginTop: 10,
+    width: 180,
+    height: 160,
+    marginTop: 50,
     backgroundColor: ColorMap['blue'].dark,
   },
   title: {
@@ -249,7 +259,6 @@ export const styles = StyleSheet.create({
   },
   textBox: {
     marginTop: 20,
-    marginBottom: 40,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -258,9 +267,11 @@ export const styles = StyleSheet.create({
   },
   text: {
     color: ColorMap['blue'].light,
+    fontSize: 16,
   },
   loginText: {
     color: ColorMap['blue'].light,
     fontWeight: 'bold',
+    fontSize: 16,
   },
 });

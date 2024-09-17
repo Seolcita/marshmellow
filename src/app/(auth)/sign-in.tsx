@@ -84,7 +84,7 @@ export const SignInScreen = () => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../../../assets/images/login-screen.png')}
+        source={require('../../../assets/images/mm-login.png')}
         style={styles.image}
       />
 
@@ -129,10 +129,22 @@ export const SignInScreen = () => {
         borderRadius={5}
         marginVertical={8}
       />
+      <View style={styles.horizontalLine} />
+      <Button
+        href='/magic-link-login'
+        text='Log In with Magic Link'
+        onPress={handleSubmit}
+        disabled={loading}
+        bgColor={ColorMap['white'].main}
+        textColor={ColorMap['blue'].dark}
+        fullWidth
+        borderRadius={5}
+        marginVertical={8}
+      />
       <View style={styles.textBox}>
         <Text style={styles.text}>Don't have an account?</Text>
         <Link href='/sign-up'>
-          <Text style={styles.signupText}>Sign up</Text>
+          <Text style={styles.boldText}>Sign up</Text>
         </Link>
       </View>
     </View>
@@ -146,11 +158,12 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: ColorMap['blue'].dark,
   },
   image: {
-    width: 200,
-    height: 200,
+    width: 180,
+    height: 204,
     marginTop: 40,
   },
   title: {
@@ -171,9 +184,17 @@ export const styles = StyleSheet.create({
   },
   text: {
     color: ColorMap['blue'].light,
+    fontSize: 16,
   },
-  signupText: {
+  boldText: {
     color: ColorMap['blue'].light,
     fontWeight: 'bold',
+    fontSize: 16,
+  },
+  horizontalLine: {
+    height: 1,
+    width: '100%',
+    backgroundColor: 'white',
+    marginVertical: 32,
   },
 });

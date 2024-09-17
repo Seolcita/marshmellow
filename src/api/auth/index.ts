@@ -1,5 +1,6 @@
 import { Alert } from 'react-native';
 import { router } from 'expo-router';
+import { makeRedirectUri } from 'expo-auth-session';
 
 import { supabase } from '../../lib/supabase';
 
@@ -12,6 +13,11 @@ interface SignUpWithEmailAndPW {
 interface SignInWithEmailAndPW {
   email: string;
   password: string;
+}
+
+interface ResetPasswordForEmail {
+  email: string;
+  redirectTo: string;
 }
 
 export const signUpWithEmailAndPW = async ({
@@ -51,6 +57,29 @@ export const signInWithEmailAndPW = async ({
   if (error) Alert.alert(error.message);
 };
 
+export const sendMagicLink = async (email: string) => {
+  const redirectTo = makeRedirectUri();
+
+  const { data, error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      shouldCreateUser: false,
+      emailRedirectTo: redirectTo,
+    },
+  });
+
+  if (error) {
+    Alert.alert('Error:', 'Failed to send magic link. Please try again.');
+  }
+
+  if (data) {
+    Alert.alert(
+      'Success:',
+      'The link sent to your email. Please check your email to login.'
+    );
+  }
+};
+
 export const signOut = async () => {
   let { error } = await supabase.auth.signOut();
   if (error) {
@@ -58,4 +87,30 @@ export const signOut = async () => {
   }
   Alert.alert('Logged out');
   router.push('/(auth)/sign-in');
+};
+
+export const resetPasswordForEmail = async ({
+  email,
+  redirectTo,
+}: ResetPasswordForEmail) => {
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo,
+  });
+
+  return { data, error };
+};
+
+export const updatePassword = async (password: string) => {
+  const { error } = await supabase.auth.updateUser({ password });
+
+  if (error) {
+    console.log('Error updating password:', error.message);
+    Alert.alert(
+      'Error',
+      'Password reset failed. Please request a reset password link again.'
+    );
+  } else {
+    Alert.alert('Success', 'Password has been reset');
+    router.push('/(user)/shared-site-info');
+  }
 };
