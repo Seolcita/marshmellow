@@ -7,6 +7,7 @@ export const PendingInvitationTile = styled(Tile)`
   justify-content: space-between;
   align-items: center;
   margin-horizontal: 12px;
+  margin-vertical: 4px;
   padding: 16px;
 `;
 

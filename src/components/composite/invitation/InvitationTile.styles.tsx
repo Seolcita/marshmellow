@@ -7,6 +7,7 @@ export const InvitationTile = styled(Tile)`
   align-items: center;
   justify-content: space-between;
   margin-horizontal: 12px;
+  margin-vertical: 4px;
   padding: 16px;
 `;
 

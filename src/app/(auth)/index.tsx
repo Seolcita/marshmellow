@@ -48,7 +48,7 @@ export default function AuthIndex() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 40,
+    paddingTop: 60,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#014d94',

@@ -50,7 +50,7 @@ export const NotificationContainer = styled.View`
   padding: 12px;
   border-radius: 5px;
   margin-top: 14px;
-  margin-right: 90px;
+  margin-right: 55px;
   flex: 1;
   align-items: center;
 `;
