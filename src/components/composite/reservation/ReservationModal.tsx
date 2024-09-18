@@ -238,7 +238,7 @@ export const ReservationModal = ({
           markedDates={markedDates}
           style={{ marginBottom: 20 }}
         />
-        {dateError && <S.DateErrorText>{dateError}</S.DateErrorText>}
+
         <S.InputContainer>
           <S.Title>Campground Info</S.Title>
           <Input
@@ -315,6 +315,7 @@ export const ReservationModal = ({
             error={province.error}
           />
         </S.InputContainer>
+        {dateError && <S.DateErrorText>{dateError}</S.DateErrorText>}
         <S.ButtonContainer>
           <Button
             title='Cancel'

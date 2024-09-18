@@ -165,7 +165,7 @@ const Reservation = () => {
           />
         </View>
       </S.ButtonsContainer>
-      {!isLoading && reservations.length === 0 && (
+      {!isLoading && reservations.length === 0 && showAllTrips && (
         <S.AddSiteMessageContainer>
           <s.AddSiteMessageTextTitle>
             Please add your trips
@@ -180,6 +180,20 @@ const Reservation = () => {
             Sites.
           </S.AddSiteMessageTextDescription>
           <S.AddSiteMessageTextDescription></S.AddSiteMessageTextDescription>
+        </S.AddSiteMessageContainer>
+      )}
+      {!isLoading && reservations.length === 0 && showUpcomingTrips && (
+        <S.AddSiteMessageContainer>
+          <s.AddSiteMessageTextSubTitle>
+            There is no upcoming trips
+          </s.AddSiteMessageTextSubTitle>
+        </S.AddSiteMessageContainer>
+      )}
+      {!isLoading && reservations.length === 0 && showPastTrips && (
+        <S.AddSiteMessageContainer>
+          <s.AddSiteMessageTextSubTitle>
+            There is no past trips
+          </s.AddSiteMessageTextSubTitle>
         </S.AddSiteMessageContainer>
       )}
       <S.TripsContainer>

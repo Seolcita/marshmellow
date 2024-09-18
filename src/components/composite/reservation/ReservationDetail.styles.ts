@@ -26,7 +26,7 @@ export const Header = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 `;
 
 export const CampgroundName = styled.Text`
@@ -42,6 +42,7 @@ export const SiteWrapper = styled.View`
 
 export const DateWrapper = styled(SiteWrapper)`
   align-items: start;
+  margin-vertical: 4px;
   flex: 1;
 `;
 
