@@ -177,7 +177,7 @@ const ResevationDetail = ({
           <S.ConfirmMessage
             color={ColorMap['black'].main}
           >{`Are you sure that you want to delete this trip?`}</S.ConfirmMessage>
-          <S.WarningMessage>{`This campsite information will be deleted as well.`}</S.WarningMessage>
+          <S.WarningMessage>{`This campsite's detailed information will be deleted as well.`}</S.WarningMessage>
         </S.MessageContainer>
         <S.ModalButtonContainer>
           <View style={{ width: '49%' }}>

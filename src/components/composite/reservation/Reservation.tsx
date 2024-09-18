@@ -43,21 +43,29 @@ const Reservation = () => {
   const [showAllTrips, setShowAllTrips] = useState(true);
   const [showUpcomingTrips, setShowUpcomingTrips] = useState(false);
   const [showPastTrips, setShowPastTrips] = useState(false);
+  const [userId, setUserId] = useState<string>('');
 
   const { session } = useAuth();
-  const userId = session?.user.id;
-  if (!userId) {
-    Alert.alert('Session is not valid, please login again');
-    console.log('User not found');
-    router.push('/(auth)/sign-in');
-    return;
-  }
 
   const {
     data,
     error,
     isLoading: isReservationsLoading,
   } = useReservationsInfo(userId);
+
+  useEffect(() => {
+    if (session) {
+      const userId = session?.user.id;
+
+      if (!userId) {
+        router.push('/(auth)/sign-in');
+        return;
+      } else if (userId) {
+        setUserId(userId);
+      }
+    }
+  }, [session]);
+
   useEffect(() => {
     if (data) {
       setReservations(data);

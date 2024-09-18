@@ -401,7 +401,7 @@ const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
             <S.SectionContainer>
               <Section
                 sectionTitle='Campground Facilities'
-                question='Can I purchase fire wood?'
+                question='Can I purchase/get fire wood?'
                 inputComponent={
                   <RadioButton
                     stateValue={siteInfo.canPurchaseFirewood}
@@ -589,7 +589,7 @@ const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
             <S.SectionContainer>
               <Section
                 sectionTitle='Park Pass'
-                question='Does campground need a park pass?'
+                question='Does campground require a park pass?'
                 inputComponent={
                   <RadioButton
                     stateValue={siteInfo.needParkPass}

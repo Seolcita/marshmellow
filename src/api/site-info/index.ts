@@ -57,7 +57,7 @@ export const useCampSitesPartialInfo = (userId: string) => {
       const { error, data: siteInfo } = await supabase
         .from('site_info')
         .select(
-          'id, user_id, campground_name, site_number, favourite, rating, reservation, share'
+          'id, user_id, campground_name, site_number, favourite, rating, reservation, share, country'
         )
         .eq('user_id', userId);
 
@@ -75,6 +75,7 @@ export const useCampSitesPartialInfo = (userId: string) => {
           rate: info.rating,
           reservationType: info.reservation,
           share: info.share,
+          country: info.country,
         };
       });
 

@@ -94,12 +94,15 @@ export const SignInScreen = () => {
         showsVerticalScrollIndicator={false}
         style={{
           backgroundColor: 'transparent',
+          width: '100%',
         }}
         contentContainerStyle={{
           flexGrow: 1,
           alignItems: 'center',
           justifyContent: 'center',
           paddingBottom: 40,
+          paddingTop: 40,
+          paddingHorizontal: 20,
         }}
       >
         <ImageBackground
