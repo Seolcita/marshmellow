@@ -68,6 +68,13 @@ export const Text = styled.Text`
   font-weight: bold;
 `;
 
+export const InfoText = styled.Text`
+  color: ${ColorMap['yellow'].main};
+  margin-bottom: 8px;
+  margin-top: -8px;
+  padding-horizontal: 20px;
+`;
+
 export const ToggleWrapper = styled.View`
   width: 49%;
 `;

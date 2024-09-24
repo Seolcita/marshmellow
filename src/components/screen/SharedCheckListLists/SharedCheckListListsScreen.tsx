@@ -37,7 +37,7 @@ const SharedCheckListListsScreen = () => {
   } = useMySharedCheckList(userId);
 
   useEffect(() => {
-    data && setMySharedCheckList(data);
+    session && data && setMySharedCheckList(data);
     if (!isCheckListLoading) {
       setIsLoading(false);
     }

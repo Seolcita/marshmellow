@@ -27,7 +27,6 @@ const SharedCheckListFormModal = ({
 
   if (!userEmail || !userId) {
     Alert.alert('Session is not valid, please login again');
-    console.log('User not found');
     router.push('/(auth)/sign-in');
     return;
   }

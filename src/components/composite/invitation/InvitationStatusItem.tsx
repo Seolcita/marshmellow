@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Pressable } from 'react-native';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import * as S from './InvitationStatusItem.styles';
 import ColorMap, { Colors } from '../../../styles/Color';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Invitation, InvitationStatus } from '../../../types';
 import { CancelInvitationModal } from './CancelInvitationModal';
 
@@ -38,13 +38,16 @@ const InvitationStatusItem = ({ invitation }: InvitationStatusItemProps) => {
 
         <S.Email>{invitation.inviteeEmail}</S.Email>
       </S.InviteeInfo>
-      <Pressable onPress={() => handleDelete(invitation)}>
-        <MaterialCommunityIcons
-          name='delete-forever-outline'
-          size={24}
-          color={ColorMap['red'].main}
-        />
-      </Pressable>
+      {invitation.status === InvitationStatus.PENDING && (
+        <Pressable onPress={() => handleDelete(invitation)}>
+          <MaterialIcons
+            name='cancel-schedule-send'
+            size={24}
+            color={ColorMap['yellow'].main}
+          />
+        </Pressable>
+      )}
+
       {invitation.id && (
         <CancelInvitationModal
           id={invitation.id}

@@ -40,7 +40,7 @@ const ImageTile = ({
         <AntDesign name='checksquareo' size={24} color='white' />
         <S.Text>{title}</S.Text>
       </S.Contents>
-      {hasNotification && (
+      {/* {hasNotification && (
         <S.NotificationContainer>
           <S.NotificationIcon>
             <MaterialIcons
@@ -53,7 +53,7 @@ const ImageTile = ({
             numNotification === 1 ? 'invitation' : 'invitations'
           }`}</S.NotificationText>
         </S.NotificationContainer>
-      )}
+      )} */}
       <S.ImageContainer $absRight={absRight} $absBottom={absBottom}>
         <S.Image
           source={imageSource}

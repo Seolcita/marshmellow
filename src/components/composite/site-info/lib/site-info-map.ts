@@ -7,14 +7,16 @@ import {
   ToiletType,
 } from '../../../../types';
 
-export const convertBooleanToString = (value: boolean | undefined): string => {
-  if (value === undefined) return ' - ';
+export const convertBooleanToString = (
+  value: boolean | null | undefined
+): string => {
+  if (value === null || value === undefined) return ' - ';
 
   return value ? 'Yes' : 'No';
 };
 
-export const convertCost = (fee: number | undefined) => {
-  if (fee === undefined) return ' - ';
+export const convertCost = (fee: number | null | undefined) => {
+  if (fee === null || fee === undefined) return ' - ';
 
   if (fee <= 0) {
     return 'Free';

@@ -155,6 +155,10 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
                       color='white'
                     />
                   </s.Accordion>
+                  <s.InfoText>
+                    * Invitation can be canceled while it is in a pending
+                    status.
+                  </s.InfoText>
                   {isInvitationStatusListOpen && (
                     <InvitationStatus sharedCheckListId={id} />
                   )}
