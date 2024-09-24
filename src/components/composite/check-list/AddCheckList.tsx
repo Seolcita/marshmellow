@@ -75,7 +75,7 @@ const AddCheckList = ({
       return;
     }
 
-    insertCheckListItem({ name: item.name, categoryId });
+    insertCheckListItem({ name: item.name.trim(), categoryId });
     setItem({ name: '', error: '' });
   };
 
@@ -88,7 +88,7 @@ const AddCheckList = ({
               label=''
               isValid={true}
               textInputConfig={{
-                value: item.name.trim(),
+                value: item.name,
                 onChangeText: (text) => {
                   handleChange(text);
                 },

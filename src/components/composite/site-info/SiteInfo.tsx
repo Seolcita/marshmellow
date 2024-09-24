@@ -236,7 +236,7 @@ const SiteInfo = () => {
       <s.FilterHeaderContainer>
         <SearchInput
           textInputConfig={{
-            value: search.trim(),
+            value: search,
             onChangeText: (text) => {
               updateSearchByKeyword(text);
             },

@@ -140,7 +140,7 @@ const ParkPassModal = ({
       !!!expiryDate.error
     ) {
       const updateItem: ParkPass = {
-        name: parkPassName.name,
+        name: parkPassName.name.trim(),
         expiryDate: expiryDate.date,
       };
 
@@ -180,7 +180,7 @@ const ParkPassModal = ({
                 label='Park Pass Name'
                 isValid={true}
                 textInputConfig={{
-                  value: parkPassName.name.trim(),
+                  value: parkPassName.name,
                   onChangeText: (text: string) =>
                     setParkPassName({ name: text, error: '' }),
                   placeholder: 'Discovery Pass',

@@ -63,7 +63,7 @@ const AddSharedCheckList = ({
     }
 
     insertSharedCheckListItem({
-      name: item.name,
+      name: item.name.trim(),
       categoryId,
       sharedCheckListId,
     });
@@ -80,7 +80,7 @@ const AddSharedCheckList = ({
               label=''
               isValid={true}
               textInputConfig={{
-                value: item.name.trim(),
+                value: item.name,
                 onChangeText: (text) => {
                   handleChange(text);
                 },

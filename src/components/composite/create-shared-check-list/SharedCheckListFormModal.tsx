@@ -54,7 +54,7 @@ const SharedCheckListFormModal = ({
 
     userEmail &&
       insertSharedCheckList({
-        name,
+        name: name.trim(),
         adminEmail: userEmail,
         adminName: userName,
       });
@@ -73,7 +73,7 @@ const SharedCheckListFormModal = ({
           label='Shared Check List Name'
           isValid={true}
           textInputConfig={{
-            value: name.trim(),
+            value: name,
             onChangeText: (text) => {
               handleChange(text);
             },

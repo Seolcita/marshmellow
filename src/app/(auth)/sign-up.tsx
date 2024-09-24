@@ -115,7 +115,7 @@ export const SignUpScreen = () => {
         error: '',
       },
       name: {
-        value: prevState.name.value,
+        value: prevState.name.value.trim(),
         isValid: isNameValid,
         error: '',
       },
@@ -149,7 +149,7 @@ export const SignUpScreen = () => {
           label='Name'
           isValid={inputs.name.isValid}
           textInputConfig={{
-            value: inputs.name.value.trim(),
+            value: inputs.name.value,
             onChangeText: handleInputChange.bind(this, 'name'),
             placeholder: 'John',
             placeholderTextColor: ColorMap['grey'].light,
@@ -179,7 +179,7 @@ export const SignUpScreen = () => {
           label='Password'
           isValid={inputs.password.isValid}
           textInputConfig={{
-            value: inputs.password.value,
+            value: inputs.password.value.trim(),
             onChangeText: handleInputChange.bind(this, 'password'),
             secureTextEntry: true,
             placeholder: '******',
@@ -194,7 +194,7 @@ export const SignUpScreen = () => {
           label='Confirm Password'
           isValid={inputs.confirmPassword.isValid}
           textInputConfig={{
-            value: inputs.confirmPassword.value,
+            value: inputs.confirmPassword.value.trim(),
             onChangeText: handleInputChange.bind(this, 'confirmPassword'),
             secureTextEntry: true,
             placeholder: '******',

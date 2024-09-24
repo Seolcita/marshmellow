@@ -31,7 +31,7 @@ const CreateCategoryModalContent = ({
       return;
     }
 
-    insertCategory({ item: category.item });
+    insertCategory({ item: category.item.trim() });
     setCategory({ item: '', error: '' });
     setIsModalOpen(false);
   };
@@ -43,7 +43,7 @@ const CreateCategoryModalContent = ({
         label=''
         isValid={true}
         textInputConfig={{
-          value: category.item.trim(),
+          value: category.item,
           onChangeText: (text) => {
             handleChange(text);
           },
