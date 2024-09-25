@@ -16,10 +16,9 @@ export const MainCheckListScreen = () => {
 
   const [hasPendingInvitations, setHasPendingInvitations] = useState(false);
   const [numPendingInvitations, setNumPendingInvitations] = useState(0);
-  const [userEmail, setUserEmail] = useState<string>('');
+  const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
 
-  const { data: myInvitations, isError } =
-    useInvitationWithUserEmail(userEmail);
+  const { data: myInvitations } = useInvitationWithUserEmail(userEmail);
 
   useEffect(() => {
     if (session) {
@@ -27,7 +26,6 @@ export const MainCheckListScreen = () => {
 
       if (!userEmail) {
         router.push('/(auth)/sign-in');
-        return;
       } else if (userEmail) {
         setUserEmail(userEmail);
       }

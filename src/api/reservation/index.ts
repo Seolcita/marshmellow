@@ -29,7 +29,7 @@ interface UseUpdateReservation {
   city?: string;
 }
 
-export const useReservationsInfo = (userId: string) => {
+export const useReservationsInfo = (userId: string | undefined) => {
   return useQuery({
     queryKey: ['reservations-info', userId],
     queryFn: async () => {
@@ -60,6 +60,7 @@ export const useReservationsInfo = (userId: string) => {
 
       return formattedReservationsInfo;
     },
+    enabled: !!userId,
   });
 };
 

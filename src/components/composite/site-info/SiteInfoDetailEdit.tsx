@@ -45,20 +45,25 @@ export interface SiteInfoDetail {
 }
 
 const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
+  const { session } = useAuth();
+
   const [siteInfo, setSiteInfo] = useState<SiteInfoDetail>(initialValues);
   const [previewImage, setPreviewImage] = useState<string | undefined>();
   const [previewLoading, setPreviewLoading] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [userId, setUserId] = useState<string | undefined>(undefined);
 
-  const { session } = useAuth();
-  const userId = session?.user.id;
+  useEffect(() => {
+    if (session) {
+      const userId = session?.user.id;
 
-  if (!userId) {
-    Alert.alert('Session is not valid, please login again');
-    console.log('User not found');
-    router.push('/(auth)/sign-in');
-    return;
-  }
+      if (!userId) {
+        router.push('/(auth)/sign-in');
+      } else if (userId) {
+        setUserId(userId);
+      }
+    }
+  }, [session]);
 
   const { mutate: updateSiteInfo } = useUpdateCampSiteInfo({ id, userId });
   const {
@@ -89,7 +94,7 @@ const SiteInfoDetailEdit = ({ id, setIsEditMode }: SiteInfoDetailProps) => {
   const handleSubmit = async () => {
     const convertedSiteInfo = convertType(siteInfo);
 
-    updateSiteInfo({ ...convertedSiteInfo });
+    userId && updateSiteInfo({ ...convertedSiteInfo });
     setIsEditMode(false);
   };
 

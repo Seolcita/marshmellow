@@ -1,4 +1,3 @@
-import { Alert } from 'react-native';
 import { router } from 'expo-router';
 import { Switch } from 'react-native';
 import { useEffect, useState } from 'react';
@@ -17,26 +16,29 @@ import CreateCategoryModal from '../../composite/category/CreateCategoryModal';
 import CheckListSkeleton from '../../composite/skeleton/check-list/CheckListSkeleton';
 
 const CheckListScreen = () => {
+  const { session } = useAuth();
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [isEditMode, setIsEditMode] = useState(true);
   const [isClearCheckList, setIsClearCheckList] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [userId, setUserId] = useState<string | undefined>(undefined);
 
-  const { session } = useAuth();
-  const userId = session?.user.id;
-  if (!userId) {
-    Alert.alert('Session is not valid, please login again');
-    console.log('User not found');
-    router.push('/(auth)/sign-in');
-    return;
-  }
+  useEffect(() => {
+    if (session) {
+      const userId = session?.user.id;
 
-  const {
-    error,
-    data: existCategories,
-    isLoading: isCategoriesLoading,
-  } = useCategories(userId);
+      if (!userId) {
+        router.push('/(auth)/sign-in');
+      } else if (userId) {
+        setUserId(userId);
+      }
+    }
+  }, [session]);
+
+  const { data: existCategories, isLoading: isCategoriesLoading } =
+    useCategories(userId);
 
   const { mutate: clearCheckList } = useClearCheckList();
 
@@ -54,7 +56,7 @@ const CheckListScreen = () => {
   }, [existCategories]);
 
   const handleClearCheckList = () => {
-    clearCheckList(userId);
+    userId && clearCheckList(userId);
   };
 
   return (

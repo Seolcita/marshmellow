@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { View } from '../../Themed';
 import Modal from '../../atomic/modal/Modal';
@@ -21,20 +21,29 @@ const SharedCheckListFormModal = ({
   setIsModalOpen,
 }: SharedCheckListFormModalProps) => {
   const { session, profile } = useAuth();
-  const userEmail = session?.user.email;
-  const userId = session?.user.id;
-  const userName = profile?.name;
-
-  if (!userEmail || !userId) {
-    Alert.alert('Session is not valid, please login again');
-    router.push('/(auth)/sign-in');
-    return;
-  }
-
-  const { mutate: insertSharedCheckList } = useInsertSharedCheckList(userId);
-
   const [name, setName] = useState('');
   const [error, setError] = useState('');
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+  const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    if (session) {
+      const userEmail = session?.user.email;
+      const userId = session?.user.id;
+      const userName = profile?.name;
+
+      if (!userEmail || !userId || !userName) {
+        router.push('/(auth)/sign-in');
+      } else if (userId && userEmail && userName) {
+        setUserId(userId);
+        setUserEmail(userEmail);
+        setUserName(userName);
+      }
+    }
+  }, [session]);
+
+  const { mutate: insertSharedCheckList } = useInsertSharedCheckList(userId);
 
   const initiate = () => {
     setName('');
@@ -52,12 +61,15 @@ const SharedCheckListFormModal = ({
       return;
     }
 
-    userEmail &&
+    userId &&
+      userName &&
+      userEmail?.trim() &&
       insertSharedCheckList({
         name: name.trim(),
         adminEmail: userEmail,
         adminName: userName,
       });
+
     initiate();
   };
 

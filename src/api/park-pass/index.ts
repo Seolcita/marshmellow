@@ -7,6 +7,7 @@ import {
 
 import { supabase } from '../../lib/supabase';
 import { ParkPass } from '../../types';
+import { Alert } from 'react-native';
 
 interface InsertParkPass {
   item: ParkPass;
@@ -18,7 +19,7 @@ export interface UpdateParkPass {
   id: string;
 }
 
-export const useParkPasses = (userId: string) => {
+export const useParkPasses = (userId: string | undefined) => {
   return useQuery({
     queryKey: ['park-passes', userId],
     queryFn: async () => {
@@ -28,11 +29,13 @@ export const useParkPasses = (userId: string) => {
         .eq('user_id', userId);
 
       if (error) {
-        throw new Error(error.message);
+        console.log('useParkPasses error', error);
+        Alert.alert('Fetching park passes failed');
       }
 
       return parkPasses;
     },
+    enabled: !!userId,
   });
 };
 

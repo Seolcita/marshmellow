@@ -17,18 +17,25 @@ import SharedCheckListFormModal from '../../composite/create-shared-check-list/S
 
 const SharedCheckListListsScreen = () => {
   const { session } = useAuth();
-  const userId = session?.user.id;
-
-  if (!userId) {
-    router.push('/(auth)/sign-in');
-    return;
-  }
 
   const [mySharedCheckList, setMySharedCheckList] = useState<
     MySharedCheckList[]
   >([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (session) {
+      const userId = session?.user.id;
+      console.log('userId🚨', userId);
+      if (!userId) {
+        router.push('/(auth)/sign-in');
+      } else if (userId) {
+        setUserId(userId);
+      }
+    }
+  }, [session]);
 
   const {
     data,
@@ -72,7 +79,7 @@ const SharedCheckListListsScreen = () => {
               </S.NoSharedCheckListTitleDescription>
             </S.NoSharedCheckListContainer>
           )}
-          {!isLoading && mySharedCheckList ? (
+          {!isLoading && mySharedCheckList && userId ? (
             mySharedCheckList.map((list) => (
               <SharedCheckListTile
                 key={list.id}

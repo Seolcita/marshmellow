@@ -33,7 +33,9 @@ const InvitationAcceptedMembers = ({
   return (
     <S.Container>
       {!isLoading ? (
-        members.map((member) => <S.Name>{member.inviteeName}</S.Name>)
+        members.map((member) => (
+          <S.Name key={member.id}>{member.inviteeName}</S.Name>
+        ))
       ) : (
         <MemberSkeletons />
       )}

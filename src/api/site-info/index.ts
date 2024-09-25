@@ -7,10 +7,11 @@ import {
 
 import { CampSiteInfo } from '../../types';
 import { supabase } from '../../lib/supabase';
+import { Alert } from 'react-native';
 
 interface UseDeleteSiteInfo {
   id: string;
-  userId: string;
+  userId: string | undefined;
 }
 
 interface UseUpdateSiteInfo extends UseDeleteSiteInfo {}
@@ -265,12 +266,19 @@ export const useUpdateCampSiteInfo = ({ id, userId }: UseUpdateSiteInfo) => {
         .single();
 
       if (error) {
-        throw new Error(error.message);
+        Alert.alert('Failed to update site info. Please try again.');
+        console.log(error);
+        return;
       }
+
       return updatedSiteInfo;
     },
 
     async onSuccess() {
+      if (!userId) {
+        return;
+      }
+
       queryClient.invalidateQueries([
         'site-info',
         userId,

@@ -37,16 +37,6 @@ const AddSharedCheckList = ({
     error: '',
   });
 
-  const { session } = useAuth();
-  const userId = session?.user.id;
-
-  if (!userId) {
-    Alert.alert('Session is not valid, please login again');
-    console.log('User not found');
-    router.push('/(auth)/sign-in');
-    return;
-  }
-
   const { mutate: insertSharedCheckListItem } =
     useInsertSharedCheckListItem(categoryId);
 

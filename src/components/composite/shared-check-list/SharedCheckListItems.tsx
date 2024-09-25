@@ -36,21 +36,13 @@ const SharedCheckListItems = ({
   sharedCheckListId,
 }: SharedCheckListItemsProps) => {
   const { session } = useAuth();
-  const userEmail = session?.user.email;
-  const userId = session?.user.id;
 
-  if (!userEmail || !userId) {
-    Alert.alert('Session is not valid, please login again');
-    console.log('User not found');
-    router.push('/(auth)/sign-in');
-    return;
-  }
-
+  const [userEmail, setUserEmail] = useState('');
   const [checkList, setCheckList] = useState<SharedCheckList[]>([]);
+  const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>(
     {}
   );
-  const [invitations, setInvitations] = useState<Invitation[]>([]);
 
   const { mutate: deleteSharedCheckListItem } = useDeleteSharedCheckList();
   const { mutate: updateSharedCheckListItemStatus } =
@@ -61,6 +53,18 @@ const SharedCheckListItems = ({
     useInvitationWithSharedCheckListId(sharedCheckListId);
 
   const subscriiption = useSharedCheckListItemSubscription(categoryId);
+
+  useEffect(() => {
+    if (session) {
+      const userEmail = session?.user.email;
+
+      if (!userEmail) {
+        router.push('/(auth)/sign-in');
+      } else if (userEmail) {
+        setUserEmail(userEmail);
+      }
+    }
+  }, [session]);
 
   useEffect(() => {
     if (items) {

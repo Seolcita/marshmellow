@@ -137,8 +137,6 @@ export const useUpdateSharedCheckListItemStatus = () => {
       id,
       isChecked,
     }: UpdateSharedCheckListItemStatus): Promise<any> {
-      console.log('id🪪', id);
-      console.log('isChecked👍', isChecked);
       const { error, data: updatedCheckListItem } = await supabase
         .from('shared_check_list_items')
         .update({ checked: isChecked })

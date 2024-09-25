@@ -14,7 +14,7 @@ export interface MySharedCheckList {
   sharedCheckListId: number;
 }
 
-export const useMySharedCheckList = (userId: string) => {
+export const useMySharedCheckList = (userId: string | undefined) => {
   return useQuery({
     queryKey: ['my_shared_check_list', userId],
     queryFn: async () => {
@@ -39,6 +39,8 @@ export const useMySharedCheckList = (userId: string) => {
 
       return result;
     },
+    enabled: !!userId,
+    initialData: [],
   });
 };
 
@@ -47,7 +49,7 @@ export const useMySharedCheckListForAdmin = ({
   userId,
 }: {
   id: number;
-  userId: string;
+  userId: string | undefined;
 }) => {
   return useQuery({
     queryKey: ['my_shared_check_list', id, userId],
@@ -69,6 +71,7 @@ export const useMySharedCheckListForAdmin = ({
         name: data[0].shared_check_list_name,
       };
     },
+    enabled: !!userId,
   });
 };
 

@@ -22,12 +22,15 @@ import ClearAllCheckBoxModal from '../../composite/shared-check-list/ClearAllChe
 import ClearAllAssigneeModal from '../../composite/shared-check-list/ClearAllAssigneeModal';
 import InvitationAcceptedMembers from '../../composite/invitation/InvitationAcceptedMembers';
 import CreateSharedCategoryModal from '../../composite/shared-category/CreateSharedCategoryModal';
+import { set } from 'date-fns';
 
 interface SharedCheckListScreenProps {
   id: number;
 }
 
 const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
+  const { session } = useAuth();
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [isEditMode, setIsEditMode] = useState(true);
   const [isClearCheckList, setIsClearCheckList] = useState(false);
@@ -48,15 +51,22 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
   const [isExistingCategoriesLoading, setIsExistingCategoriesLoading] =
     useState(true);
   const [isSettingOpen, setIsSettingOpen] = useState(true);
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+  const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
 
-  const { session } = useAuth();
-  const userId = session?.user.id;
-  if (!userId) {
-    Alert.alert('Session is not valid, please login again');
-    console.log('User not found');
-    router.push('/(auth)/sign-in');
-    return;
-  }
+  useEffect(() => {
+    if (session) {
+      const userId = session?.user.id;
+      const userEmail = session?.user.email;
+
+      if (!userId) {
+        router.push('/(auth)/sign-in');
+      } else if (userId && userEmail) {
+        setUserId(userId);
+        setUserEmail(userEmail);
+      }
+    }
+  }, [session]);
 
   const {
     data: adminInfo,
@@ -155,12 +165,18 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
                       color='white'
                     />
                   </s.Accordion>
-                  <s.InfoText>
-                    * Invitation can be canceled while it is in a pending
-                    status.
-                  </s.InfoText>
                   {isInvitationStatusListOpen && (
-                    <InvitationStatus sharedCheckListId={id} />
+                    <s.InfoText>
+                      * Invitation can be canceled while it is in a pending
+                      status.
+                    </s.InfoText>
+                  )}
+
+                  {isInvitationStatusListOpen && userEmail && (
+                    <InvitationStatus
+                      sharedCheckListId={id}
+                      userEmail={userEmail}
+                    />
                   )}
 
                   <s.Accordion

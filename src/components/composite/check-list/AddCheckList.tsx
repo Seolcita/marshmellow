@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
 import { router } from 'expo-router';
 
 import { CheckList } from '../../../types';
@@ -9,11 +8,11 @@ import ColorMap from '../../../styles/Color';
 import CheckListItems from './CheckListItems';
 import Button from '../../atomic/button/Button';
 import * as s from '../../common-styles/CommonStyles';
-import { useAuth } from '../../../providers/AuthProvider';
 import { useCheckList, useInsertCheckList } from '../../../api/check-list';
 import CheckListItemSkeleton from '../../atomic/skeleton/check-list/CheckListItemSkeleton';
 
 interface AddCheckListProps {
+  userId: string;
   categoryId: string;
   isInputVisible?: boolean;
   isEditMode: boolean;
@@ -22,6 +21,7 @@ interface AddCheckListProps {
 }
 
 const AddCheckList = ({
+  userId,
   categoryId,
   isInputVisible,
   isEditMode,
@@ -34,16 +34,6 @@ const AddCheckList = ({
   });
   const [checkList, setCheckList] = useState<CheckList[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const { session } = useAuth();
-  const userId = session?.user.id;
-
-  if (!userId) {
-    Alert.alert('Session is not valid, please login again');
-    console.log('User not found');
-    router.push('/(auth)/sign-in');
-    return;
-  }
 
   const { mutate: insertCheckListItem } = useInsertCheckList({
     userId,

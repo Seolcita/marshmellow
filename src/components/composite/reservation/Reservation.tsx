@@ -43,7 +43,7 @@ const Reservation = () => {
   const [showAllTrips, setShowAllTrips] = useState(true);
   const [showUpcomingTrips, setShowUpcomingTrips] = useState(false);
   const [showPastTrips, setShowPastTrips] = useState(false);
-  const [userId, setUserId] = useState<string>('');
+  const [userId, setUserId] = useState<string | undefined>(undefined);
 
   const { session } = useAuth();
 
@@ -59,8 +59,7 @@ const Reservation = () => {
 
       if (!userId) {
         router.push('/(auth)/sign-in');
-        return;
-      } else if (userId) {
+      } else {
         setUserId(userId);
       }
     }
@@ -212,15 +211,16 @@ const Reservation = () => {
           <S.Space />
         </ScrollView>
       </S.TripsContainer>
-
-      <ReservationModal
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-        userId={userId}
-        isEdit={isEdit}
-        setIsEdit={setIsEdit}
-        initialValue={initialValue}
-      />
+      {userId && (
+        <ReservationModal
+          isOpen={isModalOpen}
+          setIsOpen={setIsModalOpen}
+          userId={userId}
+          isEdit={isEdit}
+          setIsEdit={setIsEdit}
+          initialValue={initialValue}
+        />
+      )}
     </S.Container>
   );
 };

@@ -8,7 +8,7 @@ import { Alert } from 'react-native';
 
 import { supabase } from '../../lib/supabase';
 
-export const useWish = (userId: string) => {
+export const useWish = (userId: string | undefined) => {
   return useQuery({
     queryKey: ['wish', userId],
     queryFn: async () => {
@@ -24,6 +24,7 @@ export const useWish = (userId: string) => {
 
       return wishArray.wish;
     },
+    enabled: !!userId,
   });
 };
 

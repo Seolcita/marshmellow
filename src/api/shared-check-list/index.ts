@@ -13,7 +13,7 @@ interface InsertSharedCheckList {
   adminName: string;
 }
 
-export const useInsertSharedCheckList = (userId: string) => {
+export const useInsertSharedCheckList = (userId: string | undefined) => {
   const queryClient = useQueryClient();
 
   return useMutation({

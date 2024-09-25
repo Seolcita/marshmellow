@@ -5,6 +5,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { supabase } from '../../lib/supabase';
+import { Alert } from 'react-native';
 
 export interface InsertCategory {
   item: string;
@@ -15,7 +16,7 @@ export interface UpdateCategory {
   id: string;
 }
 
-export const useCategories = (userId: string) => {
+export const useCategories = (userId: string | undefined) => {
   return useQuery({
     queryKey: ['categories', userId],
     queryFn: async () => {
@@ -25,11 +26,13 @@ export const useCategories = (userId: string) => {
         .eq('user_id', userId);
 
       if (error) {
-        throw new Error(error.message);
+        Alert.alert('Failed to fetch categories. try again later');
+        return;
       }
 
       return categories;
     },
+    enabled: !!userId,
   });
 };
 

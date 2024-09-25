@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { Stack } from 'expo-router';
-import { useNavigation } from '@react-navigation/native';
 
 import ColorMap from '../../../styles/Color';
 import * as S from './SiteInfoDetail.styles';
 import Button from '../../atomic/button/Button';
 import { useCampSiteInfo } from '../../../api/site-info';
-import { useAuth } from '../../../providers/AuthProvider';
 import SiteInfoDetail from '../../composite/site-info/SiteInfoDetail';
 import SiteInfoDetailEdit from '../../composite/site-info/SiteInfoDetailEdit';
 
@@ -15,14 +13,9 @@ interface SiteInfoDetailProps {
 }
 
 const SiteInfoDetailScreen = ({ id }: SiteInfoDetailProps) => {
-  const { session } = useAuth();
-  const userId = session?.user.id;
-
   const [isEditMode, setIsEditMode] = useState(false);
 
-  const { error, isLoading, data: siteInfo } = useCampSiteInfo(id);
-
-  const navigation = useNavigation();
+  const { isLoading, data: siteInfo } = useCampSiteInfo(id);
 
   return (
     <>

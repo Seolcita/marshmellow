@@ -16,22 +16,29 @@ import TileSkeletons from '../../composite/skeleton/tiles/TileSkeletons';
 import PendingInvitationTile from '../../composite/invitation/PendingInvitationTile';
 
 export const InvitationsScreen = () => {
+  const { session } = useAuth();
+
   const [myInvitations, setMyInvitations] = useState<Invitation[]>([]);
   const [isPendingOpen, setIsPendingOpen] = useState(true);
   const [isAcceptedOpen, setIsAcceptedOpen] = useState(true);
   const [isRejectedOpen, setIsRejectedOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+  const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
 
-  const { session } = useAuth();
-  const userEmail = session?.user.email;
-  const userId = session?.user.id;
+  useEffect(() => {
+    if (session) {
+      const userEmail = session?.user.email;
+      const userId = session?.user.id;
 
-  if (!userEmail || !userId) {
-    Alert.alert('Session is not valid, please login again');
-    console.log('User not found');
-    router.push('/(auth)/sign-in');
-    return;
-  }
+      if (!userEmail || !userId) {
+        router.push('/(auth)/sign-in');
+      } else if (userId) {
+        setUserId(userId);
+        setUserEmail(userEmail);
+      }
+    }
+  }, [session]);
 
   const {
     data: myInvitationList,
@@ -90,7 +97,8 @@ export const InvitationsScreen = () => {
         />
       </s.Accordion>
       <S.TileContainer>
-        {!isLoading &&
+        {userId &&
+          !isLoading &&
           isPendingOpen &&
           pending.length > 0 &&
           pending.map((invitation) => (
@@ -124,7 +132,8 @@ export const InvitationsScreen = () => {
         />
       </s.Accordion>
       <S.TileContainer>
-        {!isLoading &&
+        {userId &&
+          !isLoading &&
           isAcceptedOpen &&
           accepted.map((invitation) => (
             <InvitationTile
@@ -157,7 +166,8 @@ export const InvitationsScreen = () => {
         />
       </s.Accordion>
       <S.TileContainer>
-        {!isLoading &&
+        {userId &&
+          !isLoading &&
           isRejectedOpen &&
           rejected.map((invitation) => (
             <InvitationTile
