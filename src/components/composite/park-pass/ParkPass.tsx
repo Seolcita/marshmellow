@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert, ScrollView } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -24,14 +25,23 @@ export const ParkPass = () => {
   const [initialValue, setInitialValue] = useState<InitialValue>();
   const [parkPasses, setParkPasses] = useState<InitialValue[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [userId, setUserId] = useState<string | undefined>(undefined);
 
   const { session } = useAuth();
-  const userId = session?.user.id ?? '';
-  const { data, error, isLoading: isParkPassLoading } = useParkPasses(userId);
 
-  if (error) {
-    Alert.alert('Fetching park passes failed');
-  }
+  useEffect(() => {
+    if (session) {
+      const userId = session?.user.id;
+
+      if (!userId) {
+        router.push('/(auth)/sign-in');
+      } else if (userId) {
+        setUserId(userId);
+      }
+    }
+  }, [session]);
+
+  const { data, isLoading: isParkPassLoading } = useParkPasses(userId);
 
   useEffect(() => {
     if (data) {
@@ -77,14 +87,15 @@ export const ParkPass = () => {
             )}
             {!isLoading && parkPasses && parkPasses.length > 0 && (
               <View style={styles.listContainer}>
-                {parkPasses?.map((item) => (
-                  <ParkPassItem
-                    key={item.id}
-                    item={item}
-                    handleEdit={handleEdit}
-                    userId={userId}
-                  />
-                ))}
+                {userId &&
+                  parkPasses?.map((item) => (
+                    <ParkPassItem
+                      key={item.id}
+                      item={item}
+                      handleEdit={handleEdit}
+                      userId={userId}
+                    />
+                  ))}
               </View>
             )}
           </View>
@@ -101,12 +112,15 @@ export const ParkPass = () => {
           setIsEdit(false), setIsOpen(true);
         }}
       />
-      <ParkPassModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        isEdit={isEdit}
-        initialValue={initialValue}
-      />
+      {userId && (
+        <ParkPassModal
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          isEdit={isEdit}
+          initialValue={initialValue}
+          userId={userId}
+        />
+      )}
     </View>
   );
 };

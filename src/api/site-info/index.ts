@@ -7,10 +7,11 @@ import {
 
 import { CampSiteInfo } from '../../types';
 import { supabase } from '../../lib/supabase';
+import { Alert } from 'react-native';
 
 interface UseDeleteSiteInfo {
   id: string;
-  userId: string;
+  userId: string | undefined;
 }
 
 interface UseUpdateSiteInfo extends UseDeleteSiteInfo {}
@@ -57,7 +58,7 @@ export const useCampSitesPartialInfo = (userId: string) => {
       const { error, data: siteInfo } = await supabase
         .from('site_info')
         .select(
-          'id, user_id, campground_name, site_number, favourite, rating, reservation, share'
+          'id, user_id, campground_name, site_number, favourite, rating, reservation, share, country'
         )
         .eq('user_id', userId);
 
@@ -75,6 +76,7 @@ export const useCampSitesPartialInfo = (userId: string) => {
           rate: info.rating,
           reservationType: info.reservation,
           share: info.share,
+          country: info.country,
         };
       });
 
@@ -264,12 +266,19 @@ export const useUpdateCampSiteInfo = ({ id, userId }: UseUpdateSiteInfo) => {
         .single();
 
       if (error) {
-        throw new Error(error.message);
+        Alert.alert('Failed to update site info. Please try again.');
+        console.log(error);
+        return;
       }
+
       return updatedSiteInfo;
     },
 
     async onSuccess() {
+      if (!userId) {
+        return;
+      }
+
       queryClient.invalidateQueries([
         'site-info',
         userId,

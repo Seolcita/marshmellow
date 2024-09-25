@@ -43,21 +43,28 @@ const Reservation = () => {
   const [showAllTrips, setShowAllTrips] = useState(true);
   const [showUpcomingTrips, setShowUpcomingTrips] = useState(false);
   const [showPastTrips, setShowPastTrips] = useState(false);
+  const [userId, setUserId] = useState<string | undefined>(undefined);
 
   const { session } = useAuth();
-  const userId = session?.user.id;
-  if (!userId) {
-    Alert.alert('Session is not valid, please login again');
-    console.log('User not found');
-    router.push('/(auth)/sign-in');
-    return;
-  }
 
   const {
     data,
     error,
     isLoading: isReservationsLoading,
   } = useReservationsInfo(userId);
+
+  useEffect(() => {
+    if (session) {
+      const userId = session?.user.id;
+
+      if (!userId) {
+        router.push('/(auth)/sign-in');
+      } else {
+        setUserId(userId);
+      }
+    }
+  }, [session]);
+
   useEffect(() => {
     if (data) {
       setReservations(data);
@@ -157,7 +164,7 @@ const Reservation = () => {
           />
         </View>
       </S.ButtonsContainer>
-      {!isLoading && reservations.length === 0 && (
+      {!isLoading && reservations.length === 0 && showAllTrips && (
         <S.AddSiteMessageContainer>
           <s.AddSiteMessageTextTitle>
             Please add your trips
@@ -172,6 +179,20 @@ const Reservation = () => {
             Sites.
           </S.AddSiteMessageTextDescription>
           <S.AddSiteMessageTextDescription></S.AddSiteMessageTextDescription>
+        </S.AddSiteMessageContainer>
+      )}
+      {!isLoading && reservations.length === 0 && showUpcomingTrips && (
+        <S.AddSiteMessageContainer>
+          <s.AddSiteMessageTextSubTitle>
+            There is no upcoming trips
+          </s.AddSiteMessageTextSubTitle>
+        </S.AddSiteMessageContainer>
+      )}
+      {!isLoading && reservations.length === 0 && showPastTrips && (
+        <S.AddSiteMessageContainer>
+          <s.AddSiteMessageTextSubTitle>
+            There is no past trips
+          </s.AddSiteMessageTextSubTitle>
         </S.AddSiteMessageContainer>
       )}
       <S.TripsContainer>
@@ -190,15 +211,16 @@ const Reservation = () => {
           <S.Space />
         </ScrollView>
       </S.TripsContainer>
-
-      <ReservationModal
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-        userId={userId}
-        isEdit={isEdit}
-        setIsEdit={setIsEdit}
-        initialValue={initialValue}
-      />
+      {userId && (
+        <ReservationModal
+          isOpen={isModalOpen}
+          setIsOpen={setIsModalOpen}
+          userId={userId}
+          isEdit={isEdit}
+          setIsEdit={setIsEdit}
+          initialValue={initialValue}
+        />
+      )}
     </S.Container>
   );
 };

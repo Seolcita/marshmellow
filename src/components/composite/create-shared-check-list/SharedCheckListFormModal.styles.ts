@@ -4,7 +4,7 @@ import { TwoButtonContainer } from '../../common-styles/CommonStyles';
 
 export const Container = styled.View`
   flex: 1;
-  padding-vertical: 20px;
+  padding-top: 10px;
 `;
 
 export const Title = styled.Text`

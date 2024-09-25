@@ -16,6 +16,7 @@ import { ParkPass } from '../../../types';
 import { InitialValue } from './ParkPass';
 
 interface ParkPassModalProps {
+  userId: string;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   isEdit?: boolean;
@@ -28,6 +29,7 @@ interface ExpiryDate {
 }
 
 const ParkPassModal = ({
+  userId,
   isOpen,
   setIsOpen,
   isEdit,
@@ -42,16 +44,6 @@ const ParkPassModal = ({
     error: '',
   });
   const [showCalendar, setShowCalendar] = useState(false);
-
-  const { session } = useAuth();
-  const userId = session?.user.id;
-
-  if (!userId) {
-    Alert.alert('Session is not valid, please login again');
-    console.log('User not found');
-    router.push('/(auth)/sign-in');
-    return;
-  }
 
   const { mutate: insertParkPass } = useInsertParkPass(userId);
   const { mutate: updateParkPass } = useUpdateParkPass(userId);
@@ -140,7 +132,7 @@ const ParkPassModal = ({
       !!!expiryDate.error
     ) {
       const updateItem: ParkPass = {
-        name: parkPassName.name,
+        name: parkPassName.name.trim(),
         expiryDate: expiryDate.date,
       };
 
@@ -180,7 +172,7 @@ const ParkPassModal = ({
                 label='Park Pass Name'
                 isValid={true}
                 textInputConfig={{
-                  value: parkPassName.name.trim(),
+                  value: parkPassName.name,
                   onChangeText: (text: string) =>
                     setParkPassName({ name: text, error: '' }),
                   placeholder: 'Discovery Pass',

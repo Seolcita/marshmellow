@@ -82,7 +82,7 @@ const CreateInvitationForm = ({
     insertInvitation({
       inviterId,
       inviteeEmail: inputs.email.value,
-      inviteeName: inputs.name.value,
+      inviteeName: inputs.name.value.trim(),
       sharedCheckListName,
       sharedCheckListId,
     });
@@ -122,7 +122,7 @@ const CreateInvitationForm = ({
         labelColor={ColorMap['white'].main}
         isValid={inputs.name.isValid}
         textInputConfig={{
-          value: inputs.name.value.trim(),
+          value: inputs.name.value,
           onChangeText: handleInputChange.bind(this, 'name'),
           placeholder: 'John',
           placeholderTextColor: ColorMap['grey'].light,

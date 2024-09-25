@@ -238,6 +238,7 @@ const Categories = ({
                 isEditMode={isEditMode}
                 isClearCheckList={isClearCheckList}
                 setIsClearCheckList={setIsClearCheckList}
+                userId={userId}
               />
             )}
         </S.Wrapper>

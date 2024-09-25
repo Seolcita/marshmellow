@@ -1,4 +1,4 @@
-import { Alert, Switch } from 'react-native';
+import { Switch } from 'react-native';
 import { router, Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
@@ -28,6 +28,8 @@ interface SharedCheckListScreenProps {
 }
 
 const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
+  const { session } = useAuth();
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [isEditMode, setIsEditMode] = useState(true);
   const [isClearCheckList, setIsClearCheckList] = useState(false);
@@ -48,15 +50,22 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
   const [isExistingCategoriesLoading, setIsExistingCategoriesLoading] =
     useState(true);
   const [isSettingOpen, setIsSettingOpen] = useState(true);
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+  const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
 
-  const { session } = useAuth();
-  const userId = session?.user.id;
-  if (!userId) {
-    Alert.alert('Session is not valid, please login again');
-    console.log('User not found');
-    router.push('/(auth)/sign-in');
-    return;
-  }
+  useEffect(() => {
+    if (session) {
+      const userId = session?.user.id;
+      const userEmail = session?.user.email;
+
+      if (!userId) {
+        router.push('/(auth)/sign-in');
+      } else if (userId && userEmail) {
+        setUserId(userId);
+        setUserEmail(userEmail);
+      }
+    }
+  }, [session]);
 
   const {
     data: adminInfo,
@@ -68,7 +77,7 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
     data: existSharedCategories,
     error: fetchingExistSharedCategoriesError,
     isLoading: isExistSharedCategoriesLoading,
-    refetch,
+    refetch: categoryRefetch,
   } = useSharedCategories(id);
 
   useEffect(() => {
@@ -91,7 +100,7 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
   }, [existSharedCategories, categories]);
 
   const handleRefresh = () => {
-    refetch();
+    categoryRefetch();
   };
 
   return (
@@ -156,7 +165,17 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
                     />
                   </s.Accordion>
                   {isInvitationStatusListOpen && (
-                    <InvitationStatus sharedCheckListId={id} />
+                    <s.InfoText>
+                      * Invitation can be canceled while it is in a pending
+                      status.
+                    </s.InfoText>
+                  )}
+
+                  {isInvitationStatusListOpen && userEmail && (
+                    <InvitationStatus
+                      sharedCheckListId={id}
+                      userEmail={userEmail}
+                    />
                   )}
 
                   <s.Accordion

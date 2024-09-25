@@ -1,19 +1,16 @@
 import { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
-import { router } from 'expo-router';
 
 import Input from '../../atomic/input/Input';
 import ColorMap from '../../../styles/Color';
 import Button from '../../atomic/button/Button';
 import * as s from '../../common-styles/CommonStyles';
-import { useAuth } from '../../../providers/AuthProvider';
 import {
   useInsertSharedCheckListItem,
   useSharedCheckList,
-  useSharedCheckListItemSubscription,
 } from '../../../api/shared-check-list-item';
 import * as S from '../check-list/AddCheckList.styles';
 import SharedCheckListItems from './SharedCheckListItems';
+import { SharedCheckList } from '../../../types';
 
 interface AddSharedCheckListProps {
   categoryId: string;
@@ -36,21 +33,18 @@ const AddSharedCheckList = ({
     name: '',
     error: '',
   });
-
-  const { session } = useAuth();
-  const userId = session?.user.id;
-
-  if (!userId) {
-    Alert.alert('Session is not valid, please login again');
-    console.log('User not found');
-    router.push('/(auth)/sign-in');
-    return;
-  }
+  const [sharedCheckList, setSharedCheckList] = useState<SharedCheckList[]>([]);
 
   const { mutate: insertSharedCheckListItem } =
     useInsertSharedCheckListItem(categoryId);
 
-  const { error, data: sharedCheckList } = useSharedCheckList(categoryId);
+  const { data } = useSharedCheckList(categoryId);
+
+  useEffect(() => {
+    if (data) {
+      setSharedCheckList(data);
+    }
+  }, [data, sharedCheckList]);
 
   const handleChange = (text: string) => {
     setItem({ name: text, error: '' });
@@ -63,7 +57,7 @@ const AddSharedCheckList = ({
     }
 
     insertSharedCheckListItem({
-      name: item.name,
+      name: item.name.trim(),
       categoryId,
       sharedCheckListId,
     });
@@ -80,7 +74,7 @@ const AddSharedCheckList = ({
               label=''
               isValid={true}
               textInputConfig={{
-                value: item.name.trim(),
+                value: item.name,
                 onChangeText: (text) => {
                   handleChange(text);
                 },

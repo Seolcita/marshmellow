@@ -31,13 +31,6 @@ interface FilteredMySiteInfo extends FilteredSiteInfo {
 
 const SiteInfo = () => {
   const { session } = useAuth();
-  const userId = session?.user.id;
-  if (!userId) {
-    Alert.alert('Session is not valid, please login again');
-    console.log('User not found');
-    router.push('/(auth)/sign-in');
-    return;
-  }
 
   const [campSites, setCampSites] = useState<FilteredMySiteInfo[] | undefined>(
     undefined
@@ -57,12 +50,26 @@ const SiteInfo = () => {
   const [showReviewed, setShowReviewed] = useState(reviewedInitialState);
   const [activeFilters, setActiveFilters] = useState<FilterType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [userId, setUserId] = useState<string>('');
 
   const {
     data: campSitesInfo,
     error,
     isLoading: isCampSitesLoading,
   } = useCampSitesPartialInfo(userId);
+
+  useEffect(() => {
+    if (session) {
+      const userId = session?.user.id;
+
+      if (!userId) {
+        router.push('/(auth)/sign-in');
+        return;
+      } else if (userId) {
+        setUserId(userId);
+      }
+    }
+  }, [session]);
 
   useEffect(() => {
     if (campSitesInfo) {
@@ -229,7 +236,7 @@ const SiteInfo = () => {
       <s.FilterHeaderContainer>
         <SearchInput
           textInputConfig={{
-            value: search.trim(),
+            value: search,
             onChangeText: (text) => {
               updateSearchByKeyword(text);
             },

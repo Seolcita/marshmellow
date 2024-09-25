@@ -11,20 +11,14 @@ import InvitationStatusSkeletons from '../skeleton/invitation-status/InvitationS
 import { Text } from '../../Themed';
 
 interface InvitationStatusProps {
+  userEmail: string;
   sharedCheckListId: number;
 }
 
-const InvitationStatusList = ({ sharedCheckListId }: InvitationStatusProps) => {
-  const { session } = useAuth();
-  const userEmail = session?.user.email;
-
-  if (!userEmail) {
-    Alert.alert('Session is not valid, please login again');
-    console.log('User not found');
-    router.push('/(auth)/sign-in');
-    return;
-  }
-
+const InvitationStatusList = ({
+  sharedCheckListId,
+  userEmail,
+}: InvitationStatusProps) => {
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -35,6 +29,10 @@ const InvitationStatusList = ({ sharedCheckListId }: InvitationStatusProps) => {
   } = useInvitationWithSharedCheckListId(sharedCheckListId);
 
   useEffect(() => {
+    if (!isInvitationLoading) {
+      setIsLoading(false);
+    }
+
     if (invitationInfo) {
       const filteredAdmin = invitationInfo.filter((invitation) => {
         return invitation.inviteeEmail !== userEmail;

@@ -136,7 +136,7 @@ export const useInvitationWithSharedCheckListId = (
   });
 };
 
-export const useInvitationWithUserEmail = (userEmail: string) => {
+export const useInvitationWithUserEmail = (userEmail: string | undefined) => {
   return useQuery({
     queryKey: ['invitation', userEmail],
     queryFn: async () => {
@@ -146,7 +146,8 @@ export const useInvitationWithUserEmail = (userEmail: string) => {
         .eq('invitee_email', userEmail);
 
       if (error) {
-        throw new Error(error.message);
+        Alert.alert('Failed to fetch invitations. Please try again');
+        return;
       }
 
       const invitations: Invitation[] = myInvitationInfo.map((info) => {
@@ -164,6 +165,7 @@ export const useInvitationWithUserEmail = (userEmail: string) => {
 
       return invitations;
     },
+    enabled: !!userEmail,
   });
 };
 
@@ -318,7 +320,7 @@ export const useInvitationAcceptedMembers = (sharedCheckListId: number) => {
   });
 };
 
-export const useInvitationSubscription = (userEmail: string) => {
+export const useInvitationSubscription = (userEmail: string | undefined) => {
   const queryClient = useQueryClient();
 
   const invitations = supabase
@@ -327,6 +329,9 @@ export const useInvitationSubscription = (userEmail: string) => {
       'postgres_changes',
       { event: '*', schema: 'public', table: 'invitation' },
       (payload) => {
+        if (!userEmail) {
+          return;
+        }
         queryClient.invalidateQueries([
           'invitation',
           userEmail,

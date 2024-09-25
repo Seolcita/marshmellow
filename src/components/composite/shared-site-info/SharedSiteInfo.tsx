@@ -34,12 +34,19 @@ export interface FilteredSharedSiteInfo extends FilteredSiteInfo {
 
 const SharedSiteInfo = () => {
   const { session } = useAuth();
-  const userId = session?.user.id;
-  if (!userId) {
-    console.log('User not found');
-    router.push('/(auth)/sign-in');
-    return;
-  }
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (session) {
+      const userId = session?.user.id;
+
+      if (!userId) {
+        router.push('/(auth)/sign-in');
+      } else if (userId) {
+        setUserId(userId);
+      }
+    }
+  }, [session]);
 
   const [sharedCampSites, setSharedCampSites] = useState<
     FilteredSharedSiteInfo[] | undefined
@@ -249,7 +256,7 @@ const SharedSiteInfo = () => {
       <S.FilterHeaderContainer>
         <SearchInput
           textInputConfig={{
-            value: search.trim(),
+            value: search,
             onChangeText: (text) => {
               updateSearchByKeyword(text);
             },
@@ -341,7 +348,8 @@ const SharedSiteInfo = () => {
           overScrollMode='auto'
           showsVerticalScrollIndicator={false}
         >
-          {filteredData.length > 0 &&
+          {userId &&
+            filteredData.length > 0 &&
             filteredData?.map((item) => (
               <SharedSiteInfoCard
                 key={item.id}

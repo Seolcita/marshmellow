@@ -99,11 +99,20 @@ export const ModalTitle = styled.Text`
 
 export const ConfirmMessage = styled.Text`
   font-size: 20px;
-  text-align: center;
-  margin-bottom: 30px;
   margin-top: 20px;
   line-height: 28px;
   padding: 4px;
+  font-weight: bold;
+  text-align: center;
+`;
+
+export const WarningMessage = styled.Text`
+  color: ${ColorMap['red'].main};
+  font-size: 20px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  font-weight: bold;
+  text-align: center;
 `;
 
 export const Span = styled.Text`

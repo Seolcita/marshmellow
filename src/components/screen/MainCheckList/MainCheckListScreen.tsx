@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 
 import {
   useInvitationSubscription,
@@ -12,21 +12,25 @@ import { useAuth } from '../../../providers/AuthProvider';
 import ImageTile from '../../atomic/image-tile/ImageTile';
 
 export const MainCheckListScreen = () => {
+  const { session } = useAuth();
+
   const [hasPendingInvitations, setHasPendingInvitations] = useState(false);
   const [numPendingInvitations, setNumPendingInvitations] = useState(0);
+  const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
 
-  const { session } = useAuth();
-  const userEmail = session?.user.email;
+  const { data: myInvitations } = useInvitationWithUserEmail(userEmail);
 
-  if (!userEmail) {
-    Alert.alert('Session is not valid, please login again');
-    console.log('User not found');
-    router.push('/(auth)/sign-in');
-    return;
-  }
+  useEffect(() => {
+    if (session) {
+      const userEmail = session?.user.email;
 
-  const { data: myInvitations, isError } =
-    useInvitationWithUserEmail(userEmail);
+      if (!userEmail) {
+        router.push('/(auth)/sign-in');
+      } else if (userEmail) {
+        setUserEmail(userEmail);
+      }
+    }
+  }, [session]);
 
   useEffect(() => {
     if (myInvitations) {

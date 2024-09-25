@@ -29,7 +29,7 @@ const EditCategoryModalContent = ({
   }, [editCategory.name]);
 
   const handleChange = (text: string) => {
-    setCategory({ item: text.trim(), error: '' });
+    setCategory({ item: text, error: '' });
   };
 
   const handleEdit = () => {
@@ -38,7 +38,7 @@ const EditCategoryModalContent = ({
       return;
     }
 
-    updateCategory({ id: editCategory.categoryId, item: category.item });
+    updateCategory({ id: editCategory.categoryId, item: category.item.trim() });
     setCategory({ item: '', error: '' });
     setIsEditModalOpen(false);
   };

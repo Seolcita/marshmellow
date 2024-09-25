@@ -13,18 +13,24 @@ import EditNameModal from '../../composite/profile/EditNameModal';
 
 const ProfileScreen = () => {
   const { session } = useAuth();
-  const userId = session?.user?.id;
-
-  if (!userId) {
-    console.log('User not found');
-    router.push('/(auth)/sign-in');
-    return;
-  }
 
   const [profile, setProfile] = useState<Profile | undefined>();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userId, setUserId] = useState<string | undefined>(undefined);
 
-  const { data: profileData, isLoading, isError } = useProfile(userId);
+  useEffect(() => {
+    if (session) {
+      const userId = session?.user.id;
+
+      if (!userId) {
+        router.push('/(auth)/sign-in');
+      } else if (userId) {
+        setUserId(userId);
+      }
+    }
+  }, [session]);
+
+  const { data: profileData, isLoading } = useProfile(userId);
 
   const handleLogout = () => {
     signOut();

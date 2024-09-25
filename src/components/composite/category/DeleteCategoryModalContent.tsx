@@ -25,6 +25,7 @@ const DeleteCategoryModalContent = ({
     <>
       <S.ModalTitle>Delete Category</S.ModalTitle>
       <S.ConfirmMessage>{`Are you sure that you want to delete '${deleteCategory.name}' category?`}</S.ConfirmMessage>
+      <S.WarningMessage>{`Items under this category will be deleted as well.`}</S.WarningMessage>
       <TwoButtonContainer>
         <View style={{ width: '49%' }}>
           <Button

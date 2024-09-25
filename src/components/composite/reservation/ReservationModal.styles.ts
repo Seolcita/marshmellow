@@ -13,7 +13,6 @@ export const ModalTitle = styled.Text`
 export const DateErrorText = styled.Text`
   color: ${ColorMap['red'].main};
   text-align: center;
-  margin-bottom: 20px;
 `;
 
 export const InputContainer = styled.View`

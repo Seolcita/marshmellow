@@ -193,11 +193,11 @@ export const ReservationModal = ({
       insertReservation({
         arrivalDate,
         departureDate,
-        campgroundName: campgroundName.name,
-        campgroundSiteNumber: campgroundSiteNumber?.siteNumber,
-        country: country.name,
-        province: province.name,
-        city: city.name,
+        campgroundName: campgroundName.name.trim(),
+        campgroundSiteNumber: campgroundSiteNumber?.siteNumber.trim(),
+        country: country.name.trim(),
+        province: province.name.trim(),
+        city: city.name.trim(),
         userId,
       });
       initiate();
@@ -212,11 +212,11 @@ export const ReservationModal = ({
         id,
         arrivalDate,
         departureDate,
-        campgroundName: campgroundName.name,
-        campgroundSiteNumber: campgroundSiteNumber?.siteNumber,
-        country: country.name,
-        province: province.name,
-        city: city.name,
+        campgroundName: campgroundName.name.trim(),
+        campgroundSiteNumber: campgroundSiteNumber?.siteNumber.trim(),
+        country: country.name.trim(),
+        province: province.name.trim(),
+        city: city.name.trim(),
       });
       initiate();
     }
@@ -238,7 +238,7 @@ export const ReservationModal = ({
           markedDates={markedDates}
           style={{ marginBottom: 20 }}
         />
-        {dateError && <S.DateErrorText>{dateError}</S.DateErrorText>}
+
         <S.InputContainer>
           <S.Title>Campground Info</S.Title>
           <Input
@@ -247,7 +247,7 @@ export const ReservationModal = ({
             textInputConfig={{
               value: campgroundName.name,
               onChangeText: (text: string) =>
-                setCampgroundName({ name: text.trim(), error: '' }),
+                setCampgroundName({ name: text, error: '' }),
               placeholder: 'Two Jack Lakeside',
               keyboardType: 'default',
             }}
@@ -259,7 +259,7 @@ export const ReservationModal = ({
             textInputConfig={{
               value: campgroundSiteNumber.siteNumber,
               onChangeText: (text: string) =>
-                setCampgroundSiteNumber({ siteNumber: text.trim(), error: '' }),
+                setCampgroundSiteNumber({ siteNumber: text, error: '' }),
               placeholder: 'C-7',
               keyboardType: 'default',
             }}
@@ -276,7 +276,7 @@ export const ReservationModal = ({
               value: country.name,
               onChangeText: (text: string) =>
                 setCountry({
-                  name: text.trim(),
+                  name: text,
                   error: '',
                 }),
               placeholder: 'Canada',
@@ -291,7 +291,7 @@ export const ReservationModal = ({
               value: province.name,
               onChangeText: (text: string) =>
                 setProvince({
-                  name: text.trim(),
+                  name: text,
                   error: '',
                 }),
               placeholder: 'Alberta',
@@ -306,7 +306,7 @@ export const ReservationModal = ({
               value: city.name,
               onChangeText: (text: string) =>
                 setCity({
-                  name: text.trim(),
+                  name: text,
                   error: '',
                 }),
               placeholder: 'Banff',
@@ -315,6 +315,7 @@ export const ReservationModal = ({
             error={province.error}
           />
         </S.InputContainer>
+        {dateError && <S.DateErrorText>{dateError}</S.DateErrorText>}
         <S.ButtonContainer>
           <Button
             title='Cancel'

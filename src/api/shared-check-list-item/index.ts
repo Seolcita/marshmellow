@@ -4,6 +4,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
+import { Alert } from 'react-native';
 
 import { supabase } from '../../lib/supabase';
 
@@ -28,6 +29,40 @@ interface UpdateSharedCheckListAssignedItemStatus {
   assignedTo: string | null;
 }
 
+export const useSharedCheckListForSubscription = (
+  sharedCheckListId: number
+) => {
+  return useQuery({
+    queryKey: ['shared-check-list-items', sharedCheckListId],
+    queryFn: async () => {
+      const { error, data: sharedCheckListInfo } = await supabase
+        .from('shared_check_list_items')
+        .select('*')
+        .eq('shared_check_list_id', sharedCheckListId);
+
+      if (error) {
+        console.log('error', error);
+        throw new Error(error.message);
+      }
+
+      const sharedChecklist = sharedCheckListInfo.map((item) => {
+        return {
+          id: item.id,
+          name: item.name,
+          checked: item.checked,
+          isAssigned: item.is_assigned,
+          assignedTo: item.assigned_to,
+          sharedCategoryId: item.shared_category_id,
+          sharedCheckListId: item.shared_check_list_id,
+        };
+      });
+      console.log('items🎄', sharedChecklist);
+
+      return sharedChecklist;
+    },
+  });
+};
+
 export const useSharedCheckList = (categoryId: string) => {
   return useQuery({
     queryKey: ['shared-check-list-items', categoryId],
@@ -38,6 +73,7 @@ export const useSharedCheckList = (categoryId: string) => {
         .eq('shared_category_id', categoryId);
 
       if (error) {
+        Alert.alert('Fail to fetch shared check list. Please try again');
         throw new Error(error.message);
       }
 
@@ -137,8 +173,6 @@ export const useUpdateSharedCheckListItemStatus = () => {
       id,
       isChecked,
     }: UpdateSharedCheckListItemStatus): Promise<any> {
-      console.log('id🪪', id);
-      console.log('isChecked👍', isChecked);
       const { error, data: updatedCheckListItem } = await supabase
         .from('shared_check_list_items')
         .update({ checked: isChecked })
@@ -294,7 +328,6 @@ export const useClearSharedCheckListAssignees = () => {
 
 export const useSharedCheckListItemSubscription = (categoryId: string) => {
   const queryClient = useQueryClient();
-
   const sharedCheckListItemSubscription = supabase
     .channel('custom-all-channel')
     .on(

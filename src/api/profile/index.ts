@@ -6,8 +6,9 @@ import {
 } from '@tanstack/react-query';
 
 import { supabase } from '../../lib/supabase';
+import { Alert } from 'react-native';
 
-export const useProfile = (userId: string) => {
+export const useProfile = (userId: string | undefined) => {
   return useQuery({
     queryKey: ['profiles', userId],
     queryFn: async () => {
@@ -18,7 +19,9 @@ export const useProfile = (userId: string) => {
         .single();
 
       if (error) {
-        throw new Error(error.message);
+        console.log('fetch profile error', error);
+        Alert.alert('Failed to fetch profile. try again later');
+        return;
       }
 
       return (
@@ -29,6 +32,7 @@ export const useProfile = (userId: string) => {
         }
       );
     },
+    enabled: !!userId,
   });
 };
 
