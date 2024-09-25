@@ -1,19 +1,16 @@
 import { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
-import { router } from 'expo-router';
 
 import Input from '../../atomic/input/Input';
 import ColorMap from '../../../styles/Color';
 import Button from '../../atomic/button/Button';
 import * as s from '../../common-styles/CommonStyles';
-import { useAuth } from '../../../providers/AuthProvider';
 import {
   useInsertSharedCheckListItem,
   useSharedCheckList,
-  useSharedCheckListItemSubscription,
 } from '../../../api/shared-check-list-item';
 import * as S from '../check-list/AddCheckList.styles';
 import SharedCheckListItems from './SharedCheckListItems';
+import { SharedCheckList } from '../../../types';
 
 interface AddSharedCheckListProps {
   categoryId: string;
@@ -36,11 +33,18 @@ const AddSharedCheckList = ({
     name: '',
     error: '',
   });
+  const [sharedCheckList, setSharedCheckList] = useState<SharedCheckList[]>([]);
 
   const { mutate: insertSharedCheckListItem } =
     useInsertSharedCheckListItem(categoryId);
 
-  const { error, data: sharedCheckList } = useSharedCheckList(categoryId);
+  const { data } = useSharedCheckList(categoryId);
+
+  useEffect(() => {
+    if (data) {
+      setSharedCheckList(data);
+    }
+  }, [data, sharedCheckList]);
 
   const handleChange = (text: string) => {
     setItem({ name: text, error: '' });

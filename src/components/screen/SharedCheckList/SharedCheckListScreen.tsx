@@ -1,4 +1,4 @@
-import { Alert, Switch } from 'react-native';
+import { Switch } from 'react-native';
 import { router, Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
@@ -22,7 +22,6 @@ import ClearAllCheckBoxModal from '../../composite/shared-check-list/ClearAllChe
 import ClearAllAssigneeModal from '../../composite/shared-check-list/ClearAllAssigneeModal';
 import InvitationAcceptedMembers from '../../composite/invitation/InvitationAcceptedMembers';
 import CreateSharedCategoryModal from '../../composite/shared-category/CreateSharedCategoryModal';
-import { set } from 'date-fns';
 
 interface SharedCheckListScreenProps {
   id: number;
@@ -78,7 +77,7 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
     data: existSharedCategories,
     error: fetchingExistSharedCategoriesError,
     isLoading: isExistSharedCategoriesLoading,
-    refetch,
+    refetch: categoryRefetch,
   } = useSharedCategories(id);
 
   useEffect(() => {
@@ -101,7 +100,7 @@ const SharedCheckListScreen = ({ id }: SharedCheckListScreenProps) => {
   }, [existSharedCategories, categories]);
 
   const handleRefresh = () => {
-    refetch();
+    categoryRefetch();
   };
 
   return (
